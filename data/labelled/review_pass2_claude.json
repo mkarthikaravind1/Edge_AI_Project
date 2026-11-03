@@ -1,0 +1,47 @@
+{
+ "reviewer": "Claude (AI assistant), visual check of helper-model labels, 2026-11-03",
+ "accepted": 99,
+ "edits": {
+  "clip1_000742.jpg": [
+   "merge",
+   "b",
+   "c",
+   2
+  ],
+  "clip1_000749.jpg": [
+   "del",
+   "a"
+  ],
+  "clip1_001204.jpg": [
+   "all",
+   2
+  ],
+  "clip1_001218.jpg": [
+   "all",
+   2
+  ],
+  "clip1_001400.jpg": [
+   "set",
+   "b",
+   1
+  ],
+  "clip1_001407.jpg": [
+   "set",
+   "b",
+   1
+  ],
+  "clip1_002051.jpg": [
+   "all",
+   0
+  ]
+ },
+ "for_karthik_to_fix": {
+  "clip1_000854.jpg": 84,
+  "clip1_000875.jpg": 87,
+  "clip1_001295.jpg": 137,
+  "clip1_001302.jpg": 138,
+  "clip1_001323.jpg": 139,
+  "clip1_001463.jpg": 150,
+  "clip1_001897.jpg": 191
+ }
+}

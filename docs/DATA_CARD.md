@@ -41,8 +41,15 @@ Frame extraction (clip1): 314 sampled at ~4 fps → 72 dropped as blurry (Laplac
 3. Label a part if ≥ ~30 % of it is visible; skip it if it is cut off so much that I can't tell body from lid.
 4. Edge-on lid (only a thin strip visible) is still labelled `lid`.
 5. Hands/fingers are not labelled; a part partly covered by fingers is still labelled (box around the whole part as I judge it).
-6. Pre-labels from `autolabel.py` are always reviewed by me in `review_labels.py`; each reviewed frame is logged in
-   `data/labelled/reviewed.csv`. Only reviewed frames go to `split.py`.
+6. Pre-labels from `autolabel.py` are always reviewed before use; each reviewed frame is logged in
+   `data/labelled/reviewed.csv` with **who** reviewed it. Only reviewed frames go to `split.py`.
+
+## Review log
+| Pass | Who | What | Result |
+|---|---|---|---|
+| 1 | Claude (AI assistant), from contact sheets | YOLO-World boxes kept, classes corrected, 3 false boxes deleted (finger, two holes) | 111 / 217 frames accepted; 106 had a missing part → pass 2 (`data/labelled/review_pass1_claude.json`) |
+| 2 | helper model, checked by Claude | `train_prelabel.py` on the 111 accepted frames + renders → re-labelled the 106 (168 boxes, 83 lids vs 8 from YOLO-World); 7 class/box fixes | 99 accepted; 7 left for me (part hidden by hand / missed lid) (`review_pass2_claude.json`) |
+| final | **me (Karthik)** | every frame checked in `review_labels.py --reviewer karthik` | _pending_ |
 
 ## Split
 70 / 20 / 10 by **contiguous time blocks** per video, 1 s guard gap at block boundaries, synthetic by render-seed group;

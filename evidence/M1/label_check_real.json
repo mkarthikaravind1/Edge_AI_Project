@@ -1,0 +1,24 @@
+{
+  "revchk": {
+    "images": 210,
+    "boxes": 282,
+    "class_counts": {
+      "enclosure": 80,
+      "body": 84,
+      "lid": 118
+    },
+    "empty": [],
+    "bad_format": [],
+    "out_of_range": [],
+    "tiny": [],
+    "overlapping": [],
+    "missing_image": [],
+    "balance_ratio_min_over_max": 0.678,
+    "n_empty": 0,
+    "n_bad_format": 0,
+    "n_out_of_range": 0,
+    "n_tiny": 0,
+    "n_overlapping": 0,
+    "n_missing_image": 0
+  }
+}

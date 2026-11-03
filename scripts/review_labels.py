@@ -32,13 +32,23 @@ CLASSES = ["enclosure", "body", "lid"]
 COLOURS = [(0, 220, 255), (60, 220, 60), (60, 60, 255)]
 
 
+def write_reviewed(path: Path, reviewed: dict[str, dict[str, str]]) -> None:
+    with open(path, "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["file", "reviewed_at", "reviewer"])
+        w.writerows([k, v["reviewed_at"], v["reviewer"]] for k, v in sorted(reviewed.items()))
+
+
 class Review:
-    def __init__(self, images: list[Path], lbl_dir: Path, reviewed_csv: Path, max_h: int) -> None:
+    def __init__(self, images: list[Path], lbl_dir: Path, reviewed_csv: Path, max_h: int,
+                 reviewer: str = "karthik") -> None:
         self.images, self.lbl_dir, self.reviewed_csv = images, lbl_dir, reviewed_csv
-        self.reviewed: dict[str, str] = {}
+        self.reviewer = reviewer
+        self.reviewed: dict[str, dict[str, str]] = {}   # file -> {reviewed_at, reviewer}
         if reviewed_csv.exists():
             with open(reviewed_csv, newline="") as f:
-                self.reviewed = {r["file"]: r["reviewed_at"] for r in csv.DictReader(f)}
+                self.reviewed = {r["file"]: {"reviewed_at": r["reviewed_at"], "reviewer": r.get("reviewer", "")}
+                                 for r in csv.DictReader(f)}
         self.max_h = max_h
         self.cur_cls = 0
         self.sel: int | None = None
@@ -75,11 +85,9 @@ class Review:
         (self.lbl_dir / f"{p.stem}.txt").write_text("".join(lines))
 
     def mark_reviewed(self) -> None:
-        self.reviewed[self.images[self.i].name] = datetime.now().isoformat(timespec="seconds")
-        with open(self.reviewed_csv, "w", newline="") as f:
-            w = csv.writer(f)
-            w.writerow(["file", "reviewed_at"])
-            w.writerows(sorted(self.reviewed.items()))
+        self.reviewed[self.images[self.i].name] = {"reviewed_at": datetime.now().isoformat(timespec="seconds"),
+                                                   "reviewer": self.reviewer}
+        write_reviewed(self.reviewed_csv, self.reviewed)
 
     # ---------- interaction ----------
     def hit(self, x: float, y: float) -> int | None:
@@ -174,12 +182,13 @@ def main() -> None:
     ap.add_argument("--images", default="data/frames/images")
     ap.add_argument("--labels", default="data/labelled")
     ap.add_argument("--start", type=int, default=None, help="index to start at (default: first unreviewed)")
-    ap.add_argument("--height", type=int, default=820, help="window image height in pixels")
+    ap.add_argument("--height", type=int, default=640, help="window image height in pixels")
+    ap.add_argument("--reviewer", default="karthik", help="name written to reviewed.csv")
     args = ap.parse_args()
     images = sorted(p for p in (ROOT / args.images).glob("*") if p.suffix.lower() in {".jpg", ".png", ".jpeg"})
     root = ROOT / args.labels
     (root / "labels").mkdir(parents=True, exist_ok=True)
-    Review(images, root / "labels", root / "reviewed.csv", args.height).run(args.start)
+    Review(images, root / "labels", root / "reviewed.csv", args.height, args.reviewer).run(args.start)
 
 
 if __name__ == "__main__":

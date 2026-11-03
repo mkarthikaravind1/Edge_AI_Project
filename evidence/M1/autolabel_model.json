@@ -1,0 +1,14 @@
+{
+  "images": 217,
+  "kept_reviewed": 111,
+  "prelabelled": 106,
+  "boxes": 168,
+  "no_box": 2,
+  "boxes_per_class": {
+    "enclosure": 13,
+    "body": 72,
+    "lid": 83
+  },
+  "method": "model models/prelabel.pt",
+  "conf": 0.25
+}

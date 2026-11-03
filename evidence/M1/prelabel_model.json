@@ -1,0 +1,10 @@
+{
+  "purpose": "label-assist only, not the submitted model",
+  "reviewed_real_frames": 111,
+  "epochs": 25,
+  "imgsz": 416,
+  "val_on_reviewed_real": {
+    "mAP50": 0.995,
+    "mAP50_95": 0.995
+  }
+}
