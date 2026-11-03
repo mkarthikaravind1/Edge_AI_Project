@@ -34,32 +34,55 @@ def read_manifest(p: Path) -> list[dict]:
         return list(csv.DictReader(f))
 
 
-def assign_real(rows: list[dict], n_blocks: int, gap_s: float, rng: np.random.Generator) -> tuple[dict[str, str], dict]:
+def _apply_blocks(rs: list[dict], labels: list[str], gap_s: float) -> tuple[dict[str, str], list[float], int]:
+    n = len(labels)
+    t0, t1 = float(rs[0]["timestamp_s"]), float(rs[-1]["timestamp_s"]) + 1e-6
+    edges = np.linspace(t0, t1, n + 1)
+    assign, dropped = {}, 0
+    for r in rs:
+        t = float(r["timestamp_s"])
+        b = min(int(np.searchsorted(edges, t, side="right")) - 1, n - 1)
+        near_prev = b > 0 and labels[b - 1] != labels[b] and t - edges[b] < gap_s
+        near_next = b < n - 1 and labels[b + 1] != labels[b] and edges[b + 1] - t < gap_s
+        if near_prev or near_next:
+            dropped += 1
+            continue
+        assign[r["file"]] = labels[b]
+    return assign, [round(float(e), 2) for e in edges], dropped
+
+
+def assign_real(rows: list[dict], n_blocks: int, gap_s: float, rng: np.random.Generator,
+                classes_of: dict[str, set[str]], tries: int = 500) -> tuple[dict[str, str], dict]:
+    """Whole time blocks go to one split. Among `tries` random block assignments, keep the one where
+    val and test contain every class and the real-image ratio is closest to 70/20/10."""
     by_video: dict[str, list[dict]] = defaultdict(list)
     for r in rows:
         by_video[r["video"]].append(r)
-    assign: dict[str, str] = {}
-    info = {}
-    for vid, rs in sorted(by_video.items()):
+    for rs in by_video.values():
         rs.sort(key=lambda r: float(r["timestamp_s"]))
-        t0, t1 = float(rs[0]["timestamp_s"]), float(rs[-1]["timestamp_s"]) + 1e-6
-        edges = np.linspace(t0, t1, n_blocks + 1)
-        k_test = max(1, round(0.1 * n_blocks))
-        k_val = max(1, round(0.2 * n_blocks))
-        labels = ["test"] * k_test + ["val"] * k_val + ["train"] * (n_blocks - k_test - k_val)
-        labels = list(rng.permutation(labels))
-        dropped = 0
-        for r in rs:
-            t = float(r["timestamp_s"])
-            b = min(int(np.searchsorted(edges, t, side="right")) - 1, n_blocks - 1)
-            near_prev = b > 0 and labels[b - 1] != labels[b] and t - edges[b] < gap_s
-            near_next = b < n_blocks - 1 and labels[b + 1] != labels[b] and edges[b + 1] - t < gap_s
-            if near_prev or near_next:
-                dropped += 1
-                continue
-            assign[r["file"]] = labels[b]
-        info[vid] = {"blocks": [str(x) for x in labels], "block_edges_s": [round(float(e), 2) for e in edges],
-                     "dropped_at_boundaries": dropped}
+    k_test = max(1, round(0.1 * n_blocks))
+    k_val = max(1, round(0.2 * n_blocks))
+    base = ["test"] * k_test + ["val"] * k_val + ["train"] * (n_blocks - k_test - k_val)
+    target = {"train": 0.7, "val": 0.2, "test": 0.1}
+    all_classes = set().union(*classes_of.values()) if classes_of else set()
+
+    best = None
+    for _ in range(tries):
+        assign, info = {}, {}
+        for vid, rs in sorted(by_video.items()):
+            labels = [str(x) for x in rng.permutation(base)]
+            a, edges, dropped = _apply_blocks(rs, labels, gap_s)
+            assign.update(a)
+            info[vid] = {"blocks": labels, "block_edges_s": edges, "dropped_at_boundaries": dropped}
+        n = max(1, len(assign))
+        missing = sum(len(all_classes - set().union(*[classes_of.get(f, set()) for f, s in assign.items() if s == sp]))
+                      for sp in ("val", "test"))
+        ratio_err = sum(abs(sum(s == sp for s in assign.values()) / n - target[sp]) for sp in target)
+        score = (missing, ratio_err)
+        if best is None or score < best[0]:
+            best = (score, assign, info)
+    (missing, ratio_err), assign, info = best
+    info["_selection"] = {"tries": tries, "classes_missing_in_val_test": missing, "ratio_error": round(ratio_err, 3)}
     return assign, info
 
 
@@ -85,8 +108,8 @@ def main() -> None:
     ap.add_argument("--real-manifest", default="data/frames/manifest.csv")
     ap.add_argument("--syn-dir", default="data/synthetic")
     ap.add_argument("--out", default="data/splits")
-    ap.add_argument("--blocks", type=int, default=10, help="time blocks per video")
-    ap.add_argument("--gap-s", type=float, default=1.0, help="drop frames this close to a split boundary")
+    ap.add_argument("--blocks", type=int, default=20, help="time blocks per video")
+    ap.add_argument("--gap-s", type=float, default=0.5, help="drop frames this close to a split boundary")
     ap.add_argument("--dup-max", type=int, default=4, help="pHash distance treated as a leaked duplicate")
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--no-synthetic", action="store_true")
@@ -102,9 +125,17 @@ def main() -> None:
         skipped = len(real_rows) - sum(r["file"] in reviewed for r in real_rows)
         real_rows = [r for r in real_rows if r["file"] in reviewed]
         print(f"using {len(real_rows)} reviewed real frames ({skipped} unreviewed skipped)")
+    exclude_txt = ROOT / args.real_labels / ".." / "exclude.txt"
+    excluded = set()
+    if exclude_txt.exists():
+        excluded = {l.split("#")[0].strip() for l in exclude_txt.read_text().splitlines()} - {""}
+        real_rows = [r for r in real_rows if r["file"] not in excluded]
+        print(f"excluded {len(excluded)} frames listed in exclude.txt (labels still to fix)")
     syn_dir = ROOT / args.syn_dir
     syn_rows = [] if args.no_synthetic else read_manifest(syn_dir / "manifest.csv")
-    real_assign, block_info = assign_real(real_rows, args.blocks, args.gap_s, rng)
+    classes_of = {r["file"]: set(label_counts(ROOT / args.real_labels / (Path(r["file"]).stem + ".txt")))
+                  for r in real_rows}
+    real_assign, block_info = assign_real(real_rows, args.blocks, args.gap_s, rng, classes_of)
     syn_assign = assign_synthetic(syn_rows, rng)
 
     out = ROOT / args.out
@@ -157,6 +188,7 @@ def main() -> None:
                                    "threshold": args.dup_max, "found": len(leaks), "items": leaks[:50]},
         "test_is_real_only": counts["test"]["synthetic"] == 0,
         "only_reviewed_labels": not args.include_unreviewed,
+        "excluded_frames": sorted(excluded),
     }
     ev = ROOT / "evidence/M1"
     ev.mkdir(parents=True, exist_ok=True)

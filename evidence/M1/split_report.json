@@ -1,0 +1,121 @@
+{
+  "method": "real: contiguous time blocks per video (+ boundary gap); synthetic: render-seed groups, train/val only",
+  "params": {
+    "real_images": "data/frames/images",
+    "real_labels": "data/labelled/labels",
+    "real_manifest": "data/frames/manifest.csv",
+    "syn_dir": "data/synthetic",
+    "out": "data/splits",
+    "blocks": 20,
+    "gap_s": 0.5,
+    "dup_max": 4,
+    "seed": 42,
+    "no_synthetic": false,
+    "include_unreviewed": false
+  },
+  "splits": {
+    "train": {
+      "real": 126,
+      "synthetic": 350,
+      "real_pct": 70.0,
+      "boxes": {
+        "enclosure": 158,
+        "body": 254,
+        "lid": 267
+      }
+    },
+    "val": {
+      "real": 36,
+      "synthetic": 100,
+      "real_pct": 20.0,
+      "boxes": {
+        "enclosure": 52,
+        "body": 81,
+        "lid": 75
+      }
+    },
+    "test": {
+      "real": 18,
+      "synthetic": 0,
+      "real_pct": 10.0,
+      "boxes": {
+        "body": 3,
+        "lid": 9,
+        "enclosure": 9
+      }
+    }
+  },
+  "total_images": 630,
+  "real_blocks": {
+    "clip1.mp4": {
+      "blocks": [
+        "train",
+        "val",
+        "train",
+        "train",
+        "train",
+        "val",
+        "train",
+        "train",
+        "test",
+        "train",
+        "train",
+        "train",
+        "train",
+        "train",
+        "train",
+        "val",
+        "train",
+        "val",
+        "train",
+        "test"
+      ],
+      "block_edges_s": [
+        0.0,
+        3.63,
+        7.26,
+        10.89,
+        14.52,
+        18.15,
+        21.78,
+        25.41,
+        29.04,
+        32.67,
+        36.3,
+        39.93,
+        43.56,
+        47.19,
+        50.82,
+        54.46,
+        58.09,
+        61.72,
+        65.35,
+        68.98,
+        72.61
+      ],
+      "dropped_at_boundaries": 30
+    },
+    "_selection": {
+      "tries": 500,
+      "classes_missing_in_val_test": 0,
+      "ratio_error": 0.0
+    }
+  },
+  "cross_split_duplicates": {
+    "checked_pairs": "every val/test image vs every train image (pHash)",
+    "threshold": 4,
+    "found": 0,
+    "items": []
+  },
+  "test_is_real_only": true,
+  "only_reviewed_labels": true,
+  "excluded_frames": [
+    "clip1_000854.jpg",
+    "clip1_000875.jpg",
+    "clip1_001295.jpg",
+    "clip1_001302.jpg",
+    "clip1_001323.jpg",
+    "clip1_001463.jpg",
+    "clip1_001897.jpg"
+  ]
+}

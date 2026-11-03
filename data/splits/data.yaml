@@ -1,0 +1,8 @@
+path: D:/Data/Kumaraguru/Protosem/Edge AI/Edge_AI_Project/data/splits
+train: train/images
+val: val/images
+test: test/images
+names:
+  0: enclosure
+  1: body
+  2: lid

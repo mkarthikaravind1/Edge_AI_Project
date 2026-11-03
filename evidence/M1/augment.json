@@ -1,0 +1,15 @@
+{
+  "split": "train",
+  "source_images": 126,
+  "augmented_created": 252,
+  "copies": 2,
+  "transforms": [
+    "HorizontalFlip",
+    "Affine",
+    "RandomBrightnessContrast",
+    "HueSaturationValue",
+    "OneOf",
+    "GaussNoise",
+    "ImageCompression"
+  ]
+}

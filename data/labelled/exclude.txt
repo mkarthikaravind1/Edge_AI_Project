@@ -1,0 +1,8 @@
+# Frames kept OUT of the split until their labels are fixed in review_labels.py (then delete the line).
+clip1_000854.jpg  # lid not boxed separately: one body box covers lid + body
+clip1_000875.jpg  # lid at top not boxed
+clip1_001295.jpg  # body mostly under hand: box only partial
+clip1_001302.jpg  # hand covers part: decide box / no box
+clip1_001323.jpg  # blurred body at bottom not boxed
+clip1_001463.jpg  # lid at top not boxed
+clip1_001897.jpg  # closed box mostly under hand: no box

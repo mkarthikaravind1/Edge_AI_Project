@@ -22,9 +22,13 @@ Why three classes: the closed box looks nothing like the open body or the loose 
 ## Counts
 | Split | Real | Synthetic | Augmented | enclosure | body | lid |
 |---|---|---|---|---|---|---|
-| train | | | | | | |
-| val | | | – | | | |
-| test | | 0 | – | | | |
+| train | 126 | 350 | 252 (2 per real frame) | 244 | 346 | 413 |
+| val | 36 | 100 | – | 52 | 81 | 75 |
+| test | 18 | 0 | – | 9 | 3 | 9 |
+
+Real frames: 217 extracted → 7 held back in `data/labelled/exclude.txt` (labels still to fix) → 30 dropped at split
+boundaries → 180 used (126 / 36 / 18 = 70 / 20 / 10 %). Label check: 0 empty, tiny, overlapping or malformed boxes
+(`evidence/M1/label_check.json`).
 
 ## Capture conditions
 | Clip | Camera | Resolution | Length | Background | Lighting | Content |
@@ -49,14 +53,18 @@ Frame extraction (clip1): 314 sampled at ~4 fps → 72 dropped as blurry (Laplac
 |---|---|---|---|
 | 1 | Claude (AI assistant), from contact sheets | YOLO-World boxes kept, classes corrected, 3 false boxes deleted (finger, two holes) | 111 / 217 frames accepted; 106 had a missing part → pass 2 (`data/labelled/review_pass1_claude.json`) |
 | 2 | helper model, checked by Claude | `train_prelabel.py` on the 111 accepted frames + renders → re-labelled the 106 (168 boxes, 83 lids vs 8 from YOLO-World); 7 class/box fixes | 99 accepted; 7 left for me (part hidden by hand / missed lid) (`review_pass2_claude.json`) |
-| final | **me (Karthik)** | every frame checked in `review_labels.py --reviewer karthik` | _pending_ |
+| final | me (Karthik) | `review_labels.py` | _pending: the two runs so far stamped all 217 frames in ~8 s and changed no labels; the 7 frames in `exclude.txt` still need fixing_ |
 
 ## Split
-70 / 20 / 10 by **contiguous time blocks** per video, 1 s guard gap at block boundaries, synthetic by render-seed group;
-cross-split pHash check. Test = real images only. Details: `evidence/M1/split_report.json`.
+70 / 20 / 10 by **contiguous time blocks**: the video is cut into 20 blocks (~3.7 s each) and whole blocks go to one split;
+frames within 0.5 s of a boundary between different splits are dropped. Of 500 random block assignments, the one kept
+has **every class in val and test** and the ratio closest to 70/20/10 (with one video a purely random pick gave a test
+set with no `enclosure`). Synthetic by render-seed group (train/val only). Cross-split pHash check: **0 duplicates**.
+Test = real images only. Details: `evidence/M1/split_report.json`.
 
 ## Known gaps
 - One clip, one background (wooden desk), one lighting → the test set shares that background. More clips planned.
+- Test set is small (18 images, only 3 body boxes) → mAP on it has a wide error bar; more clips fix this.
 - Phone video is WhatsApp-compressed (480×854) → lower detail than the Pi camera will give.
 - Only 2 physical copies of each part → limited variation in print defects and colour.
 - Synthetic renders are flat-shaded (no texture/layer lines) → the domain gap is why real frames dominate val/test.

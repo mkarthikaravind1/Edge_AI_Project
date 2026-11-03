@@ -1,0 +1,68 @@
+{
+  "train": {
+    "images": 728,
+    "boxes": 1003,
+    "class_counts": {
+      "enclosure": 244,
+      "body": 346,
+      "lid": 413
+    },
+    "empty": [],
+    "bad_format": [],
+    "out_of_range": [],
+    "tiny": [],
+    "overlapping": [],
+    "missing_image": [],
+    "balance_ratio_min_over_max": 0.591,
+    "n_empty": 0,
+    "n_bad_format": 0,
+    "n_out_of_range": 0,
+    "n_tiny": 0,
+    "n_overlapping": 0,
+    "n_missing_image": 0
+  },
+  "val": {
+    "images": 136,
+    "boxes": 208,
+    "class_counts": {
+      "enclosure": 52,
+      "body": 81,
+      "lid": 75
+    },
+    "empty": [],
+    "bad_format": [],
+    "out_of_range": [],
+    "tiny": [],
+    "overlapping": [],
+    "missing_image": [],
+    "balance_ratio_min_over_max": 0.642,
+    "n_empty": 0,
+    "n_bad_format": 0,
+    "n_out_of_range": 0,
+    "n_tiny": 0,
+    "n_overlapping": 0,
+    "n_missing_image": 0
+  },
+  "test": {
+    "images": 18,
+    "boxes": 21,
+    "class_counts": {
+      "body": 3,
+      "lid": 9,
+      "enclosure": 9
+    },
+    "empty": [],
+    "bad_format": [],
+    "out_of_range": [],
+    "tiny": [],
+    "overlapping": [],
+    "missing_image": [],
+    "balance_ratio_min_over_max": 0.333,
+    "n_empty": 0,
+    "n_bad_format": 0,
+    "n_out_of_range": 0,
+    "n_tiny": 0,
+    "n_overlapping": 0,
+    "n_missing_image": 0
+  }
+}

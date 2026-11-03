@@ -40,9 +40,13 @@ and Modbus. Switching is one setting in `config/<target>.yaml`, chosen by `EDGE_
 
 **1.5 Correct split** — `python scripts/split.py`
 > Neighbouring video frames are near copies. A random split would put one copy in train and its twin in test, and the
-> test score would be fake-high (**leakage**). So I cut each video into time blocks and give whole blocks to one split,
-> drop frames within 1 s of a boundary, and then pHash-check every test image against every train image.
+> test score would be fake-high (**leakage**). So I cut each video into 20 time blocks and give whole blocks to one
+> split, drop frames within 0.5 s of a boundary, and then pHash-check every test image against every train image (0 found).
+> With only one video, a random block choice once left `enclosure` out of the test set entirely, so the script tries 500
+> block assignments and keeps one where val and test contain every class at 70/20/10.
 > Test is real images only, because the device will only ever see real parts.
+> Augmentation (flip, small shift/scale/±5° rotation, brightness, blur, light noise) runs on train only, after the split,
+> so test never contains an augmented copy of a training image.
 
 **1.6 Train & run** — `scripts/train_colab.ipynb`
 > Transfer learning: start from public COCO weights (`yolov8n.pt`), fine-tune on my 2 classes.
