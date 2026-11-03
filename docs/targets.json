@@ -1,0 +1,17 @@
+{
+  "written": "2026-11-03",
+  "mAP50": 0.85,
+  "mAP50_95": 0.60,
+  "precision": 0.85,
+  "recall": 0.85,
+  "int8_map50_drop_max": 0.03,
+  "int8_size_mb_max": 4.0,
+  "pi4_median_infer_ms_max": 120,
+  "pi5_median_infer_ms_max": 60,
+  "pi4_pipeline_fps_min": 6,
+  "pi5_pipeline_fps_min": 12,
+  "e2e_latency_p95_ms_max": 600,
+  "false_pass_rate_max": 0.10,
+  "false_alarms_5_normal_runs_max": 1,
+  "headline_correct_of_20_min": 18
+}

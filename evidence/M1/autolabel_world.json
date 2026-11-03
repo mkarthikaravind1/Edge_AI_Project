@@ -1,0 +1,14 @@
+{
+  "images": 217,
+  "kept_reviewed": 0,
+  "prelabelled": 217,
+  "boxes": 175,
+  "no_box": 60,
+  "boxes_per_class": {
+    "enclosure": 86,
+    "body": 81,
+    "lid": 8
+  },
+  "method": "yolo-world zero-shot",
+  "conf": 0.12
+}

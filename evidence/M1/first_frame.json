@@ -1,0 +1,18 @@
+{
+  "task": "first_frame",
+  "host": {
+    "hostname": "LAPTOP-6BN8T06N",
+    "device_type": "laptop",
+    "cpu_model": "Intel(R) Core(TM) Ultra 5 225H",
+    "cpu_cores": 14,
+    "ram_gb": 16.57,
+    "os": "Windows 11",
+    "machine": "AMD64",
+    "python": "3.12.10",
+    "timestamp_utc": "2026-11-03T14:43:38+00:00"
+  },
+  "camera": "webcam",
+  "width": 640,
+  "height": 480,
+  "file": "first_frame.png"
+}

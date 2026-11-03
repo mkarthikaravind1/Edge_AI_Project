@@ -1,0 +1,45 @@
+{
+  "task": "baseline_laptop_coco_yolov8n",
+  "host": {
+    "hostname": "LAPTOP-6BN8T06N",
+    "device_type": "laptop",
+    "cpu_model": "Intel(R) Core(TM) Ultra 5 225H",
+    "cpu_cores": 14,
+    "ram_gb": 16.57,
+    "os": "Windows 11",
+    "machine": "AMD64",
+    "python": "3.12.10",
+    "timestamp_utc": "2026-11-03T10:31:02+00:00"
+  },
+  "camera": "webcam",
+  "backend": "ultralytics",
+  "model": "models/best.pt",
+  "imgsz": 320,
+  "duration_s": 20.02,
+  "frames": 467,
+  "fps": 23.33,
+  "frame_latency": {
+    "n": 467,
+    "mean_ms": 31.461,
+    "median_ms": 28.333,
+    "p95_ms": 67.101,
+    "min_ms": 13.308,
+    "max_ms": 84.227,
+    "std_ms": 15.445
+  },
+  "inference_latency": {
+    "n": 467,
+    "mean_ms": 30.995,
+    "median_ms": 27.85,
+    "p95_ms": 66.639,
+    "min_ms": 13.062,
+    "max_ms": 83.424,
+    "std_ms": 15.327
+  },
+  "cpu_pct_mean": 67.6,
+  "cpu_pct_peak": 83.8,
+  "gpu_pct_mean": null,
+  "temp_c_mean": null,
+  "temp_c_peak": null,
+  "note": "temperature/GPU are null when the host does not expose them (most Windows laptops)"
+}

@@ -1,0 +1,52 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+.ipynb_checkpoints/
+
+# Large raw data (keep manifests, not media)
+data/raw/videos/*
+!data/raw/videos/.gitkeep
+data/frames/*
+!data/frames/manifest.csv
+data/labelled/images/
+data/splits/*/images/
+data/synthetic/images/
+data/backgrounds/*
+!data/backgrounds/.gitkeep
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# Training outputs and weights (export + model card are committed separately)
+runs/
+*.pt
+!models/*.pt
+yolov8n.pt
+yolo11n.pt
+
+# Secrets and certificates
+docker/mosquitto/certs/
+docker/mosquitto/passwd
+*.key
+*.pem
+*.crt
+*.srl
+.env
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+*.log
+logs/
+
+# Colab upload bundle and scratch
+colab_bundle.zip
+data/_render_test/
+data/labelled/cvat_annotations.zip
+models/prelabel.pt

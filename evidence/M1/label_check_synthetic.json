@@ -1,0 +1,24 @@
+{
+  "synthetic": {
+    "images": 450,
+    "boxes": 668,
+    "class_counts": {
+      "enclosure": 152,
+      "body": 268,
+      "lid": 248
+    },
+    "empty": [],
+    "bad_format": [],
+    "out_of_range": [],
+    "tiny": [],
+    "overlapping": [],
+    "missing_image": [],
+    "balance_ratio_min_over_max": 0.567,
+    "n_empty": 0,
+    "n_bad_format": 0,
+    "n_out_of_range": 0,
+    "n_tiny": 0,
+    "n_overlapping": 0,
+    "n_missing_image": 0
+  }
+}

@@ -1,0 +1,51 @@
+# Viva notes — what to show and what to say
+
+Short "explain it simply" notes per task. Commands assume the venv is active and `EDGE_TARGET` is set.
+
+## Architecture in one breath
+Core logic (detect, decide, monitor) never talks to hardware directly. It talks to a **HAL** (hardware abstraction layer):
+`Camera`, `Actuator`, `Imu`, `Plc`. On the laptop these are a webcam and fakes; on the Pi they are Picamera2, GPIO, MPU6050
+and Modbus. Switching is one setting in `config/<target>.yaml`, chosen by `EDGE_TARGET`.
+
+---
+
+## M1 Detect
+
+**1.1 Camera & repo** — `python scripts/capture_frame.py`
+> Opens the camera through the HAL, throws away 10 frames while auto-exposure settles, saves one frame and a json
+> that records which machine took it.
+
+**1.2 OpenCV pipeline** — `python scripts/run_live.py`
+> Loop: read frame → detector returns boxes → `overlay.draw` paints box, class and confidence, a per-class count and FPS.
+> FPS is frames counted over the last 2 seconds.
+
+**1.3 Baseline speed** — `python scripts/benchmark_pipeline.py --seconds 60`
+> 20 warm-up frames are not timed (first runs are slow: memory allocation, caches). Then for 60 s I time every frame
+> from capture to overlay done, and a background thread samples CPU %, GPU % and temperature every second.
+> I report median and p95, not just mean, because a few slow frames hide inside a mean.
+
+**1.4 Dataset v1** — `extract_frames.py`, `render_cad.py`, `autolabel.py`, `check_labels.py`
+> - *Blur filter:* the Laplacian highlights edges; a blurry image has few edges so its variance is low → dropped.
+> - *Duplicate filter:* a perceptual hash is a 64-bit fingerprint of how the image looks; two frames whose hashes
+>   differ in ≤ 6 bits are practically the same picture, so I keep only one.
+> - *Synthetic:* I split my STL into body (Model 1) and lid (Model 2) and render them in random pose, light, colour
+>   and background. Boxes come from the rendered pixel mask, so they are exact.
+> - *Three classes:* the closed box looks different from the open tray and the loose plate, so it gets its own class
+>   (`enclosure`) instead of two overlapping boxes.
+> - *Auto-label, pass 1:* YOLO-World is a detector you can prompt with text ("closed white plastic box"). It found the
+>   parts but mixed up the classes and missed most lids (8 lid boxes on 217 frames), so I corrected ~30 frames by hand.
+> - *Auto-label, pass 2:* a helper YOLOv8n trained on those reviewed frames + the CAD renders re-labels the rest; I review
+>   every frame in my offline tool (`review_labels.py`), and `reviewed.csv` proves which frames I checked and when.
+>   The helper model is not my submitted model, and it only *suggests* boxes, so it cannot leak test data.
+
+**1.5 Correct split** — `python scripts/split.py`
+> Neighbouring video frames are near copies. A random split would put one copy in train and its twin in test, and the
+> test score would be fake-high (**leakage**). So I cut each video into time blocks and give whole blocks to one split,
+> drop frames within 1 s of a boundary, and then pHash-check every test image against every train image.
+> Test is real images only, because the device will only ever see real parts.
+
+**1.6 Train & run** — `scripts/train_colab.ipynb`
+> Transfer learning: start from public COCO weights (`yolov8n.pt`), fine-tune on my 2 classes.
+> mAP@0.5 = area under the precision-recall curve, counting a box as correct if it overlaps the truth ≥ 50 %, averaged
+> over classes. mAP@0.5:0.95 averages that over stricter overlaps (50 % … 95 %), so it rewards tight boxes.
+> Precision = of the boxes I drew, how many were right. Recall = of the real parts, how many I found.

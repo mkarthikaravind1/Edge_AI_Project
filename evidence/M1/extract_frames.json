@@ -1,0 +1,24 @@
+{
+  "params": {
+    "video": [
+      "data/raw/videos/clip1.mp4"
+    ],
+    "fps": 4.0,
+    "blur_min": 60.0,
+    "dup_max": 6,
+    "max_side": 1280,
+    "out": "data/frames"
+  },
+  "videos": [
+    {
+      "video": "clip1.mp4",
+      "video_fps": 29.790522120238233,
+      "frames_total": 2198,
+      "sampled": 314,
+      "dropped_blur": 72,
+      "dropped_dup": 25,
+      "kept": 217
+    }
+  ],
+  "kept_total": 217
+}
