@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 # Edge inspection station image. Builds for linux/arm64 (Raspberry Pi) and linux/amd64 (laptop test).
 #   docker buildx build --platform linux/arm64,linux/amd64 -f docker/Dockerfile -t edge-inspection:latest .
 # Debian Bookworm = the same base as Raspberry Pi OS, so apt's picamera2/gpiozero work inside the container.
@@ -7,7 +8,10 @@ ARG TARGETARCH
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
     MPLBACKEND=Agg \
+    PIP_DEFAULT_TIMEOUT=120 \
+    PIP_RETRIES=5 \
     EDGE_TARGET=pi \
+    EDGE_ROOT=/app \
     PATH=/opt/venv/bin:$PATH
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -29,11 +33,12 @@ WORKDIR /app
 # --system-site-packages: the venv can see the apt-installed picamera2 / gpiozero
 RUN python3 -m venv --system-site-packages /opt/venv
 COPY requirements-pi.txt .
-RUN pip install --no-cache-dir -r requirements-pi.txt
+# BuildKit cache: downloaded wheels survive a failed/slow build, so a retry resumes instead of restarting
+RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements-pi.txt
 
 COPY pyproject.toml ./
 COPY src ./src
-RUN pip install --no-cache-dir --no-deps .
+RUN --mount=type=cache,target=/root/.cache/pip pip install --no-deps .
 COPY config ./config
 COPY scripts ./scripts
 COPY models/best_int8.tflite models/best_int8_full.tflite ./models/

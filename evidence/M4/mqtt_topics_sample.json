@@ -1,0 +1,157 @@
+{
+  "received_per_topic": {
+    "status": 28,
+    "detection": 2,
+    "motor/score": 50
+  },
+  "schema_failures": {},
+  "seconds": 120.0,
+  "samples": {
+    "status": [
+      {
+        "topic": "edge/laptop-karthik/status",
+        "retained": true,
+        "payload": {
+          "device_id": "laptop-karthik",
+          "ts": 1793780250.51934,
+          "state": "offline"
+        },
+        "schema_ok": true
+      },
+      {
+        "topic": "edge/laptop-karthik/status",
+        "retained": false,
+        "payload": {
+          "ts": 1793780310.566834,
+          "device_id": "laptop-karthik",
+          "state": "starting",
+          "uptime_s": 0.1,
+          "frames": 0,
+          "fps": 0.0,
+          "triggers": 0,
+          "safe_events": 0,
+          "errors": {},
+          "run_permit": false,
+          "reject": false,
+          "class_counts": {}
+        },
+        "schema_ok": true
+      },
+      {
+        "topic": "edge/laptop-karthik/status",
+        "retained": false,
+        "payload": {
+          "ts": 1793780311.6185331,
+          "device_id": "laptop-karthik",
+          "state": "running",
+          "uptime_s": 1.1,
+          "frames": 30,
+          "fps": 29.61,
+          "triggers": 1,
+          "safe_events": 0,
+          "errors": {},
+          "run_permit": true,
+          "reject": false,
+          "class_counts": {
+            "enclosure": 30
+          }
+        },
+        "schema_ok": true
+      }
+    ],
+    "detection": [
+      {
+        "topic": "edge/laptop-karthik/detection",
+        "retained": false,
+        "payload": {
+          "device_id": "laptop-karthik",
+          "ts": 1793780310.7167737,
+          "event": "trigger",
+          "count": 1,
+          "classes": [
+            "enclosure"
+          ],
+          "confidences": [
+            0.9693
+          ],
+          "boxes": [
+            [
+              39.4,
+              272.5,
+              460.1,
+              523.8
+            ]
+          ],
+          "verdict": null,
+          "latency_ms": 16.58
+        },
+        "schema_ok": true
+      },
+      {
+        "topic": "edge/laptop-karthik/detection",
+        "retained": false,
+        "payload": {
+          "device_id": "laptop-karthik",
+          "ts": 1793780316.4417222,
+          "event": "trigger",
+          "count": 2,
+          "classes": [
+            "enclosure"
+          ],
+          "confidences": [
+            0.9435
+          ],
+          "boxes": [
+            [
+              1.2,
+              213.9,
+              321.3,
+              553.6
+            ]
+          ],
+          "verdict": null,
+          "latency_ms": 15.05
+        },
+        "schema_ok": true
+      }
+    ],
+    "motor/score": [
+      {
+        "topic": "edge/laptop-karthik/motor/score",
+        "retained": false,
+        "payload": {
+          "device_id": "laptop-karthik",
+          "ts": 1793780311.4968793,
+          "score": 5.488,
+          "threshold": 9.198,
+          "alert": false
+        },
+        "schema_ok": true
+      },
+      {
+        "topic": "edge/laptop-karthik/motor/score",
+        "retained": false,
+        "payload": {
+          "device_id": "laptop-karthik",
+          "ts": 1793780311.9969747,
+          "score": 4651.576,
+          "threshold": 9.198,
+          "alert": false
+        },
+        "schema_ok": true
+      },
+      {
+        "topic": "edge/laptop-karthik/motor/score",
+        "retained": false,
+        "payload": {
+          "device_id": "laptop-karthik",
+          "ts": 1793780312.4976301,
+          "score": 5614.126,
+          "threshold": 9.198,
+          "alert": true
+        },
+        "schema_ok": true
+      }
+    ]
+  }
+}

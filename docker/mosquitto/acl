@@ -1,0 +1,8 @@
+# Least privilege per user.
+# edge    = the station: may only publish its own topics (and read them back)
+user edge
+topic readwrite edge/#
+
+# monitor = dashboards / the subscriber script: read-only
+user monitor
+topic read edge/#

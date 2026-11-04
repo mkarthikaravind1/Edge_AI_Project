@@ -128,3 +128,47 @@ and Modbus. Switching is one setting in `config/<target>.yaml`, chosen by `EDGE_
 **3.6 End-to-end latency** — `python scripts/e2e_latency.py --events 25`
 > Two numbers: from the frame that fired to the output (pipeline cost; laptop median 6.6 ms) and from the part's first
 > frame to the output (adds the deliberate 3-of-5 wait = 2 frames; laptop median 73 ms at 30 FPS).
+
+---
+
+## M4 Monitor and Connect
+
+**4.1 Sensor data** — `scripts/record_imu.py`, wiring in `docs/PI_CHECKLIST.md`
+> MPU6050 over I²C (address 0x68): 3-axis accelerometer (g) + 3-axis gyro (°/s) at 200 Hz, saved as labelled CSVs.
+> 8 normal runs + 3 fault runs (unbalance ×2, tapping). Until the Pi arrives the code is developed on clearly labelled
+> SYNTHETIC runs (`data/imu/synthetic/README.md`); real runs replace them for marks.
+
+**4.2 Anomaly model** — `scripts/train_anomaly.py`, `scripts/motor_monitor.py`
+> Each 1 s window → 72 features: per axis RMS (vibration energy), peak, and FFT energy in 4 bands (0–5, 5–20, 20–50,
+> 50–100 Hz). Trained on NORMAL data only: learn the mean and spread of every feature; score = how many standard
+> deviations a window is away from normal (z-score distance). No fault data is needed to train, which matters because
+> real faults are rare. Alert after 2 windows in a row above the threshold. Synthetic demo: alert 1.0 s after injection.
+
+**4.3 False alarms** — `evidence/M4/false_alarms.json`
+> Threshold = 99.5th percentile of scores on a normal run that was NOT used for training (the model always looks best
+> on its own training data, so a training percentile would be too low). Counted on 5 more unseen normal runs.
+> Synthetic: 1 false alarm in 5 runs (2.5 min), 3/3 faults detected. Trade-off: higher percentile = fewer false alarms
+> but later/missed faults.
+
+**4.4 Secure MQTT** — `scripts/mqtt_security_test.py` → 6/6
+> TLS encrypts and proves the broker's identity (my own CA signed its certificate). No anonymous users, salted-hash
+> password file, ACL per user. There is no plain 1883 listener at all, so a mis-configured client cannot fall back.
+
+**4.5 Topics** — `docs/MQTT_TOPICS.md`, `scripts/mqtt_subscribe.py`
+> detection (QoS 1, one per part), motor/score (QoS 0, 2 per s), status (QoS 1, retained + last-will "offline").
+> Retained = a late subscriber gets the last state at once; last will = the broker announces "offline" if I die.
+
+**4.6 PLC link** — `scripts/plc_watch.py`, `deploy/openplc/edge_tags.st`
+> Modbus TCP: on each trigger coil 0 (%QX0.0) pulses 0.5 s and holding register 0 (%QW0) = part count. Laptop proof
+> with a Modbus simulator: 7 triggers → 7 coil pulses, register 1→7. Modbus has no password → localhost + firewall.
+
+**4.7 Threat model** — `docs/THREAT_MODEL.md` (device, network, application, physical; 5 mitigations applied).
+
+**4.8 Reliability** — `scripts/drift_report.py`, `scripts/ota.py demo`, `deploy/*.service`
+> *Drift:* PSI compares today's distribution with the baseline in 5 bins; small samples make PSI jumpy, so a feature
+> must beat both 0.25 and 3× its sampling noise floor. Sharp frames: stable; hand-shake blur: "watch" on sharpness;
+> failing lamp: DRIFT. *OTA:* hash check → install → health check (recall ≥ 0.9 on reference images) → rollback if it
+> fails: v1 → v2 ok, broken v3 rolled back to v2, tampered bundle refused. *Auto-restart:* Docker
+> `restart: unless-stopped` / systemd `Restart=always`. `docker exec edge sh -c 'kill -USR1 1'` makes the station
+> crash (exit 70) from inside; it was back in 1.2 s (laptop, `evidence/M4/crash_restart_laptop.log`). Note: `docker kill`
+> does NOT trigger a restart, because Docker treats it as a deliberate manual stop.

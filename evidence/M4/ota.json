@@ -1,0 +1,168 @@
+{
+  "task": "ota",
+  "host": {
+    "hostname": "LAPTOP-6BN8T06N",
+    "device_type": "laptop",
+    "cpu_model": "Intel(R) Core(TM) Ultra 5 225H",
+    "cpu_cores": 14,
+    "ram_gb": 16.57,
+    "os": "Windows 11",
+    "machine": "AMD64",
+    "python": "3.12.10",
+    "timestamp_utc": "2026-11-04T08:27:57+00:00"
+  },
+  "sequence": [
+    "install v1",
+    "install v2 (upgrade)",
+    "install v3-broken (must roll back)",
+    "install tampered v2 (must be rejected)"
+  ],
+  "final_current": "v2",
+  "passed": true,
+  "installs": [
+    {
+      "bundle": "edge-v1.tar.gz",
+      "previous": null,
+      "steps": [
+        {
+          "step": "bundle_sha256",
+          "ok": true,
+          "expected": "a5d123d8ee24ed1cd24c95a7cfc036a38bb3d5b6ce8e6630cd2ebc860ba76968",
+          "actual": "a5d123d8ee24ed1cd24c95a7cfc036a38bb3d5b6ce8e6630cd2ebc860ba76968"
+        },
+        {
+          "step": "file_hashes",
+          "ok": true,
+          "mismatched": []
+        },
+        {
+          "step": "switch",
+          "ok": true,
+          "current": "v1",
+          "previous": null
+        },
+        {
+          "step": "health_check",
+          "ok": true,
+          "reason": "ok"
+        }
+      ],
+      "version": "v1",
+      "health": {
+        "model": "deploy\\releases\\v1\\best_int8.tflite",
+        "backend": "tflite",
+        "min_recall": 0.9,
+        "max_median_ms": 500.0,
+        "ok": true,
+        "reason": "ok",
+        "reference_images": 18,
+        "parts": 21,
+        "recall": 1.0,
+        "median_ms": 14.05
+      },
+      "result": "installed v1",
+      "current_after": "v1"
+    },
+    {
+      "bundle": "edge-v2.tar.gz",
+      "previous": "v1",
+      "steps": [
+        {
+          "step": "bundle_sha256",
+          "ok": true,
+          "expected": "c84f0a7f6307a4f588597142eb39854c85dc0a9b7dbcf4eb3f6f380a4dc1ba14",
+          "actual": "c84f0a7f6307a4f588597142eb39854c85dc0a9b7dbcf4eb3f6f380a4dc1ba14"
+        },
+        {
+          "step": "file_hashes",
+          "ok": true,
+          "mismatched": []
+        },
+        {
+          "step": "switch",
+          "ok": true,
+          "current": "v2",
+          "previous": "v1"
+        },
+        {
+          "step": "health_check",
+          "ok": true,
+          "reason": "ok"
+        }
+      ],
+      "version": "v2",
+      "health": {
+        "model": "deploy\\releases\\v2\\best_int8_full.tflite",
+        "backend": "tflite",
+        "min_recall": 0.9,
+        "max_median_ms": 500.0,
+        "ok": true,
+        "reason": "ok",
+        "reference_images": 18,
+        "parts": 21,
+        "recall": 1.0,
+        "median_ms": 10.6
+      },
+      "result": "installed v2",
+      "current_after": "v2"
+    },
+    {
+      "bundle": "edge-v3-broken.tar.gz",
+      "previous": "v2",
+      "steps": [
+        {
+          "step": "bundle_sha256",
+          "ok": true,
+          "expected": "0a9c4aba0dc3ef1445b705cf5b31555e239a949c94cce80edcfe34d0942e5ba4",
+          "actual": "0a9c4aba0dc3ef1445b705cf5b31555e239a949c94cce80edcfe34d0942e5ba4"
+        },
+        {
+          "step": "file_hashes",
+          "ok": true,
+          "mismatched": []
+        },
+        {
+          "step": "switch",
+          "ok": true,
+          "current": "v3-broken",
+          "previous": "v2"
+        },
+        {
+          "step": "health_check",
+          "ok": false,
+          "reason": "model failed to load: ValueError: No subgraph in the model.\n"
+        },
+        {
+          "step": "rollback",
+          "ok": true,
+          "current": "v2"
+        }
+      ],
+      "version": "v3-broken",
+      "health": {
+        "model": "deploy\\releases\\v3-broken\\broken_model.tflite",
+        "backend": "tflite",
+        "min_recall": 0.9,
+        "max_median_ms": 500.0,
+        "ok": false,
+        "reason": "model failed to load: ValueError: No subgraph in the model.\n"
+      },
+      "result": "rolled back to v2: v3-broken failed the health check (model failed to load: ValueError: No subgraph in the model.\n)",
+      "current_after": "v2"
+    },
+    {
+      "bundle": "edge-v2-tampered.tar.gz",
+      "previous": "v2",
+      "steps": [
+        {
+          "step": "bundle_sha256",
+          "ok": false,
+          "expected": "c84f0a7f6307a4f588597142eb39854c85dc0a9b7dbcf4eb3f6f380a4dc1ba14",
+          "actual": "bbf516b42724e7b6460c32bfd0ba38c326548b38b4e00b116f9bd162fbcbe963"
+        }
+      ],
+      "result": "rejected: bundle hash mismatch (tampered or corrupted download)",
+      "current_after": "v2"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "task": "mqtt_security",
+  "host": {
+    "hostname": "LAPTOP-6BN8T06N",
+    "device_type": "laptop",
+    "cpu_model": "Intel(R) Core(TM) Ultra 5 225H",
+    "cpu_cores": 14,
+    "ram_gb": 16.57,
+    "os": "Windows 11",
+    "machine": "AMD64",
+    "python": "3.12.10",
+    "timestamp_utc": "2026-11-04T08:15:27+00:00"
+  },
+  "broker": "localhost:8883",
+  "listener": "TLS 1.2+ only, allow_anonymous false, password_file, acl_file",
+  "cases": [
+    {
+      "case": 1,
+      "name": "anonymous client over TLS",
+      "expected": "refused",
+      "result": "refused",
+      "detail": "Not authorized",
+      "pass": true
+    },
+    {
+      "case": 2,
+      "name": "user 'edge' with WRONG password over TLS",
+      "expected": "refused",
+      "result": "refused",
+      "detail": "Not authorized",
+      "pass": true
+    },
+    {
+      "case": 3,
+      "name": "correct password but PLAIN TCP :1883 (no TLS)",
+      "expected": "refused",
+      "result": "refused",
+      "detail": "ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it",
+      "pass": true
+    },
+    {
+      "case": 4,
+      "name": "TLS but trusting a different CA (impostor broker check)",
+      "expected": "refused",
+      "result": "refused",
+      "detail": "SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1010)",
+      "pass": true
+    },
+    {
+      "case": 5,
+      "name": "user 'edge' + correct password + TLS (publish/subscribe round trip)",
+      "expected": "accepted",
+      "result": "accepted",
+      "detail": "Success; round trip received",
+      "pass": true
+    },
+    {
+      "case": 6,
+      "name": "read-only user 'monitor' publishes (ACL)",
+      "expected": "refused",
+      "result": "refused",
+      "detail": "message dropped by ACL",
+      "pass": true
+    }
+  ],
+  "all_passed": true
+}

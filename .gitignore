@@ -54,3 +54,4 @@ models/prelabel.pt
 *.cache
 export_bundle.zip
 docker/.env
+deploy/releases/

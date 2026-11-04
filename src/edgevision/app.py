@@ -11,12 +11,13 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import os
 import signal
 import threading
 from typing import Any
 
 from .bus import EventBus
-from .config import load_config
+from .config import load_config, resolve
 from .detect import make_detector
 from .hal import make_actuator, make_camera, make_plc
 from .ops.logs import setup_logging
@@ -57,6 +58,19 @@ def attach_plugins(rt: StationRuntime, cfg: dict[str, Any]) -> list[Any]:
             plugins.append(MqttBridge(cfg, rt.bus))
         except Exception:
             log.exception("MQTT disabled: broker not reachable")
+    model_path = resolve(cfg.get("anomaly", {}).get("model_path", "models/anomaly.json"))
+    if cfg.get("imu") and model_path.exists():
+        try:
+            from .hal import make_imu
+            from .monitor import AnomalyModel, MotorMonitor
+
+            mon = MotorMonitor(make_imu(cfg["imu"]), AnomalyModel.load(model_path), cfg, rt.bus, rt.device_id)
+            mon.start()
+            mon.close = mon.stop
+            rt.motor = mon
+            plugins.append(mon)
+        except Exception:
+            log.exception("motor monitor disabled: IMU not available")
     return plugins
 
 
@@ -77,6 +91,9 @@ def main() -> None:
     if args.inspect:
         cfg.setdefault("inspection", {})["enabled"] = True
     setup_logging(cfg)
+    from .ops.ota import apply_current_release
+
+    cfg = apply_current_release(cfg)             # OTA: use the model of deploy/releases/CURRENT if one is installed
     rt = build_runtime(cfg)
     plugins = attach_plugins(rt, cfg)
 
@@ -84,14 +101,20 @@ def main() -> None:
     signal.signal(signal.SIGINT, lambda *_: stop.set())
     if hasattr(signal, "SIGTERM"):
         signal.signal(signal.SIGTERM, lambda *_: stop.set())
+    if hasattr(signal, "SIGUSR1"):               # crash test: `docker exec edge sh -c 'kill -USR1 1'` / `systemctl kill -s USR1 edge-station`
+        def crash(*_: Any) -> None:
+            log.critical("FORCED CRASH TEST (SIGUSR1): exiting with code 70 without cleanup")
+            logging.shutdown()
+            os._exit(70)
+        signal.signal(signal.SIGUSR1, crash)
 
     server = None
     if args.dashboard:
         from .dashboard.server import serve_in_thread
 
         server = serve_in_thread(rt, cfg)
-    log.info("station starting: target=%s camera=%s backend=%s", cfg.get("target"), cfg["camera"]["type"],
-             cfg["detector"]["backend"])
+    log.info("station starting: target=%s camera=%s backend=%s model=%s release=%s", cfg.get("target"),
+             cfg["camera"]["type"], cfg["detector"]["backend"], cfg["detector"]["model"], cfg.get("release"))
     rt.start()
     stop.wait(args.seconds)
     rt.stop()

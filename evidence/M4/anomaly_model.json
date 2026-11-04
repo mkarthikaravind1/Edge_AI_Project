@@ -1,0 +1,44 @@
+{
+  "data": "SYNTHETIC data (scripts/gen_synthetic_imu.py) - development only, replace with real MPU6050 runs",
+  "model": "per-feature z-score (diagonal Mahalanobis) on log features, trained on normal only",
+  "features": "36 = 6 axes x (RMS, peak, FFT band energy 0-5/5-20/20-50/50-100 Hz)",
+  "window_s": 1.0,
+  "step_s": 0.5,
+  "rate_hz": 200,
+  "train_runs": [
+    "normal_1",
+    "normal_2"
+  ],
+  "train_windows": 118,
+  "calibration_run": "normal_3",
+  "threshold_percentile": 99.5,
+  "threshold": 9.198,
+  "alert_rule": "2 windows in a row above threshold",
+  "fault_runs_detected": "3/3",
+  "fault_runs": {
+    "fault_tap_1": {
+      "windows": 59,
+      "windows_above": 48,
+      "alerts": 2,
+      "first_alert_s": 2.0,
+      "score_median": 2478.617,
+      "score_max": 5976.287
+    },
+    "fault_unbalance_1": {
+      "windows": 59,
+      "windows_above": 59,
+      "alerts": 1,
+      "first_alert_s": 1.5,
+      "score_median": 216.347,
+      "score_max": 229.739
+    },
+    "fault_unbalance_2": {
+      "windows": 59,
+      "windows_above": 59,
+      "alerts": 1,
+      "first_alert_s": 1.5,
+      "score_median": 162.653,
+      "score_max": 176.097
+    }
+  }
+}

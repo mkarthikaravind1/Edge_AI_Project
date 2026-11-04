@@ -23,6 +23,7 @@ services:
       - ../models:/app/models:ro
       - ../evidence:/app/evidence
       - ../logs:/app/logs
+      - ../deploy:/app/deploy               # OTA bundles + releases (CURRENT survives container rebuilds)
       - ./mosquitto/certs/ca.crt:/app/docker/mosquitto/certs/ca.crt:ro
     command: ["python", "-m", "edgevision.app", "--dashboard"]
     depends_on:

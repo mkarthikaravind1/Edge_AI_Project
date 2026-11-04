@@ -1,0 +1,61 @@
+{
+  "data": "SYNTHETIC data (scripts/gen_synthetic_imu.py) - development only, replace with real MPU6050 runs",
+  "normal_runs_evaluated": [
+    "normal_4",
+    "normal_5",
+    "normal_6",
+    "normal_7",
+    "normal_8"
+  ],
+  "unseen_by_training_and_threshold": true,
+  "false_alarms_total": 1,
+  "normal_minutes": 2.46,
+  "false_alarms_per_hour": 24.41,
+  "per_run": {
+    "normal_4": {
+      "windows": 59,
+      "windows_above": 0,
+      "alerts": 0,
+      "first_alert_s": null,
+      "score_median": 5.808,
+      "score_max": 7.587
+    },
+    "normal_5": {
+      "windows": 59,
+      "windows_above": 1,
+      "alerts": 0,
+      "first_alert_s": null,
+      "score_median": 5.913,
+      "score_max": 9.486
+    },
+    "normal_6": {
+      "windows": 59,
+      "windows_above": 0,
+      "alerts": 0,
+      "first_alert_s": null,
+      "score_median": 5.686,
+      "score_max": 7.629
+    },
+    "normal_7": {
+      "windows": 59,
+      "windows_above": 7,
+      "alerts": 1,
+      "first_alert_s": 29.0,
+      "score_median": 7.326,
+      "score_max": 11.018
+    },
+    "normal_8": {
+      "windows": 59,
+      "windows_above": 2,
+      "alerts": 0,
+      "first_alert_s": null,
+      "score_median": 7.395,
+      "score_max": 10.581
+    }
+  },
+  "threshold": 9.198,
+  "threshold_percentile": 99.5,
+  "target": "<= 1 false alarm over 5 normal runs",
+  "met": true,
+  "threshold_choice": "99.5th percentile of scores on a normal run NOT used for training: about 1 window in 200 of normal data is above it, and the 2-in-a-row rule turns that into very few alarms. A training-run percentile would be too low because the model always fits its own training windows best."
+}

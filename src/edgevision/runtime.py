@@ -65,6 +65,7 @@ class StationRuntime:
         self.last_annotated: np.ndarray | None = None
         self.last_frame_t = 0.0
         self.state = "starting"
+        self.motor: Any = None                 # MotorMonitor, attached by the app when an IMU is configured
 
     # ------------------------------------------------------------------ lifecycle
     def start(self) -> None:

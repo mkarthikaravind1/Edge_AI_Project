@@ -1,0 +1,258 @@
+{
+  "task": "live_alert",
+  "host": {
+    "hostname": "LAPTOP-6BN8T06N",
+    "device_type": "laptop",
+    "cpu_model": "Intel(R) Core(TM) Ultra 5 225H",
+    "cpu_cores": 14,
+    "ram_gb": 16.57,
+    "os": "Windows 11",
+    "machine": "AMD64",
+    "python": "3.12.10",
+    "timestamp_utc": "2026-11-04T08:13:01+00:00"
+  },
+  "source": "SYNTHETIC replay: normal_5 then fault_unbalance_1 at 10.0s (200 Hz real time)",
+  "threshold": 9.198,
+  "alert_rule": "2 windows in a row",
+  "fault_injected_at_s": 10.0,
+  "first_alert_at_s": 11.0,
+  "time_to_alert_s": 1.0,
+  "alerts_before_injection": 0,
+  "windows": 39,
+  "timeline": [
+    {
+      "t_s": 1.0,
+      "score": 6.315,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 1.5,
+      "score": 5.204,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 2.0,
+      "score": 5.397,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 2.5,
+      "score": 6.539,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 3.0,
+      "score": 5.632,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 3.5,
+      "score": 4.942,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 4.0,
+      "score": 4.706,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 4.5,
+      "score": 4.843,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 5.0,
+      "score": 5.698,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 5.5,
+      "score": 5.749,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 6.0,
+      "score": 4.913,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 6.5,
+      "score": 6.412,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 7.0,
+      "score": 6.434,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 7.5,
+      "score": 4.757,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 8.0,
+      "score": 5.187,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 8.5,
+      "score": 7.02,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 9.0,
+      "score": 7.024,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 9.5,
+      "score": 6.389,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 10.0,
+      "score": 5.875,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 10.5,
+      "score": 140.758,
+      "alert": false,
+      "change": null
+    },
+    {
+      "t_s": 11.0,
+      "score": 222.371,
+      "alert": true,
+      "change": "alert"
+    },
+    {
+      "t_s": 11.5,
+      "score": 219.524,
+      "alert": true,
+      "change": null
+    },
+    {
+      "t_s": 12.0,
+      "score": 213.516,
+      "alert": true,
+      "change": null
+    },
+    {
+      "t_s": 12.5,
+      "score": 226.524,
+      "alert": true,
+      "change": null
+    },
+    {
+      "t_s": 13.0,
+      "score": 219.74,
+      "alert": true,
+      "change": null
+    },
+    {
+      "t_s": 13.5,
+      "score": 218.791,
+      "alert": true,
+      "change": null
+    },
+    {
+      "t_s": 14.0,
+      "score": 215.322,
+      "alert": true,
+      "change": null
+    },
+    {
+      "t_s": 14.5,
+      "score": 214.337,
+      "alert": true,
+      "change": null
+    },
+    {
+      "t_s": 15.0,
+      "score": 229.093,
+      "alert": true,
+      "change": null
+    },
+    {
+      "t_s": 15.5,
+      "score": 223.079,
+      "alert": true,
+      "change": null
+    },
+    {
+      "t_s": 16.0,
+      "score": 214.022,
+      "alert": true,
+      "change": null
+    },
+    {
+      "t_s": 16.5,
+      "score": 220.228,
+      "alert": true,
+      "change": null
+    },
+    {
+      "t_s": 17.0,
+      "score": 216.864,
+      "alert": true,
+      "change": null
+    },
+    {
+      "t_s": 17.5,
+      "score": 214.081,
+      "alert": true,
+      "change": null
+    },
+    {
+      "t_s": 18.0,
+      "score": 212.467,
+      "alert": true,
+      "change": null
+    },
+    {
+      "t_s": 18.5,
+      "score": 211.652,
+      "alert": true,
+      "change": null
+    },
+    {
+      "t_s": 19.0,
+      "score": 223.765,
+      "alert": true,
+      "change": null
+    },
+    {
+      "t_s": 19.5,
+      "score": 215.394,
+      "alert": true,
+      "change": null
+    },
+    {
+      "t_s": 20.0,
+      "score": 216.009,
+      "alert": true,
+      "change": null
+    }
+  ]
+}

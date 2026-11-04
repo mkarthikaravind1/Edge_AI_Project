@@ -40,7 +40,7 @@ python scripts/run_live.py
 | M1 Detect | laptop done (mAP@0.5 0.995 on real test); Pi runs pending |
 | M2 Optimize | laptop done: TFLite INT8 3.2 MB, mAP50 drop 0.001 (ONNX INT8 3.6 MB, drop 0.024); Pi benchmarks pending |
 | M3 Decide and Act | laptop done: debounce demo, safe state 1.06 s, 2 streams x 30 FPS, e2e p95 8.8 ms; Docker + Pi runs pending |
-| M4 Monitor and Connect | core logic ready |
+| M4 Monitor and Connect | laptop done: MQTT TLS 6/6, topics, PLC link, OTA rollback, drift, anomaly (synthetic IMU); real IMU + OpenPLC on Pi pending |
 | M5 Complete System | – |
 
 Results: [docs/RESULTS.md](docs/RESULTS.md) · Device checklist: [docs/PI_CHECKLIST.md](docs/PI_CHECKLIST.md)

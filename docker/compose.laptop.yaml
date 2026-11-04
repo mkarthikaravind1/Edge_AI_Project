@@ -1,0 +1,14 @@
+# Laptop override: run the same image on Docker Desktop with the recorded video instead of the Pi camera.
+#   docker compose -f docker/compose.yaml -f docker/compose.laptop.yaml up -d --build
+services:
+  edge:
+    network_mode: bridge
+    ports:
+      - "8000:8000"
+    environment:
+      EDGE_TARGET: laptop
+    volumes:
+      - ../data/raw/videos:/app/data/raw/videos:ro
+      - ../data/splits/test:/app/data/splits/test:ro
+      - ../data/imu:/app/data/imu:ro
+    command: ["python", "-m", "edgevision.app", "--source", "video", "--path", "data/raw/videos/clip1.mp4"]

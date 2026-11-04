@@ -60,6 +60,7 @@ imu:
 anomaly:
   window_s: 1.0
   step_s: 0.5
+  alert_n: 2            # alert after 2 windows in a row above threshold
   model_path: models/anomaly.json
   threshold_percentile: 99.5
 

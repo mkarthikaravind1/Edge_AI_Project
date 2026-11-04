@@ -1,0 +1,168 @@
+{
+  "task": "drift_report",
+  "host": {
+    "hostname": "LAPTOP-6BN8T06N",
+    "device_type": "laptop",
+    "cpu_model": "Intel(R) Core(TM) Ultra 5 225H",
+    "cpu_cores": 14,
+    "ram_gb": 16.57,
+    "os": "Windows 11",
+    "machine": "AMD64",
+    "python": "3.12.10",
+    "timestamp_utc": "2026-11-04T08:43:51+00:00"
+  },
+  "baseline": {
+    "image_stats": "217 real dataset frames",
+    "confidence": "54 held-out real frames (test + val)"
+  },
+  "psi_rule": "5 baseline-quantile bins; DRIFT: PSI > 0.25 and > 3x noise floor; watch: > 0.10 and > 2x floor",
+  "samples": {
+    "clip1_sharp (same blur gate as the dataset)": {
+      "frames": 150,
+      "brightness": {
+        "baseline_n": 217,
+        "baseline_median": 118.15,
+        "current_median": 118.2,
+        "psi": 0.003,
+        "noise_floor": 0.045,
+        "ks": 0.046,
+        "status": "stable"
+      },
+      "contrast": {
+        "baseline_n": 217,
+        "baseline_median": 49.67,
+        "current_median": 49.83,
+        "psi": 0.021,
+        "noise_floor": 0.045,
+        "ks": 0.048,
+        "status": "stable"
+      },
+      "sharpness": {
+        "baseline_n": 217,
+        "baseline_median": 250.35,
+        "current_median": 257.44,
+        "psi": 0.023,
+        "noise_floor": 0.045,
+        "ks": 0.092,
+        "status": "stable"
+      },
+      "confidence": {
+        "baseline_n": 54,
+        "baseline_median": 0.96,
+        "current_median": 0.96,
+        "psi": 0.148,
+        "noise_floor": 0.101,
+        "ks": 0.207,
+        "status": "stable"
+      },
+      "boxes": {
+        "baseline_n": 54,
+        "baseline_median": 2.0,
+        "current_median": 1.0,
+        "psi": 0.0,
+        "noise_floor": 0.101,
+        "ks": 0.139,
+        "status": "stable"
+      },
+      "_overall": "stable"
+    },
+    "clip1_raw (incl. hand-shake blur)": {
+      "frames": 200,
+      "brightness": {
+        "baseline_n": 217,
+        "baseline_median": 118.15,
+        "current_median": 118.0,
+        "psi": 0.004,
+        "noise_floor": 0.038,
+        "ks": 0.049,
+        "status": "stable"
+      },
+      "contrast": {
+        "baseline_n": 217,
+        "baseline_median": 49.67,
+        "current_median": 49.81,
+        "psi": 0.036,
+        "noise_floor": 0.038,
+        "ks": 0.04,
+        "status": "stable"
+      },
+      "sharpness": {
+        "baseline_n": 217,
+        "baseline_median": 250.35,
+        "current_median": 179.74,
+        "psi": 0.149,
+        "noise_floor": 0.038,
+        "ks": 0.256,
+        "status": "watch"
+      },
+      "confidence": {
+        "baseline_n": 54,
+        "baseline_median": 0.96,
+        "current_median": 0.96,
+        "psi": 0.123,
+        "noise_floor": 0.094,
+        "ks": 0.156,
+        "status": "stable"
+      },
+      "boxes": {
+        "baseline_n": 54,
+        "baseline_median": 2.0,
+        "current_median": 1.0,
+        "psi": 0.0,
+        "noise_floor": 0.094,
+        "ks": 0.169,
+        "status": "stable"
+      },
+      "_overall": "watch"
+    },
+    "clip1_lamp_failing (simulated: 45% light + blur)": {
+      "frames": 150,
+      "brightness": {
+        "baseline_n": 217,
+        "baseline_median": 118.15,
+        "current_median": 43.29,
+        "psi": 7.329,
+        "noise_floor": 0.045,
+        "ks": 1.0,
+        "status": "DRIFT"
+      },
+      "contrast": {
+        "baseline_n": 217,
+        "baseline_median": 49.67,
+        "current_median": 21.44,
+        "psi": 7.329,
+        "noise_floor": 0.045,
+        "ks": 1.0,
+        "status": "DRIFT"
+      },
+      "sharpness": {
+        "baseline_n": 217,
+        "baseline_median": 250.35,
+        "current_median": 2.23,
+        "psi": 7.329,
+        "noise_floor": 0.045,
+        "ks": 1.0,
+        "status": "DRIFT"
+      },
+      "confidence": {
+        "baseline_n": 54,
+        "baseline_median": 0.96,
+        "current_median": 0.95,
+        "psi": 0.465,
+        "noise_floor": 0.101,
+        "ks": 0.33,
+        "status": "DRIFT"
+      },
+      "boxes": {
+        "baseline_n": 54,
+        "baseline_median": 2.0,
+        "current_median": 1.0,
+        "psi": 0.0,
+        "noise_floor": 0.101,
+        "ks": 0.159,
+        "status": "stable"
+      },
+      "_overall": "DRIFT"
+    }
+  }
+}

@@ -118,7 +118,74 @@ show `docker ps` (both containers *Up*) and trigger the relay by putting a part 
 `docker ps > evidence/M3/cold_boot_docker_ps.txt; uptime >> evidence/M3/cold_boot_docker_ps.txt; docker logs edge --since 5m > evidence/M3/cold_boot_edge.log`
 
 ## M4 — Monitor and connect (on the Pi)
-_Added at M4: MPU6050 wiring table + recorder commands (3 normal + 3 fault runs), Mosquitto TLS, OpenPLC._
+
+### 4.1 MPU6050 wiring (Pi OFF while wiring)
+| MPU6050 pin | Pi physical pin | Pi function |
+|---|---|---|
+| VCC | 1 | 3.3 V (the GY-521 board also accepts 5 V; 3.3 V is safer for the I²C lines) |
+| GND | 9 | GND |
+| SDA | 3 | GPIO2 / SDA1 |
+| SCL | 5 | GPIO3 / SCL1 |
+| AD0 | leave open (or GND) | address 0x68 |
+Mount it firmly on the motor housing/bracket (double-sided tape or a screw), same spot for every run.
+Check: `i2cdetect -y 1` shows **68**.
+
+### 4.1 Record the runs (motor running, 30 s each, keep everything else the same)
+```bash
+for i in 1 2 3 4 5 6 7 8; do python scripts/record_imu.py --label normal --run $i --seconds 30; done   # 8 normal
+python scripts/record_imu.py --label fault_unbalance --run 1 --seconds 30   # coin/blu-tack stuck on the rotor/fan
+python scripts/record_imu.py --label fault_unbalance --run 2 --seconds 30   # bigger weight
+python scripts/record_imu.py --label fault_tap --run 1 --seconds 30         # tap the mount about once a second
+```
+Normal 1–2 train, 3 sets the threshold, 4–8 are the **5 unseen normal runs** for false alarms. Fault runs: ≥ 3.
+(Take a photo of the set-up and of each fault you inject: `evidence/M4/imu_setup.jpg`.)
+
+### 4.2 / 4.3 Train + false alarms + live alert
+```bash
+python scripts/train_anomaly.py --data data/imu/real           # -> evidence/M4/anomaly_model.json, false_alarms.json, anomaly_scores.png
+python scripts/motor_monitor.py --live --seconds 40             # press ENTER when you inject the fault -> evidence/M4/live_alert.json
+```
+
+### 4.4 Broker with TLS on the Pi
+```bash
+bash docker/mosquitto/make_certs.sh $(hostname -I | awk '{print $1}')   # CA + server cert incl. the Pi's IP
+python docker/mosquitto/make_passwd.py                                   # random passwords -> docker/.env, hashes -> passwd
+chmod 600 docker/.env && chmod 640 docker/mosquitto/passwd
+docker compose -f docker/compose.yaml up -d mosquitto
+python scripts/mqtt_security_test.py                                    # -> evidence/M4/mqtt_security.json (expect 6/6)
+docker logs mosquitto > evidence/M4/mosquitto_broker_pi.log 2>&1
+```
+
+### 4.5 Topics
+Start the station (`docker compose -f docker/compose.yaml up -d`), then from the laptop or the Pi:
+`python scripts/mqtt_subscribe.py --seconds 60 --save evidence/M4/mqtt_topics_sample_pi.json` (show a part + shake the motor).
+
+### 4.6 OpenPLC (Modbus TCP on 502)
+```bash
+cd ~ && git clone https://github.com/thiagoralves/OpenPLC_v3.git && cd OpenPLC_v3 && ./install.sh linux   # ~20 min ("rpi" option needs wiringPi, which Bookworm no longer has)
+sudo systemctl enable --now openplc       # web UI http://<pi>:8080  (login openplc / openplc -> CHANGE IT)
+```
+In the web UI: **Hardware → "Blank"** (GPIO17/27 belong to the station) → **Programs → upload
+`deploy/openplc/edge_tags.st`** → compile → **Start PLC** → **Monitoring** shows `reject_coil` (%QX0.0),
+`part_count` (%QW0), `plc_reject_total` (%QW1). Then on the Pi:
+```bash
+python scripts/plc_watch.py --seconds 60        # while parts pass the camera -> evidence/M4/plc_link_pi.json
+```
+Film the OpenPLC Monitoring page while a part triggers (`evidence/M4/openplc_monitoring.png` screenshot).
+Firewall (Modbus has no password): `sudo ufw allow 22,8000,8883/tcp && sudo ufw default deny incoming && sudo ufw enable`.
+
+### 4.8 Reliability
+```bash
+python scripts/drift_report.py --live --seconds 30                                # -> evidence/M4/drift_report.json/png
+docker exec edge python scripts/ota.py install /app/deploy/ota/bundles/edge-v1.tar.gz && docker restart edge
+docker exec edge python scripts/ota.py install /app/deploy/ota/bundles/edge-v2.tar.gz && docker restart edge
+docker exec edge python scripts/ota.py install /app/deploy/ota/bundles/edge-v3-broken.tar.gz   # -> "rolled back to v2"
+docker logs edge 2>&1 | grep "release=" | tail -2                                 # shows the station runs v2
+# auto-restart after a forced crash:
+docker exec edge sh -c 'kill -USR1 1'; sleep 8;   # from INSIDE: 'docker kill' counts as a manual stop and is never restarted
+ docker ps --filter name=edge; docker inspect -f '{{.RestartCount}}' edge
+docker logs edge 2>&1 | grep -E "FORCED CRASH|station starting" | tail -3 > evidence/M4/crash_restart_pi.log
+```
 
 ## M5 — Complete system (on the Pi)
 _Added at M5: rig, 20-part test, 10-minute run, power-cycle test._

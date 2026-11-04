@@ -1,0 +1,99 @@
+{
+  "task": "plc_link_laptop",
+  "host": {
+    "hostname": "LAPTOP-6BN8T06N",
+    "device_type": "laptop",
+    "cpu_model": "Intel(R) Core(TM) Ultra 5 225H",
+    "cpu_cores": 14,
+    "ram_gb": 16.57,
+    "os": "Windows 11",
+    "machine": "AMD64",
+    "python": "3.12.10",
+    "timestamp_utc": "2026-11-04T08:25:56+00:00"
+  },
+  "server": "127.0.0.1:5020 (laptop Modbus simulator)",
+  "tags": {
+    "coil": "0 (%QX0.0) pulses on each trigger",
+    "register": "0 (%QW0) = trigger count"
+  },
+  "watch_seconds": 70.0,
+  "coil_rising_edges": 7,
+  "final_register": 7,
+  "changes": [
+    {
+      "t_s": 0.002,
+      "coil_QX0_0": 0,
+      "register_QW0": 0
+    },
+    {
+      "t_s": 45.296,
+      "coil_QX0_0": 1,
+      "register_QW0": 1
+    },
+    {
+      "t_s": 45.813,
+      "coil_QX0_0": 0,
+      "register_QW0": 1
+    },
+    {
+      "t_s": 48.268,
+      "coil_QX0_0": 1,
+      "register_QW0": 2
+    },
+    {
+      "t_s": 48.768,
+      "coil_QX0_0": 0,
+      "register_QW0": 2
+    },
+    {
+      "t_s": 51.256,
+      "coil_QX0_0": 1,
+      "register_QW0": 3
+    },
+    {
+      "t_s": 51.766,
+      "coil_QX0_0": 0,
+      "register_QW0": 3
+    },
+    {
+      "t_s": 54.271,
+      "coil_QX0_0": 1,
+      "register_QW0": 4
+    },
+    {
+      "t_s": 54.76,
+      "coil_QX0_0": 0,
+      "register_QW0": 4
+    },
+    {
+      "t_s": 57.255,
+      "coil_QX0_0": 1,
+      "register_QW0": 5
+    },
+    {
+      "t_s": 57.784,
+      "coil_QX0_0": 0,
+      "register_QW0": 5
+    },
+    {
+      "t_s": 60.272,
+      "coil_QX0_0": 1,
+      "register_QW0": 6
+    },
+    {
+      "t_s": 60.756,
+      "coil_QX0_0": 0,
+      "register_QW0": 6
+    },
+    {
+      "t_s": 63.255,
+      "coil_QX0_0": 1,
+      "register_QW0": 7
+    },
+    {
+      "t_s": 63.757,
+      "coil_QX0_0": 0,
+      "register_QW0": 7
+    }
+  ]
+}
