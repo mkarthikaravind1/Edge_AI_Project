@@ -31,7 +31,7 @@ def test_console_actuator_pulse(capsys) -> None:
     time.sleep(0.15)
     assert not a.state
     assert [h[1].split()[0] for h in a.history] == ["ON", "OFF"]
-    assert "relay energised" in capsys.readouterr().out
+    assert "ON  (energised)" in capsys.readouterr().out
 
 
 def test_fake_plc_roundtrip() -> None:

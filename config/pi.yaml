@@ -32,15 +32,24 @@ decide:
   n: 3
   m: 5
   cooldown_s: 2.0
+  rearm_on_clear: true
   action: pulse
   pulse_s: 0.5
   camera_timeout_s: 1.0
-  safe_state: stop
+  safe_state: run_permit_off
 
-actuator:
+reject:
   type: gpio
-  pin: 17               # BCM 17 = physical pin 11 -> relay IN / LED via 330 ohm
+  pin: 27               # BCM 27 = physical pin 13 -> LED (330 ohm) or relay 2 IN
   active_high: true
+
+run_permit:
+  type: gpio
+  pin: 17               # BCM 17 = physical pin 11 -> relay 1 IN (conveyor allowed while energised)
+  active_high: true
+
+inspection:
+  enabled: false
 
 imu:
   type: mpu6050
@@ -50,6 +59,7 @@ imu:
 
 anomaly:
   window_s: 1.0
+  step_s: 0.5
   model_path: models/anomaly.json
   threshold_percentile: 99.5
 

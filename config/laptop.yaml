@@ -1,4 +1,4 @@
-# Laptop target: real webcam, fake hardware for everything else.
+# Laptop target: real webcam (or a video file), fake hardware for everything else.
 device_id: laptop-karthik
 target: laptop
 
@@ -7,7 +7,7 @@ classes: [enclosure, body, lid]   # 0 = closed printed enclosure, 1 = Model 1 (b
 camera:
   type: webcam          # webcam | video | picamera2
   index: 0
-  path: data/raw/videos/demo.mp4   # used when type = video
+  path: data/raw/videos/clip1.mp4  # used when type = video
   width: 640
   height: 480
   fps: 30
@@ -15,53 +15,64 @@ camera:
 
 camera2:                # second stream for the two-stream pipeline (M3)
   type: video
-  path: data/raw/videos/demo.mp4
+  path: data/raw/videos/clip1.mp4
   width: 640
   height: 480
   fps: 30
   loop: true
 
 detector:
-  backend: ultralytics  # ultralytics | onnx | tflite
-  model: models/best.pt
-  fallback_model: yolov8n.pt   # public COCO weights, only used before my model is trained
+  backend: tflite       # ultralytics | onnx | tflite   (same INT8 model the Pi ships)
+  model: models/best_int8.tflite
   imgsz: 320
   conf: 0.25
   iou: 0.45
   threads: 4
 
+# ---- M3 decision rule (see docs/DECISION_RULES.md) ----
 decide:
-  trigger_classes: [enclosure]
-  conf_threshold: 0.60
-  n: 3                  # N detections ...
-  m: 5                  # ... within the last M frames
-  cooldown_s: 2.0
-  action: pulse         # pulse | latch
+  trigger_classes: [enclosure]   # M3 input: a closed enclosure in view (M5: inspection verdict FAIL)
+  conf_threshold: 0.60           # below this a detection does not count as a hit
+  n: 3                           # fire when >= N of ...
+  m: 5                           # ... the last M frames are hits
+  cooldown_s: 2.0                # minimum time between two triggers
+  rearm_on_clear: true           # one trigger per part: re-arm only after M frames with no hit (part left)
+  action: pulse                  # reject output pulses for pulse_s
   pulse_s: 0.5
-  camera_timeout_s: 1.0
-  safe_state: stop      # actuator state asserted on camera loss
+  camera_timeout_s: 1.0          # no frame for this long -> SAFE STATE
+  safe_state: run_permit_off     # conveyor stops (run_permit de-energised)
 
-actuator:
+reject:                 # pulsed by the decision rule
   type: console         # console | gpio
+  pin: 27
+  active_high: true
+
+run_permit:             # energised only while healthy; off = conveyor STOP (fail-safe)
+  type: console
   pin: 17
   active_high: true
+
+inspection:             # M5 pass/fail
+  enabled: false
 
 imu:
   type: csv_replay      # csv_replay | mpu6050
   path: data/imu/synthetic/normal_1.csv
+  loop: true
   rate_hz: 200
   i2c_bus: 1
   address: 0x68
 
 anomaly:
   window_s: 1.0
+  step_s: 0.5
   model_path: models/anomaly.json
   threshold_percentile: 99.5
 
 plc:
   type: fake            # fake | modbus
   host: 127.0.0.1
-  port: 502
+  port: 5020            # laptop simulator (scripts/plc_sim.py); OpenPLC uses 502
   unit_id: 1
   coil: 0               # %QX0.0 in OpenPLC
   register: 0           # %QW0 in OpenPLC (count)

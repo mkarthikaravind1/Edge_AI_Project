@@ -1,0 +1,59 @@
+{
+  "task": "safe_state",
+  "host": {
+    "hostname": "LAPTOP-6BN8T06N",
+    "device_type": "laptop",
+    "cpu_model": "Intel(R) Core(TM) Ultra 5 225H",
+    "cpu_cores": 14,
+    "ram_gb": 16.57,
+    "os": "Windows 11",
+    "machine": "AMD64",
+    "python": "3.12.10",
+    "timestamp_utc": "2026-11-04T06:42:30+00:00"
+  },
+  "mode": "simulated unplug 4.0s -> 8.0s",
+  "camera_timeout_s": 1.0,
+  "safe_state_entered": true,
+  "detect_time_after_last_frame_s": 1.061,
+  "safe_state_at_s": 5.064,
+  "recovered_at_s": 8.035,
+  "run_permit_history": [
+    {
+      "t_s": 0.026,
+      "output": "run_permit",
+      "change": "ON first frame: healthy"
+    },
+    {
+      "t_s": 5.064,
+      "output": "run_permit",
+      "change": "OFF SAFE STATE: camera lost"
+    },
+    {
+      "t_s": 8.035,
+      "output": "run_permit",
+      "change": "ON camera recovered"
+    },
+    {
+      "t_s": 12.023,
+      "output": "run_permit",
+      "change": "OFF shutdown"
+    }
+  ],
+  "events": [
+    {
+      "t_s": 0.084,
+      "event": "trigger"
+    },
+    {
+      "t_s": 5.064,
+      "event": "safe_state",
+      "reason": "camera lost",
+      "since_last_frame_s": 1.061
+    },
+    {
+      "t_s": 8.035,
+      "event": "recovered"
+    }
+  ],
+  "meaning": "run_permit OFF = conveyor stop. It goes off within camera_timeout_s (+ <=50 ms watchdog tick) of the last frame and back on with the first good frame."
+}

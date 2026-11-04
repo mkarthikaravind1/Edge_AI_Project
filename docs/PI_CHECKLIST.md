@@ -79,7 +79,43 @@ Close other programs; let the Pi idle 2 minutes first so it starts cool. Run wit
 If a Coral/Hailo accelerator is fitted, tell Claude: it needs an Edge-TPU-compiled model and `delegate: libedgetpu.so.1`.
 
 ## M3 — Decide and act (on the Pi)
-_Added at M3: GPIO wiring table, two-stream run, Docker cold-boot test, end-to-end latency._
+
+### Wiring (Pi powered OFF while wiring)
+| Signal | Pi pin (BCM) | Physical pin | Goes to | Meaning |
+|---|---|---|---|---|
+| run_permit | GPIO17 | 11 | relay module IN1 | relay energised = conveyor/motor allowed; OFF = STOP (safe state) |
+| reject | GPIO27 | 13 | LED anode via 330 Ω (or relay IN2) | pulses 0.5 s when the rule fires |
+| 5 V | 5V | 2 | relay module VCC | |
+| GND | GND | 6 (and 14 for the LED) | relay GND, LED cathode | common ground |
+
+Motor/conveyor supply goes through relay 1 **COM → NO** contact, so it only runs while the relay is energised.
+If your relay board is active-LOW (most cheap blue boards: "low level trigger"), set `active_high: false` in `config/pi.yaml`.
+
+Quick output test (no camera needed):
+```bash
+python -c "from gpiozero import LED; import time; r=LED(17); l=LED(27); r.on(); l.blink(0.2,0.2,5,False); r.off()"
+```
+
+### Measurements
+| # | Command (on the Pi, venv active, `EDGE_TARGET=pi`) | Result file |
+|---|---|---|
+| 3.2 | `python scripts/two_stream.py --seconds 30` (Pi camera + USB webcam; if the USB cam is not index 0, set `camera2.index`) | `evidence/M3/two_stream_pi.json` |
+| 3.3 | `python scripts/debounce_demo.py` | `evidence/M3/debounce_demo.json/.csv` |
+| 3.4 | `python scripts/safe_state_demo.py --live --seconds 40` — at ~10 s **unplug the USB camera / ribbon**, at ~25 s plug back (watch relay 1 click off and on; film it) | `evidence/M3/safe_state.json` |
+| 3.6 | `python scripts/e2e_latency.py --live --events 25` — slide a closed enclosure under the camera and away again, every ~3 s | `evidence/M3/e2e_latency_pi.json` |
+
+### Docker + cold boot (3.5)
+```bash
+cd ~/Edge_AI_Project
+echo "MQTT_PASSWORD=<the password from the M4 step>" > docker/.env      # compose refuses to start without it
+docker compose -f docker/compose.yaml build                            # ~10-15 min the first time
+docker compose -f docker/compose.yaml up -d
+docker logs -f edge                                                    # see frames / triggers; Ctrl+C to leave
+sudo cp deploy/edge-compose.service /etc/systemd/system/ && sudo systemctl daemon-reload && sudo systemctl enable edge-compose
+```
+Cold-boot test (film it): `sudo poweroff` → pull the power → plug in → wait ~60 s without touching anything →
+show `docker ps` (both containers *Up*) and trigger the relay by putting a part in view. Save the output:
+`docker ps > evidence/M3/cold_boot_docker_ps.txt; uptime >> evidence/M3/cold_boot_docker_ps.txt; docker logs edge --since 5m > evidence/M3/cold_boot_edge.log`
 
 ## M4 — Monitor and connect (on the Pi)
 _Added at M4: MPU6050 wiring table + recorder commands (3 normal + 3 fault runs), Mosquitto TLS, OpenPLC._

@@ -16,8 +16,8 @@ class Clock:
         return self.t
 
 
-def engine(clock: Clock, n: int = 3, m: int = 5, cooldown: float = 2.0) -> DecisionEngine:
-    return DecisionEngine(["body"], 0.6, n, m, cooldown, camera_timeout_s=1.0, clock=clock)
+def engine(clock: Clock, n: int = 3, m: int = 5, cooldown: float = 2.0, rearm: bool = True) -> DecisionEngine:
+    return DecisionEngine(["body"], 0.6, n, m, cooldown, camera_timeout_s=1.0, rearm_on_clear=rearm, clock=clock)
 
 
 def test_debounce_single_bad_frame_does_not_fire() -> None:
@@ -66,7 +66,7 @@ def test_engine_low_confidence_and_wrong_class_ignored() -> None:
 
 def test_engine_cooldown_blocks_retrigger() -> None:
     c = Clock()
-    e = engine(c, n=1, m=1, cooldown=2.0)
+    e = engine(c, n=1, m=1, cooldown=2.0, rearm=False)
     assert e.on_frame([det()]).event == Event.TRIGGER
     c.t += 1.0
     assert e.on_frame([det()]).event == Event.COOLDOWN
@@ -85,3 +85,20 @@ def test_camera_loss_enters_safe_state_once_and_recovers() -> None:
     assert e.check_camera() is None          # reported once only
     assert e.on_frame([det()]).event == Event.RECOVERED
     assert not e.safe
+
+
+def test_one_trigger_per_part_until_it_leaves() -> None:
+    c = Clock()
+    e = engine(c, n=3, m=5, cooldown=0.5)
+    events = []
+    for _ in range(30):                       # part stays in view for 30 frames (3 s)
+        c.t += 0.1
+        events.append(e.on_frame([det()]).event)
+    assert events.count(Event.TRIGGER) == 1 and Event.HOLD in events
+    for _ in range(5):                        # part leaves: 5 empty frames re-arm
+        c.t += 0.1
+        e.on_frame([])
+    for _ in range(3):                        # next part
+        c.t += 0.1
+        ev = e.on_frame([det()]).event
+    assert ev == Event.TRIGGER

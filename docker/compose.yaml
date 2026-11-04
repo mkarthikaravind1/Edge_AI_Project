@@ -1,0 +1,51 @@
+# Station + local MQTT broker. Starts on boot: Docker itself is enabled in systemd, and restart: unless-stopped
+# brings both containers back after a power cycle or a crash.
+#   cd ~/Edge_AI_Project && docker compose -f docker/compose.yaml up -d --build
+services:
+  edge:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: edge-inspection:latest
+    container_name: edge
+    restart: unless-stopped
+    # camera (/dev/video*, /dev/media*, /dev/dma_heap), GPIO (/dev/gpiochip*), I2C (/dev/i2c-1): simplest is
+    # privileged + /dev; the container is the only thing on this device and runs no shell-facing service.
+    privileged: true
+    network_mode: host            # dashboard on :8000, OpenPLC on localhost:502, broker on localhost:8883
+    environment:
+      EDGE_TARGET: ${EDGE_TARGET:-pi}
+      MQTT_PASSWORD: ${MQTT_PASSWORD:?set MQTT_PASSWORD in docker/.env}
+    volumes:
+      - /dev:/dev
+      - /run/udev:/run/udev:ro
+      - ../config:/app/config:ro
+      - ../models:/app/models:ro
+      - ../evidence:/app/evidence
+      - ../logs:/app/logs
+      - ./mosquitto/certs/ca.crt:/app/docker/mosquitto/certs/ca.crt:ro
+    command: ["python", "-m", "edgevision.app", "--dashboard"]
+    depends_on:
+      - mosquitto
+    logging:
+      driver: json-file
+      options: {max-size: "5m", max-file: "3"}
+
+  mosquitto:
+    image: eclipse-mosquitto:2.0.20
+    container_name: mosquitto
+    restart: unless-stopped
+    ports:
+      - "8883:8883"
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./mosquitto/passwd:/mosquitto/config/passwd:ro
+      - ./mosquitto/acl:/mosquitto/config/acl:ro
+      - ./mosquitto/certs:/mosquitto/certs:ro
+      - mosquitto-data:/mosquitto/data
+    logging:
+      driver: json-file
+      options: {max-size: "5m", max-file: "3"}
+
+volumes:
+  mosquitto-data:

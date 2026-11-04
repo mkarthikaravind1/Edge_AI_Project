@@ -1,0 +1,144 @@
+{
+  "task": "two_stream_laptop",
+  "host": {
+    "hostname": "LAPTOP-6BN8T06N",
+    "device_type": "laptop",
+    "cpu_model": "Intel(R) Core(TM) Ultra 5 225H",
+    "cpu_cores": 14,
+    "ram_gb": 16.57,
+    "os": "Windows 11",
+    "machine": "AMD64",
+    "python": "3.12.10",
+    "timestamp_utc": "2026-11-04T06:44:05+00:00"
+  },
+  "camera1": "video",
+  "camera2": "video",
+  "backend": "tflite",
+  "model": "models/best_int8.tflite",
+  "seconds": 15.0,
+  "shared_model_realtime": {
+    "stream2": {
+      "frames": 446,
+      "fps": 29.72,
+      "errors": 0,
+      "infer": {
+        "n": 446,
+        "mean_ms": 20.131,
+        "median_ms": 18.248,
+        "p95_ms": 36.518,
+        "min_ms": 6.448,
+        "max_ms": 76.295,
+        "std_ms": 9.441
+      }
+    },
+    "stream1": {
+      "frames": 447,
+      "fps": 29.77,
+      "errors": 0,
+      "infer": {
+        "n": 447,
+        "mean_ms": 15.498,
+        "median_ms": 12.334,
+        "p95_ms": 34.862,
+        "min_ms": 6.236,
+        "max_ms": 65.861,
+        "std_ms": 9.079
+      }
+    },
+    "total_fps": 59.49
+  },
+  "separate_models_realtime": {
+    "stream1": {
+      "frames": 449,
+      "fps": 29.91,
+      "errors": 0,
+      "infer": {
+        "n": 449,
+        "mean_ms": 7.77,
+        "median_ms": 6.328,
+        "p95_ms": 15.403,
+        "min_ms": 5.274,
+        "max_ms": 28.402,
+        "std_ms": 3.491
+      }
+    },
+    "stream2": {
+      "frames": 449,
+      "fps": 29.89,
+      "errors": 0,
+      "infer": {
+        "n": 449,
+        "mean_ms": 7.726,
+        "median_ms": 6.283,
+        "p95_ms": 15.618,
+        "min_ms": 5.332,
+        "max_ms": 24.706,
+        "std_ms": 3.46
+      }
+    },
+    "total_fps": 59.8
+  },
+  "shared_model_max": {
+    "stream1": {
+      "frames": 1264,
+      "fps": 84.25,
+      "errors": 0,
+      "infer": {
+        "n": 1264,
+        "mean_ms": 10.437,
+        "median_ms": 10.37,
+        "p95_ms": 11.278,
+        "min_ms": 5.809,
+        "max_ms": 14.989,
+        "std_ms": 0.506
+      }
+    },
+    "stream2": {
+      "frames": 1264,
+      "fps": 84.22,
+      "errors": 0,
+      "infer": {
+        "n": 1264,
+        "mean_ms": 10.509,
+        "median_ms": 10.409,
+        "p95_ms": 11.433,
+        "min_ms": 9.614,
+        "max_ms": 14.288,
+        "std_ms": 0.481
+      }
+    },
+    "total_fps": 168.47
+  },
+  "separate_models_max": {
+    "stream1": {
+      "frames": 1604,
+      "fps": 106.9,
+      "errors": 0,
+      "infer": {
+        "n": 1604,
+        "mean_ms": 7.86,
+        "median_ms": 7.837,
+        "p95_ms": 8.998,
+        "min_ms": 6.082,
+        "max_ms": 11.051,
+        "std_ms": 0.667
+      }
+    },
+    "stream2": {
+      "frames": 1604,
+      "fps": 106.9,
+      "errors": 0,
+      "infer": {
+        "n": 1604,
+        "mean_ms": 7.854,
+        "median_ms": 7.825,
+        "p95_ms": 8.996,
+        "min_ms": 6.064,
+        "max_ms": 11.664,
+        "std_ms": 0.694
+      }
+    },
+    "total_fps": 213.8
+  },
+  "note": "realtime = each source delivers at most its native 30 FPS, like a real camera; max = frames as fast as the model allows (shows spare capacity)"
+}

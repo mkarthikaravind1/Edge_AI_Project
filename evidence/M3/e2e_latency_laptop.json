@@ -1,0 +1,40 @@
+{
+  "task": "e2e_latency_laptop",
+  "host": {
+    "hostname": "LAPTOP-6BN8T06N",
+    "device_type": "laptop",
+    "cpu_model": "Intel(R) Core(TM) Ultra 5 225H",
+    "cpu_cores": 14,
+    "ram_gb": 16.57,
+    "os": "Windows 11",
+    "machine": "AMD64",
+    "python": "3.12.10",
+    "timestamp_utc": "2026-11-04T06:45:59+00:00"
+  },
+  "source": "simulated conveyor (1.5s part / 1.5s gap, 30 FPS, real test images)",
+  "backend": "tflite",
+  "model": "models/best_int8.tflite",
+  "rule": "3-of-5, conf >= 0.6",
+  "events": 25,
+  "frames": 2166,
+  "fps": 30.01,
+  "frame_to_cmd": {
+    "n": 25,
+    "mean_ms": 7.434,
+    "median_ms": 6.57,
+    "p95_ms": 8.808,
+    "min_ms": 5.55,
+    "max_ms": 24.84,
+    "std_ms": 3.65
+  },
+  "first_hit_to_cmd": {
+    "n": 25,
+    "mean_ms": 73.922,
+    "median_ms": 73.08,
+    "p95_ms": 75.37,
+    "min_ms": 70.58,
+    "max_ms": 91.4,
+    "std_ms": 3.685
+  },
+  "target_p95_ms": 600
+}

@@ -1,0 +1,8 @@
+t_s,output,change
+0.026,run_permit,ON first frame: healthy
+5.064,run_permit,OFF SAFE STATE: camera lost
+8.035,run_permit,ON camera recovered
+12.023,run_permit,OFF shutdown
+0.084,event,trigger
+5.064,event,safe_state
+8.035,event,recovered

@@ -53,3 +53,4 @@ data/labelled/cvat_annotations.zip
 models/prelabel.pt
 *.cache
 export_bundle.zip
+docker/.env

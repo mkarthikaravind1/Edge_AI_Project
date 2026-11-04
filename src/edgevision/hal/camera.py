@@ -120,6 +120,26 @@ class FakeCamera(Camera):
         return img
 
 
+class FlakyCamera(Camera):
+    """Wraps a camera and simulates an unplugged cable between drop_at_s and resume_at_s (seconds after start)."""
+
+    def __init__(self, inner: Camera, drop_at_s: float, resume_at_s: float | None = None) -> None:
+        super().__init__()
+        self.inner, self.drop_at, self.resume_at = inner, drop_at_s, resume_at_s
+        self._t0 = time.perf_counter()
+
+    def _grab(self) -> np.ndarray | None:
+        t = time.perf_counter() - self._t0
+        fr = self.inner.read()
+        if t >= self.drop_at and (self.resume_at is None or t < self.resume_at):
+            time.sleep(0.03)          # a dead camera blocks a little, then returns nothing
+            return None
+        return None if fr is None else fr.image
+
+    def close(self) -> None:
+        self.inner.close()
+
+
 class PiCamera2Camera(Camera):
     def __init__(self, width: int = 640, height: int = 480, fps: int = 30) -> None:
         super().__init__()

@@ -95,3 +95,36 @@ and Modbus. Switching is one setting in `config/<target>.yaml`, chosen by `EDGE_
 **2.6 Target & trade-off** — `docs/OPTIMISATION.md`
 > TFLite INT8 ships: 3.8× smaller (12.1 → 3.2 MB) and almost no accuracy loss. Where you round matters: rounding the
 > output costs box tightness, aggressive int8 everywhere (my ONNX INT8) costs the hard class enclosure-vs-lid.
+
+---
+
+## M3 Decide and Act
+
+**3.1 Decision rule sheet** — `docs/DECISION_RULES.md`
+> Input: the class `enclosure` at confidence ≥ 0.60. Fire when 3 of the last 5 frames are hits, then wait until the part
+> has left (5 empty frames) before firing again, so one part = one trigger. Action: reject output pulses, PLC coil pulses,
+> PLC register counts. Safe state: no frame for 1 s → run_permit relay off → conveyor stops.
+> *Why 0.60:* on 54 real frames every correct detection was ≥ 0.61 and 7 of 11 false ones were below 0.60.
+
+**3.2 Two streams** — `python scripts/two_stream.py`
+> One thread per camera. A shared model needs a lock (a TFLite interpreter must not be used by two threads at once),
+> so the streams take turns; separate models use more memory but infer in parallel. Laptop: both streams hold 30 FPS
+> (the camera rate); flat out, shared = 84 FPS each, separate = 107 FPS each.
+
+**3.3 Debounce** — `python scripts/debounce_demo.py`, `pytest tests/test_decide.py`
+> Real model, real images: a single part frame (frame 6) does not fire; the 3rd part frame in a row (frame 15) fires;
+> the same part keeps "hold"; a new part after the gap fires again (frame 59).
+
+**3.4 Actuator + safe state** — `python scripts/safe_state_demo.py` (`--live` on the Pi, unplug the camera)
+> Two outputs. *run_permit* is ON only while healthy, so *any* failure (camera lost, program crash, power cut) stops
+> the conveyor: that is fail-safe by wiring, not by software. A watchdog thread checks every 50 ms; measured: off
+> 1.06 s after the last frame (timeout 1.0 s), back on with the first good frame.
+
+**3.5 Docker** — `docker/Dockerfile`, `docker/compose.yaml`, `deploy/edge-compose.service`
+> Debian Bookworm base (same as Raspberry Pi OS) so the apt Picamera2/gpiozero packages work inside. `privileged` +
+> `/dev` gives the container the camera, GPIO and I²C. `restart: unless-stopped` + Docker enabled at boot + the
+> systemd unit bring it back after a power cycle without anyone logging in.
+
+**3.6 End-to-end latency** — `python scripts/e2e_latency.py --events 25`
+> Two numbers: from the frame that fired to the output (pipeline cost; laptop median 6.6 ms) and from the part's first
+> frame to the output (adds the deliberate 3-of-5 wait = 2 frames; laptop median 73 ms at 30 FPS).

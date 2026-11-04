@@ -1,0 +1,21 @@
+# Brings the station (edge + mosquitto containers) up at boot, after Docker and the network.
+#   sudo cp deploy/edge-compose.service /etc/systemd/system/ && sudo systemctl daemon-reload
+#   sudo systemctl enable --now edge-compose
+# Containers also have restart: unless-stopped; this unit makes a fresh boot deterministic and rebuilds nothing.
+[Unit]
+Description=Edge inspection station (docker compose)
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+User=pi
+WorkingDirectory=/home/pi/Edge_AI_Project
+ExecStart=/usr/bin/docker compose -f docker/compose.yaml up -d
+ExecStop=/usr/bin/docker compose -f docker/compose.yaml down
+TimeoutStartSec=300
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,29 @@
+{
+  "task": "debounce_demo",
+  "host": {
+    "hostname": "LAPTOP-6BN8T06N",
+    "device_type": "laptop",
+    "cpu_model": "Intel(R) Core(TM) Ultra 5 225H",
+    "cpu_cores": 14,
+    "ram_gb": 16.57,
+    "os": "Windows 11",
+    "machine": "AMD64",
+    "python": "3.12.10",
+    "timestamp_utc": "2026-11-04T06:41:42+00:00"
+  },
+  "rule": "3-of-5 hits with conf >= 0.6 on ['enclosure']",
+  "rearm_on_clear": true,
+  "single_glitch_frame": 6,
+  "single_glitch_triggered": false,
+  "trigger_frames": [
+    15,
+    59
+  ],
+  "fps": 15,
+  "expected_trigger_frames": [
+    15,
+    59
+  ],
+  "expected": "no trigger at frame 6 (one bad frame); trigger at frame 15 (3rd hit in a row); same part keeps HOLD; trigger again at frame 59 for the next part",
+  "passed": true
+}
