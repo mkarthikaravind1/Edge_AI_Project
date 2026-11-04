@@ -1,0 +1,94 @@
+{
+  "task": "inspection_calibration",
+  "host": {
+    "hostname": "LAPTOP-6BN8T06N",
+    "device_type": "laptop",
+    "cpu_model": "Intel(R) Core(TM) Ultra 5 225H",
+    "cpu_cores": 14,
+    "ram_gb": 16.57,
+    "os": "Windows 11",
+    "machine": "AMD64",
+    "python": "3.12.10",
+    "timestamp_utc": "2026-11-04T09:36:18+00:00"
+  },
+  "dir": "data/rig_sim/calib_good",
+  "images": 6,
+  "usable": 6,
+  "limits": {
+    "mark_frac_max": 0.002,
+    "rect_fill_min": 0.7926,
+    "solidity_min": 0.9037
+  },
+  "good_feature_ranges": {
+    "mark_frac": [
+      0.0,
+      0.0
+    ],
+    "rect_fill": [
+      0.8226,
+      0.932
+    ],
+    "solidity": [
+      0.9237,
+      0.9827
+    ]
+  },
+  "rule": "limits from good parts only: mark 1.5x worst good (+0.002), rectangularity worst good - 0.03, solidity worst good - 0.02",
+  "slot_rule": "dark blobs that are long thin boxes (aspect >= 3.5, box fill >= 0.55) are the designed slot, not marks",
+  "per_image": [
+    {
+      "file": "calib_02080.jpg",
+      "enclosure_found": true,
+      "mark_frac": 0.0,
+      "dark_blobs": 0.0,
+      "slot_frac": 0.0,
+      "rect_fill": 0.9271181501707122,
+      "solidity": 0.976511801024653
+    },
+    {
+      "file": "calib_02085.jpg",
+      "enclosure_found": true,
+      "mark_frac": 0.0,
+      "dark_blobs": 0.0,
+      "slot_frac": 0.0,
+      "rect_fill": 0.9319785827353532,
+      "solidity": 0.9772060747705719
+    },
+    {
+      "file": "calib_02090.jpg",
+      "enclosure_found": true,
+      "mark_frac": 0.0,
+      "dark_blobs": 0.0,
+      "slot_frac": 0.0,
+      "rect_fill": 0.9303341017064772,
+      "solidity": 0.9760686701496727
+    },
+    {
+      "file": "calib_02095.jpg",
+      "enclosure_found": true,
+      "mark_frac": 0.0,
+      "dark_blobs": 0.0,
+      "slot_frac": 0.0,
+      "rect_fill": 0.9300208743256119,
+      "solidity": 0.9807218176301017
+    },
+    {
+      "file": "calib_02100.jpg",
+      "enclosure_found": true,
+      "mark_frac": 0.0,
+      "dark_blobs": 0.0,
+      "slot_frac": 0.0,
+      "rect_fill": 0.8225625212644858,
+      "solidity": 0.9237001471038464
+    },
+    {
+      "file": "calib_02150.jpg",
+      "enclosure_found": true,
+      "mark_frac": 0.0,
+      "dark_blobs": 0.0,
+      "slot_frac": 0.008252357816519005,
+      "rect_fill": 0.9283126875123799,
+      "solidity": 0.9826535204352984
+    }
+  ]
+}

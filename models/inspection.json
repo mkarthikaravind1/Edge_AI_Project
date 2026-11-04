@@ -1,0 +1,9 @@
+{
+  "limits": {
+    "mark_frac_max": 0.002,
+    "rect_fill_min": 0.7926,
+    "solidity_min": 0.9037
+  },
+  "calibrated_on": "data/rig_sim/calib_good",
+  "good_images": 6
+}

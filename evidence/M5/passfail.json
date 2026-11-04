@@ -1,0 +1,49 @@
+{
+  "task": "passfail",
+  "host": {
+    "hostname": "LAPTOP-6BN8T06N",
+    "device_type": "laptop",
+    "cpu_model": "Intel(R) Core(TM) Ultra 5 225H",
+    "cpu_cores": 14,
+    "ram_gb": 16.57,
+    "os": "Windows 11",
+    "machine": "AMD64",
+    "python": "3.12.10",
+    "timestamp_utc": "2026-11-04T09:36:35+00:00"
+  },
+  "dir": "data/rig_sim/test",
+  "parts": 20,
+  "good": 10,
+  "defective": 10,
+  "confusion": {
+    "good->PASS": 9,
+    "good->FAIL (false reject)": 1,
+    "defective->PASS (FALSE PASS)": 3,
+    "defective->FAIL": 7
+  },
+  "correct": 16,
+  "accuracy": 0.8,
+  "false_pass_rate": 0.3,
+  "false_reject_rate": 0.1,
+  "target_false_pass_rate_max": 0.1,
+  "headline": "16/20 parts correct",
+  "per_defect": {
+    "chipped_corner": {
+      "n": 2,
+      "caught": 0
+    },
+    "lid_missing": {
+      "n": 3,
+      "caught": 3
+    },
+    "lid_not_seated": {
+      "n": 2,
+      "caught": 1
+    },
+    "surface_mark": {
+      "n": 3,
+      "caught": 3
+    }
+  },
+  "uses_simulated_images": true
+}

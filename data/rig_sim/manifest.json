@@ -1,0 +1,158 @@
+[
+ {
+  "file": "calib_good/calib_02080.jpg",
+  "source": "real",
+  "label": "good",
+  "defect": null
+ },
+ {
+  "file": "calib_good/calib_02085.jpg",
+  "source": "real",
+  "label": "good",
+  "defect": null
+ },
+ {
+  "file": "calib_good/calib_02090.jpg",
+  "source": "real",
+  "label": "good",
+  "defect": null
+ },
+ {
+  "file": "calib_good/calib_02095.jpg",
+  "source": "real",
+  "label": "good",
+  "defect": null
+ },
+ {
+  "file": "calib_good/calib_02100.jpg",
+  "source": "real",
+  "label": "good",
+  "defect": null
+ },
+ {
+  "file": "calib_good/calib_02150.jpg",
+  "source": "real",
+  "label": "good",
+  "defect": null
+ },
+ {
+  "file": "test/good/clip1_000000.jpg",
+  "source": "real",
+  "label": "good",
+  "defect": null
+ },
+ {
+  "file": "test/good/clip1_000021.jpg",
+  "source": "real",
+  "label": "good",
+  "defect": null
+ },
+ {
+  "file": "test/good/clip1_000119.jpg",
+  "source": "real",
+  "label": "good",
+  "defect": null
+ },
+ {
+  "file": "test/good/clip1_000203.jpg",
+  "source": "real",
+  "label": "good",
+  "defect": null
+ },
+ {
+  "file": "test/good/clip1_000210.jpg",
+  "source": "real",
+  "label": "good",
+  "defect": null
+ },
+ {
+  "file": "test/good/clip1_000224.jpg",
+  "source": "real",
+  "label": "good",
+  "defect": null
+ },
+ {
+  "file": "test/good/clip1_000245.jpg",
+  "source": "real",
+  "label": "good",
+  "defect": null
+ },
+ {
+  "file": "test/good/clip1_000301.jpg",
+  "source": "real",
+  "label": "good",
+  "defect": null
+ },
+ {
+  "file": "test/good/clip1_000350.jpg",
+  "source": "real",
+  "label": "good",
+  "defect": null
+ },
+ {
+  "file": "test/good/clip1_000371.jpg",
+  "source": "real",
+  "label": "good",
+  "defect": null
+ },
+ {
+  "file": "test/defective/mark_sim_clip1_000126.jpg",
+  "source": "SIMULATED",
+  "label": "defective",
+  "defect": "surface_mark"
+ },
+ {
+  "file": "test/defective/mark_sim_clip1_000217.jpg",
+  "source": "SIMULATED",
+  "label": "defective",
+  "defect": "surface_mark"
+ },
+ {
+  "file": "test/defective/mark_sim_clip1_002002.jpg",
+  "source": "SIMULATED",
+  "label": "defective",
+  "defect": "surface_mark"
+ },
+ {
+  "file": "test/defective/chip_sim_clip1_000259.jpg",
+  "source": "SIMULATED",
+  "label": "defective",
+  "defect": "chipped_corner"
+ },
+ {
+  "file": "test/defective/chip_sim_clip1_000343.jpg",
+  "source": "SIMULATED",
+  "label": "defective",
+  "defect": "chipped_corner"
+ },
+ {
+  "file": "test/defective/lidmissing_clip1_001736.jpg",
+  "source": "real",
+  "label": "defective",
+  "defect": "lid_missing"
+ },
+ {
+  "file": "test/defective/lidmissing_clip1_001750.jpg",
+  "source": "real",
+  "label": "defective",
+  "defect": "lid_missing"
+ },
+ {
+  "file": "test/defective/lidmissing_clip1_001757.jpg",
+  "source": "real",
+  "label": "defective",
+  "defect": "lid_missing"
+ },
+ {
+  "file": "test/defective/lidnotseated_clip1_001771.jpg",
+  "source": "real",
+  "label": "defective",
+  "defect": "lid_not_seated"
+ },
+ {
+  "file": "test/defective/lidnotseated_clip1_001792.jpg",
+  "source": "real",
+  "label": "defective",
+  "defect": "lid_not_seated"
+ }
+]

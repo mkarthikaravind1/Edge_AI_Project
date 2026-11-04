@@ -1,0 +1,4 @@
+# laptop Docker Desktop, image built from docker/Dockerfile, compose + compose.laptop
+edge Up About a minute (healthy) edge-inspection:latest
+/api/health: {"ok":true,"state":"running","fps":29.78,"last_frame_age_s":0.02}
+restart policy: unless-stopped  healthcheck: healthy

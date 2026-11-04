@@ -172,3 +172,39 @@ and Modbus. Switching is one setting in `config/<target>.yaml`, chosen by `EDGE_
 > `restart: unless-stopped` / systemd `Restart=always`. `docker exec edge sh -c 'kill -USR1 1'` makes the station
 > crash (exit 70) from inside; it was back in 1.2 s (laptop, `evidence/M4/crash_restart_laptop.log`). Note: `docker kill`
 > does NOT trigger a restart, because Docker treats it as a deliberate manual stop.
+
+---
+
+## M5 Complete System + Dashboard
+
+**5.1 Inspection rig** — `docs/RIG.md`
+> Fixed camera at 30–45°, plain matte base, a stop so every part sits the same way, diffused lamp. Same view every time
+> means "good" always looks the same, so small differences are defects. The angle shows the side wall, which is what
+> separates a closed box from a loose lid (my M1 wrong detection #7).
+
+**5.2 Pass/fail station** — `src/edgevision/inspect.py`, `scripts/calibrate_inspection.py`, `scripts/passfail_test.py`
+> Two layers: the detector says what is in view (closed enclosure / open body / lid); simple vision checks look at the
+> enclosure crop: dark marks (the designed slot is excluded by its shape), solidity (a bite out of a corner makes the
+> outline concave), rectangularity. Limits come from GOOD parts only, because defects are rare and varied.
+> Stand-in result: 16/20, false-pass 0.30 — marks and lid-missing caught, chips not (camera angle varied in my phone
+> video). I changed the method once after seeing the first result, so the second score is optimistic: the rig test is
+> the honest number.
+
+**5.3 Full chain** — `python scripts/station_sim.py --minutes 10 --mqtt --report`
+> 10 min, 30.0 FPS (min 29.7), 0 errors, 171/172 parts tracked, 1858 MQTT messages received with 0 schema failures,
+> part → reject p95 90 ms. What broke and the fix is listed in `evidence/M5/full_chain_laptop.json`
+> (e.g. a 0.6 s blur in my simulator dropped it to 2.4 FPS: measure, find, fix).
+
+**5.4 Dashboard** — `http://<device>:8000`
+> FastAPI backend (REST + WebSocket + MJPEG) and a separate static page: the same API could feed a phone app.
+> Live camera with boxes, big PASS/FAIL, headline metric, 3 KPIs (throughput, yield, median latency), motor card with
+> score graph that turns red on an anomaly, parts feed with good/defective buttons. No CDN: works offline. Responsive.
+
+**5.5 Product readiness** — `scripts/readiness_check.py` (7/7 static; `--pi` adds boot + offline checks)
+> Auto-start: Docker enabled in systemd + `restart: unless-stopped` + `edge-compose.service`. Offline: broker, model,
+> dashboard all local. Logs: RotatingFileHandler 1 MB × 5 + Docker json-file 5 MB × 3, so the SD card never fills.
+> Healthcheck: container is "healthy" only while `/api/health` sees fresh frames.
+
+**5.6 Headline metric** — dashboard tile + `GET /api/kpis`
+> Parts classified correctly out of the parts I checked, with the false-pass rate next to it, because a defective part
+> passing is the costly error.

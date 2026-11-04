@@ -52,8 +52,9 @@ run_permit:             # energised only while healthy; off = conveyor STOP (fai
   pin: 17
   active_high: true
 
-inspection:             # M5 pass/fail
-  enabled: false
+inspection:             # M5 pass/fail (src/edgevision/inspect.py)
+  enabled: false          # true (or app --inspect): the decision rule fires on FAIL verdicts
+  model_path: models/inspection.json
 
 imu:
   type: csv_replay      # csv_replay | mpu6050

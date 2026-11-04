@@ -1,0 +1,1051 @@
+{
+  "task": "full_chain_laptop",
+  "host": {
+    "hostname": "LAPTOP-6BN8T06N",
+    "device_type": "laptop",
+    "cpu_model": "Intel(R) Core(TM) Ultra 5 225H",
+    "cpu_cores": 14,
+    "ram_gb": 16.57,
+    "os": "Windows 11",
+    "machine": "AMD64",
+    "python": "3.12.10",
+    "timestamp_utc": "2026-11-04T09:56:04+00:00"
+  },
+  "duration_min": 10.0,
+  "uptime_s": 601.1,
+  "chain": "camera(sim conveyor) -> TFLite INT8 -> inspection -> decision -> reject/PLC/run_permit -> MQTT TLS -> dashboard (+ motor monitor)",
+  "frames": 17990,
+  "fps_mean": 30.03,
+  "fps_min": 29.72,
+  "errors": {},
+  "safe_state_events": 0,
+  "parts_shown": 172,
+  "parts_tracked": 171,
+  "parts_correct": "137/171",
+  "false_pass_rate": 0.302,
+  "reject_latency": {
+    "n": 68,
+    "mean_ms": 83.755,
+    "median_ms": 84.05,
+    "p95_ms": 90.37,
+    "min_ms": 73.94,
+    "max_ms": 97.94,
+    "std_ms": 4.46
+  },
+  "motor_alerts": 1,
+  "mqtt_messages_sent": 1857,
+  "kpis_at_end": {
+    "throughput_per_min": 17.0,
+    "parts_total": 171,
+    "yield_pct": 60.2,
+    "median_latency_ms": 84.1,
+    "headline": {
+      "correct": 0,
+      "labelled": 0,
+      "text": "label parts to score",
+      "false_pass_rate": null,
+      "false_pass": 0,
+      "defective_labelled": 0
+    }
+  },
+  "fps_timeline": [
+    {
+      "t_s": 5,
+      "fps": 29.97,
+      "frames": 147,
+      "parts": 1,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 10,
+      "fps": 30.02,
+      "frames": 297,
+      "parts": 3,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 15,
+      "fps": 30.13,
+      "frames": 447,
+      "parts": 4,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 20,
+      "fps": 30.1,
+      "frames": 597,
+      "parts": 6,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 25,
+      "fps": 30.07,
+      "frames": 747,
+      "parts": 7,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 30,
+      "fps": 30.1,
+      "frames": 897,
+      "parts": 8,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 35,
+      "fps": 30.04,
+      "frames": 1047,
+      "parts": 10,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 40,
+      "fps": 30.02,
+      "frames": 1197,
+      "parts": 11,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 45,
+      "fps": 30.03,
+      "frames": 1347,
+      "parts": 13,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 50,
+      "fps": 30.02,
+      "frames": 1495,
+      "parts": 14,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 55,
+      "fps": 29.94,
+      "frames": 1645,
+      "parts": 16,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 60,
+      "fps": 30.03,
+      "frames": 1795,
+      "parts": 17,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 65,
+      "fps": 29.98,
+      "frames": 1945,
+      "parts": 18,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 70,
+      "fps": 30.04,
+      "frames": 2095,
+      "parts": 20,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 75,
+      "fps": 30.1,
+      "frames": 2245,
+      "parts": 21,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 80,
+      "fps": 29.85,
+      "frames": 2395,
+      "parts": 23,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 85,
+      "fps": 30.11,
+      "frames": 2545,
+      "parts": 24,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 90,
+      "fps": 30.0,
+      "frames": 2695,
+      "parts": 26,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 95,
+      "fps": 29.98,
+      "frames": 2845,
+      "parts": 27,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 100,
+      "fps": 30.17,
+      "frames": 2995,
+      "parts": 28,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 105,
+      "fps": 29.93,
+      "frames": 3145,
+      "parts": 30,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 110,
+      "fps": 30.06,
+      "frames": 3295,
+      "parts": 31,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 115,
+      "fps": 30.09,
+      "frames": 3446,
+      "parts": 33,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 120,
+      "fps": 30.0,
+      "frames": 3595,
+      "parts": 34,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 125,
+      "fps": 29.8,
+      "frames": 3745,
+      "parts": 36,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 130,
+      "fps": 29.99,
+      "frames": 3896,
+      "parts": 37,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 135,
+      "fps": 30.04,
+      "frames": 4046,
+      "parts": 38,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 140,
+      "fps": 30.84,
+      "frames": 4195,
+      "parts": 40,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 145,
+      "fps": 30.05,
+      "frames": 4345,
+      "parts": 41,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 150,
+      "fps": 30.0,
+      "frames": 4495,
+      "parts": 43,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 155,
+      "fps": 30.0,
+      "frames": 4645,
+      "parts": 44,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 160,
+      "fps": 30.02,
+      "frames": 4795,
+      "parts": 46,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 165,
+      "fps": 30.03,
+      "frames": 4945,
+      "parts": 47,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 170,
+      "fps": 30.04,
+      "frames": 5095,
+      "parts": 48,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 175,
+      "fps": 29.87,
+      "frames": 5245,
+      "parts": 50,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 180,
+      "fps": 30.13,
+      "frames": 5395,
+      "parts": 51,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 185,
+      "fps": 30.07,
+      "frames": 5544,
+      "parts": 53,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 190,
+      "fps": 29.92,
+      "frames": 5695,
+      "parts": 54,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 195,
+      "fps": 30.12,
+      "frames": 5845,
+      "parts": 56,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 200,
+      "fps": 30.06,
+      "frames": 5995,
+      "parts": 57,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 205,
+      "fps": 30.09,
+      "frames": 6145,
+      "parts": 58,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 210,
+      "fps": 30.13,
+      "frames": 6295,
+      "parts": 60,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 215,
+      "fps": 29.88,
+      "frames": 6445,
+      "parts": 61,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 220,
+      "fps": 29.83,
+      "frames": 6595,
+      "parts": 63,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 225,
+      "fps": 30.16,
+      "frames": 6745,
+      "parts": 64,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 230,
+      "fps": 29.93,
+      "frames": 6895,
+      "parts": 66,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 235,
+      "fps": 29.98,
+      "frames": 7045,
+      "parts": 67,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 240,
+      "fps": 30.09,
+      "frames": 7195,
+      "parts": 68,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 245,
+      "fps": 29.94,
+      "frames": 7345,
+      "parts": 70,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 250,
+      "fps": 29.9,
+      "frames": 7495,
+      "parts": 71,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 255,
+      "fps": 29.89,
+      "frames": 7645,
+      "parts": 73,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 260,
+      "fps": 30.09,
+      "frames": 7795,
+      "parts": 74,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 265,
+      "fps": 29.87,
+      "frames": 7945,
+      "parts": 76,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 270,
+      "fps": 29.98,
+      "frames": 8095,
+      "parts": 77,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 275,
+      "fps": 30.04,
+      "frames": 8245,
+      "parts": 78,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 280,
+      "fps": 29.93,
+      "frames": 8395,
+      "parts": 80,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 285,
+      "fps": 30.07,
+      "frames": 8545,
+      "parts": 81,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 290,
+      "fps": 29.96,
+      "frames": 8695,
+      "parts": 83,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 295,
+      "fps": 30.02,
+      "frames": 8845,
+      "parts": 84,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 300,
+      "fps": 30.0,
+      "frames": 8995,
+      "parts": 86,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 305,
+      "fps": 29.85,
+      "frames": 9145,
+      "parts": 87,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 310,
+      "fps": 29.97,
+      "frames": 9295,
+      "parts": 88,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 315,
+      "fps": 30.37,
+      "frames": 9445,
+      "parts": 90,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 320,
+      "fps": 30.05,
+      "frames": 9595,
+      "parts": 91,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 325,
+      "fps": 29.91,
+      "frames": 9745,
+      "parts": 93,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 330,
+      "fps": 30.03,
+      "frames": 9895,
+      "parts": 94,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 335,
+      "fps": 30.0,
+      "frames": 10045,
+      "parts": 96,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 340,
+      "fps": 29.99,
+      "frames": 10195,
+      "parts": 97,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 345,
+      "fps": 29.72,
+      "frames": 10345,
+      "parts": 98,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 350,
+      "fps": 30.03,
+      "frames": 10495,
+      "parts": 100,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 355,
+      "fps": 30.0,
+      "frames": 10645,
+      "parts": 101,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 360,
+      "fps": 29.75,
+      "frames": 10795,
+      "parts": 103,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 365,
+      "fps": 30.09,
+      "frames": 10945,
+      "parts": 104,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 370,
+      "fps": 30.04,
+      "frames": 11095,
+      "parts": 106,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 375,
+      "fps": 30.03,
+      "frames": 11245,
+      "parts": 107,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 380,
+      "fps": 30.04,
+      "frames": 11395,
+      "parts": 108,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 385,
+      "fps": 30.07,
+      "frames": 11545,
+      "parts": 110,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 390,
+      "fps": 30.03,
+      "frames": 11695,
+      "parts": 111,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 395,
+      "fps": 30.01,
+      "frames": 11845,
+      "parts": 113,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 400,
+      "fps": 29.88,
+      "frames": 11995,
+      "parts": 114,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 405,
+      "fps": 30.0,
+      "frames": 12145,
+      "parts": 116,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 410,
+      "fps": 30.1,
+      "frames": 12296,
+      "parts": 117,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 415,
+      "fps": 30.08,
+      "frames": 12445,
+      "parts": 118,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 420,
+      "fps": 30.03,
+      "frames": 12595,
+      "parts": 120,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 425,
+      "fps": 30.12,
+      "frames": 12745,
+      "parts": 121,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 430,
+      "fps": 29.99,
+      "frames": 12895,
+      "parts": 123,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 435,
+      "fps": 30.0,
+      "frames": 13045,
+      "parts": 124,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 440,
+      "fps": 30.04,
+      "frames": 13196,
+      "parts": 126,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 445,
+      "fps": 30.16,
+      "frames": 13339,
+      "parts": 127,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 450,
+      "fps": 30.06,
+      "frames": 13489,
+      "parts": 128,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 455,
+      "fps": 29.95,
+      "frames": 13639,
+      "parts": 130,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 460,
+      "fps": 30.01,
+      "frames": 13789,
+      "parts": 131,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 465,
+      "fps": 30.0,
+      "frames": 13939,
+      "parts": 133,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 470,
+      "fps": 30.01,
+      "frames": 14089,
+      "parts": 134,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 475,
+      "fps": 30.01,
+      "frames": 14239,
+      "parts": 135,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 480,
+      "fps": 30.07,
+      "frames": 14389,
+      "parts": 137,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 485,
+      "fps": 29.94,
+      "frames": 14539,
+      "parts": 138,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 490,
+      "fps": 30.06,
+      "frames": 14689,
+      "parts": 140,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 495,
+      "fps": 30.0,
+      "frames": 14839,
+      "parts": 141,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 500,
+      "fps": 30.05,
+      "frames": 14989,
+      "parts": 143,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 505,
+      "fps": 30.01,
+      "frames": 15139,
+      "parts": 144,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 510,
+      "fps": 30.1,
+      "frames": 15289,
+      "parts": 145,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 515,
+      "fps": 29.99,
+      "frames": 15439,
+      "parts": 147,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 520,
+      "fps": 30.16,
+      "frames": 15589,
+      "parts": 148,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 525,
+      "fps": 29.85,
+      "frames": 15739,
+      "parts": 150,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 530,
+      "fps": 30.12,
+      "frames": 15889,
+      "parts": 151,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 535,
+      "fps": 29.96,
+      "frames": 16039,
+      "parts": 153,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 540,
+      "fps": 30.04,
+      "frames": 16189,
+      "parts": 154,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 545,
+      "fps": 30.15,
+      "frames": 16338,
+      "parts": 155,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 550,
+      "fps": 30.05,
+      "frames": 16489,
+      "parts": 157,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 555,
+      "fps": 29.95,
+      "frames": 16639,
+      "parts": 158,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 560,
+      "fps": 30.14,
+      "frames": 16789,
+      "parts": 160,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 565,
+      "fps": 30.04,
+      "frames": 16939,
+      "parts": 161,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 570,
+      "fps": 30.12,
+      "frames": 17089,
+      "parts": 163,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 575,
+      "fps": 30.0,
+      "frames": 17239,
+      "parts": 164,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 580,
+      "fps": 30.04,
+      "frames": 17389,
+      "parts": 165,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 585,
+      "fps": 30.0,
+      "frames": 17539,
+      "parts": 167,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 590,
+      "fps": 30.12,
+      "frames": 17689,
+      "parts": 168,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 595,
+      "fps": 30.03,
+      "frames": 17839,
+      "parts": 170,
+      "errors": 0,
+      "state": "running"
+    },
+    {
+      "t_s": 600,
+      "fps": 30.04,
+      "frames": 17989,
+      "parts": 171,
+      "errors": 0,
+      "state": "running"
+    }
+  ],
+  "what_broke_and_fix": [
+    {
+      "broke": "first chain run ran at 2.4 FPS",
+      "cause": "the simulated conveyor re-blurred the empty-belt image (sigma 60, 643 ms) on every gap frame",
+      "fix": "blur once per part and reuse it; station itself was fine (inspection 0-14 ms)",
+      "after": "30.0 FPS for 10 min"
+    },
+    {
+      "broke": "dashboard showed 'connecting...' in the first screenshot",
+      "cause": "screenshot taken before the first 0.5 s WebSocket snapshot",
+      "fix": "none needed (verified render() with a live snapshot); page reconnects every 2 s if the socket drops",
+      "after": "live values"
+    },
+    {
+      "broke": "KPI tiles wrapped one per row beside the camera",
+      "cause": "camera spanned 3 grid rows on desktop",
+      "fix": "explicit grid placement: camera | verdict+headline, then a full-width KPI row",
+      "after": "dashboard_desktop_laptop.jpg"
+    },
+    {
+      "broke": "station container crash-looped (FileNotFoundError config/laptop.yaml)",
+      "cause": "project root found from the package install path (site-packages in Docker)",
+      "fix": "EDGE_ROOT=/app + fall back to the working directory",
+      "after": "container runs, OTA release v2 loaded"
+    },
+    {
+      "broke": "good parts cut by the image border judged FAIL",
+      "cause": "part not fully in view (portrait phone video)",
+      "fix": "inspector returns NONE until the part is fully in view; rig images always show the whole part",
+      "after": "no border false rejects"
+    }
+  ],
+  "mqtt_received_by_subscriber": {
+    "status": 591,
+    "motor/score": 1199,
+    "detection": 68
+  },
+  "mqtt_schema_failures": {}
+}

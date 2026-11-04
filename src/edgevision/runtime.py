@@ -20,6 +20,7 @@ import numpy as np
 
 from .bus import EventBus
 from .decide import DecisionEngine, Event
+from .decide.parts import Part, PartTracker
 from .detect.base import Detection, Detector
 from .hal.actuator import Actuator
 from .hal.camera import Camera, Frame
@@ -66,6 +67,8 @@ class StationRuntime:
         self.last_frame_t = 0.0
         self.state = "starting"
         self.motor: Any = None                 # MotorMonitor, attached by the app when an IMU is configured
+        self.tracker = PartTracker(gap=d["m"], min_frames=d["n"], inspecting=inspector is not None)
+        self.parts: deque[Part] = deque(maxlen=2000)
 
     # ------------------------------------------------------------------ lifecycle
     def start(self) -> None:
@@ -170,6 +173,13 @@ class StationRuntime:
             self.state = "running"
         elif dec.event == Event.TRIGGER:
             self._trigger(fr, dets)
+        present = any(x.conf >= self.engine.conf_threshold for x in dets)
+        done = self.tracker.update(present, self.last_verdict if self.inspector else None,
+                                   dec.event == Event.TRIGGER,
+                                   self.latencies[-1]["first_hit_to_cmd_ms"] if dec.event == Event.TRIGGER else None)
+        if done is not None:
+            self.parts.append(done)
+            self.bus.publish("part", done.to_dict())
 
         if self.keep_annotated:
             extra = [self.state]
@@ -211,7 +221,8 @@ class StationRuntime:
         return {"device_id": self.device_id, "state": self.state, "uptime_s": round(up, 1), "frames": self.frames,
                 "fps": round(self.fps.fps, 2), "triggers": self.triggers, "safe_events": self.safe_events,
                 "errors": dict(self.errors), "run_permit": self.run_permit.state, "reject": self.reject.state,
-                "class_counts": dict(self.class_counts)}
+                "class_counts": dict(self.class_counts), "parts": len(self.parts),
+                "inspection": self.inspector is not None}
 
     def _status(self) -> None:
         self.bus.publish("status", self.stats())

@@ -48,8 +48,9 @@ run_permit:
   pin: 17               # BCM 17 = physical pin 11 -> relay 1 IN (conveyor allowed while energised)
   active_high: true
 
-inspection:
-  enabled: false
+inspection:             # M5 pass/fail (src/edgevision/inspect.py)
+  enabled: false          # true (or app --inspect): the decision rule fires on FAIL verdicts
+  model_path: models/inspection.json
 
 imu:
   type: mpu6050

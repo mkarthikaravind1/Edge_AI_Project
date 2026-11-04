@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Edge Inspection</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='2' y='4' width='12' height='8' rx='1.5' fill='%2322c55e'/></svg>">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <h1>Edge Inspection</h1>
+      <span id="device" class="muted">—</span>
+    </div>
+    <div class="status">
+      <span id="state" class="pill pill-off">connecting…</span>
+      <span class="stat"><b id="fps">–</b> FPS</span>
+      <span class="stat">up <b id="uptime">–</b></span>
+      <span class="stat">line <b id="permit" class="dot">●</b></span>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section class="card camera">
+      <div class="card-head"><h2>Live camera</h2><span id="dets" class="muted small">—</span></div>
+      <div class="video-wrap"><img id="video" src="/video.mjpg" alt="Live annotated camera view"></div>
+    </section>
+
+    <section class="card verdict-card">
+      <div class="card-head"><h2>Current part</h2><span id="inview" class="muted small"></span></div>
+      <div id="verdict" class="verdict verdict-none">—</div>
+      <div id="reasons" class="reasons muted">waiting for a part</div>
+    </section>
+
+    <section class="card headline">
+      <div class="card-head"><h2>Headline metric</h2></div>
+      <div id="headline" class="big">–</div>
+      <div class="muted small">parts classified correctly (operator-checked)</div>
+      <div class="small">false-pass rate: <b id="fpr">–</b> <span class="muted">(target ≤ 10 %)</span></div>
+    </section>
+
+    <section class="card kpi"><div class="kpi-label">Throughput</div><div class="kpi-value"><span id="k-thr">–</span><small>parts/min</small></div></section>
+    <section class="card kpi"><div class="kpi-label">Yield</div><div class="kpi-value"><span id="k-yield">–</span><small>% pass</small></div></section>
+    <section class="card kpi"><div class="kpi-label">Median latency</div><div class="kpi-value"><span id="k-lat">–</span><small>ms, part → reject</small></div></section>
+
+    <section class="card motor" id="motor-card">
+      <div class="card-head"><h2>Motor vibration</h2><span id="motor-state" class="pill pill-off">no sensor</span></div>
+      <canvas id="spark" height="90" aria-label="motor anomaly score over the last minute"></canvas>
+      <div class="small muted">score <b id="m-score">–</b> · threshold <b id="m-thr">–</b> · alerts <b id="m-alerts">0</b></div>
+    </section>
+
+    <section class="card feed">
+      <div class="card-head"><h2>Parts</h2><span class="muted small">mark each part to score the headline metric</span></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>time</th><th>result</th><th>why</th><th>latency</th><th>operator</th></tr></thead>
+          <tbody id="parts"><tr><td colspan="6" class="muted">no parts yet</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <footer class="muted small">REST: <code>/api/stats</code> · <code>/api/kpis</code> · <code>/api/parts</code> · WebSocket <code>/ws</code> · works offline</footer>
+  <script src="app.js"></script>
+</body>
+</html>

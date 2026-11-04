@@ -1,0 +1,53 @@
+{
+  "task": "readiness_laptop",
+  "host": {
+    "hostname": "LAPTOP-6BN8T06N",
+    "device_type": "laptop",
+    "cpu_model": "Intel(R) Core(TM) Ultra 5 225H",
+    "cpu_cores": 14,
+    "ram_gb": 16.57,
+    "os": "Windows 11",
+    "machine": "AMD64",
+    "python": "3.12.10",
+    "timestamp_utc": "2026-11-04T09:46:35+00:00"
+  },
+  "host_mode": "static",
+  "checks": [
+    {
+      "check": "dashboard loads nothing from the internet",
+      "pass": true,
+      "proof": "no external src/href"
+    },
+    {
+      "check": "MQTT broker is local",
+      "pass": true,
+      "proof": "mqtt.host = localhost"
+    },
+    {
+      "check": "model + config are files on the device",
+      "pass": true,
+      "proof": "models/best_int8.tflite"
+    },
+    {
+      "check": "containers restart automatically",
+      "pass": true,
+      "proof": "{\"edge\": \"unless-stopped\", \"mosquitto\": \"unless-stopped\"}"
+    },
+    {
+      "check": "systemd unit restarts the station",
+      "pass": true,
+      "proof": "edge-station.service: Restart=always, WantedBy=multi-user.target"
+    },
+    {
+      "check": "compose stack starts at boot",
+      "pass": true,
+      "proof": "edge-compose.service"
+    },
+    {
+      "check": "logs rotate",
+      "pass": true,
+      "proof": "app: RotatingFileHandler 1000000 B x 5 files; docker: {\"edge\": {\"max-size\": \"5m\", \"max-file\": \"3\"}, \"mosquitto\": {\"max-size\": \"5m\", \"max-file\": \"3\"}}"
+    }
+  ],
+  "all_passed": true
+}

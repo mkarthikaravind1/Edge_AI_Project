@@ -188,4 +188,16 @@ docker logs edge 2>&1 | grep -E "FORCED CRASH|station starting" | tail -3 > evid
 ```
 
 ## M5 — Complete system (on the Pi)
-_Added at M5: rig, 20-part test, 10-minute run, power-cycle test._
+
+| # | Do | Result file |
+|---|---|---|
+| 5.1 | Build the rig (`docs/RIG.md`), photo of it; `python scripts/capture_frame.py --name rig_view` | `evidence/M5/rig_photo.jpg`, `rig_view.png` |
+| 5.2 | `python scripts/capture_rig.py` (≈15 calib, 10 good, 10 defective) → `python scripts/calibrate_inspection.py --dir data/rig/calib_good` → `python scripts/passfail_test.py --dir data/rig/test` | `evidence/M5/passfail.json`, `passfail_confusion.png`, `passfail_sheet.jpg` |
+| 5.3 | Full chain 10 min: `docker compose -f docker/compose.yaml up -d`, pass parts by hand every few seconds, shake the motor once; meanwhile `python scripts/mqtt_subscribe.py --seconds 600 --save evidence/M5/full_chain_mqtt_pi.json`. Afterwards `curl -s localhost:8000/api/stats > evidence/M5/full_chain_pi_stats.json; curl -s localhost:8000/api/kpis > evidence/M5/full_chain_pi_kpis.json; docker logs edge --since 11m > evidence/M5/full_chain_pi.log 2>&1` | the 4 files |
+| 5.4 | Dashboard on a phone: `http://pi-karthik.local:8000` → screenshot | `evidence/M5/dashboard_phone_pi.png` |
+| 5.5 | Power cycle (pull the plug), wait 90 s, then `python scripts/readiness_check.py --pi`; repeat the last check **with Wi-Fi off / cable out** (`sudo nmcli radio wifi off`, then back `on`) | `evidence/M5/readiness_pi.json` |
+| 5.6 | Headline metric: mark every part on the dashboard during 5.3; `curl -s localhost:8000/api/kpis` shows `headline` | in `full_chain_pi_kpis.json` |
+| 5.8 | Rehearse `docs/DEMO.md` once with a timer; record the demo video | `evidence/M5/demo.mp4` (`git add -f`) |
+
+Enable inspection permanently on the Pi after 5.2: in `config/pi.yaml` set `inspection.enabled: true`
+(compose already starts the app with `--inspect`).

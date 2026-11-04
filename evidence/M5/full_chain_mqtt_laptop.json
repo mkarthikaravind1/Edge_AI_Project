@@ -1,0 +1,190 @@
+{
+  "received_per_topic": {
+    "status": 591,
+    "motor/score": 1199,
+    "detection": 68
+  },
+  "schema_failures": {},
+  "seconds": 720.0,
+  "samples": {
+    "status": [
+      {
+        "topic": "edge/laptop-karthik/status",
+        "retained": true,
+        "payload": {
+          "device_id": "laptop-karthik",
+          "ts": 1793780335.5344844,
+          "state": "offline"
+        },
+        "schema_ok": true
+      },
+      {
+        "topic": "edge/laptop-karthik/status",
+        "retained": false,
+        "payload": {
+          "ts": 1793785560.66473,
+          "device_id": "laptop-karthik",
+          "state": "running",
+          "uptime_s": 0.1,
+          "frames": 1,
+          "fps": 0.0,
+          "triggers": 0,
+          "safe_events": 0,
+          "errors": {},
+          "run_permit": true,
+          "reject": false,
+          "class_counts": {
+            "enclosure": 1
+          },
+          "parts": 0,
+          "inspection": true
+        },
+        "schema_ok": true
+      },
+      {
+        "topic": "edge/laptop-karthik/status",
+        "retained": false,
+        "payload": {
+          "ts": 1793785561.6679332,
+          "device_id": "laptop-karthik",
+          "state": "running",
+          "uptime_s": 1.1,
+          "frames": 28,
+          "fps": 26.77,
+          "triggers": 0,
+          "safe_events": 0,
+          "errors": {},
+          "run_permit": true,
+          "reject": false,
+          "class_counts": {
+            "enclosure": 28
+          },
+          "parts": 0,
+          "inspection": true
+        },
+        "schema_ok": true
+      }
+    ],
+    "motor/score": [
+      {
+        "topic": "edge/laptop-karthik/motor/score",
+        "retained": false,
+        "payload": {
+          "device_id": "laptop-karthik",
+          "ts": 1793785561.6052184,
+          "score": 6.278,
+          "threshold": 9.198,
+          "alert": false
+        },
+        "schema_ok": true
+      },
+      {
+        "topic": "edge/laptop-karthik/motor/score",
+        "retained": false,
+        "payload": {
+          "device_id": "laptop-karthik",
+          "ts": 1793785562.1051533,
+          "score": 7.265,
+          "threshold": 9.198,
+          "alert": false
+        },
+        "schema_ok": true
+      },
+      {
+        "topic": "edge/laptop-karthik/motor/score",
+        "retained": false,
+        "payload": {
+          "device_id": "laptop-karthik",
+          "ts": 1793785562.6055963,
+          "score": 5.651,
+          "threshold": 9.198,
+          "alert": false
+        },
+        "schema_ok": true
+      }
+    ],
+    "detection": [
+      {
+        "topic": "edge/laptop-karthik/detection",
+        "retained": false,
+        "payload": {
+          "device_id": "laptop-karthik",
+          "ts": 1793785564.3004029,
+          "event": "trigger",
+          "count": 1,
+          "classes": [
+            "enclosure"
+          ],
+          "confidences": [
+            0.9639
+          ],
+          "boxes": [
+            [
+              82.9,
+              243.1,
+              459.3,
+              446.5
+            ]
+          ],
+          "verdict": "FAIL",
+          "latency_ms": 16.41
+        },
+        "schema_ok": true
+      },
+      {
+        "topic": "edge/laptop-karthik/detection",
+        "retained": false,
+        "payload": {
+          "device_id": "laptop-karthik",
+          "ts": 1793785567.8053336,
+          "event": "trigger",
+          "count": 2,
+          "classes": [
+            "enclosure"
+          ],
+          "confidences": [
+            0.9599
+          ],
+          "boxes": [
+            [
+              2.7,
+              334.4,
+              354.4,
+              663.7
+            ]
+          ],
+          "verdict": "FAIL",
+          "latency_ms": 18.78
+        },
+        "schema_ok": true
+      },
+      {
+        "topic": "edge/laptop-karthik/detection",
+        "retained": false,
+        "payload": {
+          "device_id": "laptop-karthik",
+          "ts": 1793785571.310439,
+          "event": "trigger",
+          "count": 3,
+          "classes": [
+            "body"
+          ],
+          "confidences": [
+            0.9622
+          ],
+          "boxes": [
+            [
+              34.3,
+              340.7,
+              415.9,
+              682.3
+            ]
+          ],
+          "verdict": "FAIL",
+          "latency_ms": 23.18
+        },
+        "schema_ok": true
+      }
+    ]
+  }
+}

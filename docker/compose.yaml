@@ -25,7 +25,13 @@ services:
       - ../logs:/app/logs
       - ../deploy:/app/deploy               # OTA bundles + releases (CURRENT survives container rebuilds)
       - ./mosquitto/certs/ca.crt:/app/docker/mosquitto/certs/ca.crt:ro
-    command: ["python", "-m", "edgevision.app", "--dashboard"]
+    command: ["python", "-m", "edgevision.app", "--dashboard", "--inspect"]
+    healthcheck:                  # "healthy" only while frames arrive (GET /api/health -> 200)
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=3).status == 200 else 1)"]
+      interval: 15s
+      timeout: 5s
+      start_period: 90s
+      retries: 3
     depends_on:
       - mosquitto
     logging:

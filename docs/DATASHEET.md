@@ -37,9 +37,26 @@ See [ARCHITECTURE.md](ARCHITECTURE.md).
 | SoC temperature under load | < 80 °C | n/a | |
 
 ## 5. Headline metric
-_Defined at M5: parts classified correctly out of 20 (10 good, 10 defective), computed live on the dashboard._
+**Parts classified correctly out of all operator-checked parts** (shown live as e.g. "19/20 correct"), with the
+**false-pass rate** (defective parts judged PASS ÷ defective parts) right beside it.
+
+How it is measured, live:
+1. The station turns frames into parts (`decide/parts.py`): a part starts when it appears, ends after 5 empty frames;
+   result = FAIL if ≥ 3 of 5 frames were FAIL while it was in view, else PASS.
+2. The operator marks each part *good* / *defective* on the dashboard (or `POST /api/parts/{id}/truth`).
+3. `dashboard/kpis.py`: correct = PASS∧good + FAIL∧defective; headline = correct / marked; false-pass rate =
+   PASS∧defective / defective. Shown on the dashboard, in `GET /api/kpis`, and offline in `evidence/M5/passfail.json`
+   for the fixed 20-part set.
+
+| | Target | Laptop stand-in | Pi rig |
+|---|---|---|---|
+| Correct / 20 (fixed set) | ≥ 18/20 | 16/20 (with simulated defects) | _pending_ |
+| False-pass rate | ≤ 10 % | 30 % | _pending_ |
+
+The other two dashboard KPIs: **throughput** (parts per minute over the last 5 min), **yield** (% PASS), and
+**median latency** (part's first frame → reject output).
 
 ## 6. Interfaces
-- Dashboard: `http://<device>:8000` (REST + WebSocket)
+- Dashboard: `http://<device>:8000` (REST `/api/*`, WebSocket `/ws`, MJPEG `/video.mjpg`; works offline)
 - MQTT (TLS 8883): `edge/<device_id>/detection`, `edge/<device_id>/motor/score`, `edge/<device_id>/status`
 - Modbus TCP: coil 0 (%QX0.0) = reject/stop, holding register 0 = part count

@@ -49,4 +49,16 @@ Sources: `evidence/M1/train_eval.json`, `evidence/M1/eval_val_real.json`.
 - Test boxes were machine-proposed then checked, so boxes match the model's "style" → mAP@0.5:0.95 is likely optimistic.
 - The real check is the M2/M5 run on the Pi camera with new backgrounds.
 
+## Achieved so far (M2–M5, laptop)
+
+| Target | Value | Laptop result | Met? |
+|---|---|---|---|
+| INT8 mAP@0.5 drop | ≤ 0.03 | 0.001 (TFLite INT8 vs TFLite FP32) | ✅ |
+| INT8 model size | ≤ 4 MB | 3.2 MB | ✅ |
+| Frame → actuator p95 | ≤ 600 ms | 8.8 ms (frame that fired); 75–90 ms from the part's first frame | ✅ laptop, ⏳ Pi |
+| Motor false alarms / 5 normal runs | ≤ 1 | 1 (SYNTHETIC data) | ⚠️ synthetic only |
+| False-pass rate | ≤ 10 % | 30 % (stand-in set with simulated marks/chips) | ❌ not yet — rig test pending |
+| Headline correct / 20 | ≥ 18 | 16 | ❌ not yet — rig test pending |
+| Pi inference / FPS | ≤ 120 ms / ≥ 6 FPS (Pi 4) | — | ⏳ Pi |
+
 Final numbers vs these targets are in [RESULTS.md](RESULTS.md).

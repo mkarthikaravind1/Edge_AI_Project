@@ -11,4 +11,4 @@ services:
       - ../data/raw/videos:/app/data/raw/videos:ro
       - ../data/splits/test:/app/data/splits/test:ro
       - ../data/imu:/app/data/imu:ro
-    command: ["python", "-m", "edgevision.app", "--source", "video", "--path", "data/raw/videos/clip1.mp4"]
+    command: ["python", "-m", "edgevision.app", "--source", "video", "--path", "data/raw/videos/clip1.mp4", "--dashboard", "--inspect"]
