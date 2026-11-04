@@ -14,6 +14,7 @@ import logging
 import os
 import signal
 import threading
+import time
 from typing import Any
 
 from .bus import EventBus
@@ -116,7 +117,15 @@ def main() -> None:
     log.info("station starting: target=%s camera=%s backend=%s model=%s release=%s", cfg.get("target"),
              cfg["camera"]["type"], cfg["detector"]["backend"], cfg["detector"]["model"], cfg.get("release"))
     rt.start()
-    stop.wait(args.seconds)
+    # Wait in short slices: on Windows an untimed Event.wait() cannot be interrupted, so Ctrl+C would be ignored.
+    deadline = None if args.seconds is None else time.monotonic() + args.seconds
+    try:
+        while not stop.wait(0.5):
+            if deadline is not None and time.monotonic() >= deadline:
+                break
+    except KeyboardInterrupt:
+        pass
+    log.info("stopping station...")
     rt.stop()
     for p in plugins:
         p.close()

@@ -83,6 +83,10 @@ class StationRuntime:
         self._stop.set()
         for t in self._threads:
             t.join(timeout=3)
+        try:
+            self.camera.close()                              # release the webcam so its light goes off
+        except Exception:
+            log.exception("camera close failed")
         self.run_permit.set(False, "shutdown")
         self.reject.set(False, "shutdown")
         self.state = "stopped"
