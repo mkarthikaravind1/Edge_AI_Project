@@ -79,7 +79,9 @@ and Modbus. Switching is one setting in `config/<target>.yaml`, chosen by `EDGE_
 
 **2.3 Accuracy check** — `python scripts/evaluate.py`
 > One metric implementation for every backend, same real images. Test is saturated (1.000 for all), so I compare on the
-> 36 real val frames: FP32 0.970 → INT8 0.950 mAP@0.5 (drop 0.019, target ≤ 0.03).
+> 36 real val frames. Each INT8 model is compared with the FP32 model of the same runtime: ONNX INT8 drops 0.024,
+> TFLite INT8 drops 0.001, full-integer INT8 0.000 on mAP@0.5 (target ≤ 0.03). Full-integer loses tight boxes
+> (0.934 → 0.877) because its output is int8 too: box coordinates snap to ~2.4 px steps.
 
 **2.4 Fair benchmark** — `python scripts/benchmark_model.py --backend onnx_int8`
 > Fair = same images, batch 1, same thread count, 20 warm-up runs thrown away (caches, memory allocation), 200 timed runs.
@@ -91,4 +93,5 @@ and Modbus. Switching is one setting in `config/<target>.yaml`, chosen by `EDGE_
 > the CPU. The detector is a plug-in, so adding Coral is a config change plus an Edge-TPU-compiled model.
 
 **2.6 Target & trade-off** — `docs/OPTIMISATION.md`
-> 3.4× smaller, 1.8× faster on the laptop; "is it there" barely changes, tight boxes and enclosure-vs-lid suffer most.
+> TFLite INT8 ships: 3.8× smaller (12.1 → 3.2 MB) and almost no accuracy loss. Where you round matters: rounding the
+> output costs box tightness, aggressive int8 everywhere (my ONNX INT8) costs the hard class enclosure-vs-lid.

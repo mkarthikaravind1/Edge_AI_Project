@@ -61,7 +61,8 @@ Fill the Pi column of `docs/DATASHEET.md` from `baseline_pi.json → host`.
 
 ## M2 — Optimize (on the Pi)
 
-Models come from git (`git pull`): `models/best.onnx`, `models/best_int8.onnx`, `models/best_int8.tflite`.
+Models come from git (`git pull`): `models/best.onnx`, `models/best_int8.onnx`, `models/best_fp32.tflite`, `models/best_int8.tflite`, `models/best_int8_full.tflite`.
+After all 2.4 runs: `git add evidence/M2 && git commit -m "M2: Pi benchmarks" && git push`, then on the laptop `git pull` and run 2.5.
 Close other programs; let the Pi idle 2 minutes first so it starts cool. Run with a fan/heatsink if you have one, and say so.
 
 | # | Command (on the Pi, venv active, `EDGE_TARGET=pi`) | Result file |
@@ -70,6 +71,7 @@ Close other programs; let the Pi idle 2 minutes first so it starts cool. Run wit
 | 2.4b | `python scripts/benchmark_model.py --backend onnx_int8 --threads 4` | `evidence/M2/benchmark_pi_onnx_int8.json` |
 | 2.4c | `python scripts/benchmark_model.py --backend tflite_int8 --threads 4` | `evidence/M2/benchmark_pi_tflite_int8.json` |
 | 2.4d | `python scripts/benchmark_model.py --backend tflite_fp32 --threads 4` (CPU FP32 vs INT8) | `evidence/M2/benchmark_pi_tflite_fp32.json` |
+| 2.4e | `python scripts/benchmark_model.py --backend tflite_int8_full --threads 4` | `evidence/M2/benchmark_pi_tflite_int8_full.json` |
 | 2.2 | `python scripts/run_live.py --backend tflite --model models/best_int8.tflite --headless --seconds 30 --save evidence/M2/live_int8_pi.mp4` | `evidence/M2/live_int8_pi.mp4` |
 | 2.3 | `python scripts/evaluate.py --backends onnx_int8 tflite_int8` (optional: same accuracy on the Pi runtime) | `evidence/M2/accuracy_compare.json` |
 | 2.5 | `python scripts/compare_backends.py` (back on the laptop after `git pull`) | `evidence/M2/comparison.md` |

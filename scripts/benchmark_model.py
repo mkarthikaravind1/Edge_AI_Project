@@ -30,7 +30,9 @@ MODELS = {
     "onnx_fp32": "models/best.onnx",
     "onnx_int8": "models/best_int8.onnx",
     "tflite_fp32": "models/best_fp32.tflite",
+    "tflite_fp16": "models/best_fp16.tflite",
     "tflite_int8": "models/best_int8.tflite",
+    "tflite_int8_full": "models/best_int8_full.tflite",
 }
 
 

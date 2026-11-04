@@ -7,14 +7,21 @@ Batch 1, imgsz 320, 20 warm-up + 200 timed runs on real test images. Accuracy on
 | laptop (Intel(R) Core(TM) Ultra 5 225H) | pytorch_fp32 | 6.209 | 9.696 | 11.278 | 11.139 | 89.4 | 1.0 | 1.0 | 0.9695 | 0.9223 |
 | laptop (Intel(R) Core(TM) Ultra 5 225H) | onnx_fp32 | 12.141 | 9.32 | 12.484 | 10.901 | 89.8 | 1.0 | 1.0 | 0.9746 | 0.9336 |
 | laptop (Intel(R) Core(TM) Ultra 5 225H) | onnx_int8 | 3.604 | 5.191 | 7.334 | 6.601 | 143.9 | 1.0 | 1.0 | 0.9502 | 0.886 |
+| laptop (Intel(R) Core(TM) Ultra 5 225H) | tflite_fp32 | 12.131 | 12.65 | 14.786 | 15.851 | 61.9 | 1.0 | 1.0 | 0.9746 | 0.9336 |
+| laptop (Intel(R) Core(TM) Ultra 5 225H) | tflite_fp16 | 6.108 | 12.729 | 14.409 | 15.37 | 64.8 | 1.0 | 1.0 | 0.9746 | 0.9336 |
+| laptop (Intel(R) Core(TM) Ultra 5 225H) | tflite_int8 | 3.198 | 8.984 | 10.831 | 11.542 | 85.1 | 1.0 | 1.0 | 0.9739 | 0.9288 |
+| laptop (Intel(R) Core(TM) Ultra 5 225H) | tflite_int8_full | 3.233 | 7.423 | 9.974 | 8.758 | 110.0 | 1.0 | 0.9585 | 0.9746 | 0.8765 |
 
 ## Target vs achieved
 
 | target | INT8 model | value | achieved | met? |
 |---|---|---|---|---|
-| mAP@0.5 drop vs PyTorch FP32 (real val) | onnx_int8 | <= 0.03 | 0.0193 | yes |
+| mAP@0.5 drop vs onnx_fp32 (real val) | onnx_int8 | <= 0.03 | 0.0244 | yes |
 | model size | onnx_int8 | <= 4.0 MB | 3.604 | yes |
 | Pi median inference | onnx_int8 | <= 120 ms (Pi 4) / 60 ms (Pi 5) | pending | pending |
-| mAP@0.5 drop vs PyTorch FP32 (real val) | tflite_int8 | <= 0.03 | pending | pending |
-| model size | tflite_int8 | <= 4.0 MB | pending | pending |
+| mAP@0.5 drop vs tflite_fp32 (real val) | tflite_int8 | <= 0.03 | 0.0007 | yes |
+| model size | tflite_int8 | <= 4.0 MB | 3.198 | yes |
 | Pi median inference | tflite_int8 | <= 120 ms (Pi 4) / 60 ms (Pi 5) | pending | pending |
+| mAP@0.5 drop vs tflite_fp32 (real val) | tflite_int8_full | <= 0.03 | 0.0 | yes |
+| model size | tflite_int8_full | <= 4.0 MB | 3.233 | yes |
+| Pi median inference | tflite_int8_full | <= 120 ms (Pi 4) / 60 ms (Pi 5) | pending | pending |

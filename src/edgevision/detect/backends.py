@@ -76,11 +76,17 @@ class TfliteDetector(Detector):
 
     def detect(self, image: np.ndarray) -> list[Detection]:
         lb, r, pad = letterbox(image, self.imgsz)
-        x = cv2.cvtColor(lb, cv2.COLOR_BGR2RGB)[None].astype(np.float32) / 255.0   # NHWC
+        rgb = cv2.cvtColor(lb, cv2.COLOR_BGR2RGB)[None]   # NHWC uint8
         if self._inp["dtype"] in (np.int8, np.uint8):
             s, z = self._inp["quantization"]
             info = np.iinfo(self._inp["dtype"])
-            x = np.clip(np.round(x / s + z), info.min, info.max).astype(self._inp["dtype"])
+            if abs(s * 255.0 - 1.0) < 1e-6:
+                # scale is exactly 1/255, so q = pixel/255/s + z = pixel + z: integer maths only, no float pass
+                x = (rgb.astype(np.int16) + int(z)).clip(info.min, info.max).astype(self._inp["dtype"])
+            else:
+                x = np.clip(np.round(rgb.astype(np.float32) / 255.0 / s + z), info.min, info.max).astype(self._inp["dtype"])
+        else:
+            x = rgb.astype(np.float32) / 255.0
         self._it.set_tensor(self._inp["index"], x)
         t = time.perf_counter()
         self._it.invoke()

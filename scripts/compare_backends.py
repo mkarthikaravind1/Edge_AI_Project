@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-ORDER = ["pytorch_fp32", "onnx_fp32", "onnx_int8", "tflite_fp32", "tflite_int8"]
+ORDER = ["pytorch_fp32", "onnx_fp32", "onnx_int8", "tflite_fp32", "tflite_fp16", "tflite_int8", "tflite_int8_full"]
 
 
 def main() -> None:
@@ -49,13 +49,17 @@ def main() -> None:
         md.append(f"| {name} | {model} | {target} | {value if value is not None else 'pending'} | "
                   f"{'pending' if ok is None else ('yes' if ok else 'NO')} |")
 
-    fp32 = acc.get("pytorch_fp32", {}).get("val_real", {}).get("mAP50")
-    for b in ("onnx_int8", "tflite_int8"):
+    # INT8 is compared with the FP32 model of the SAME runtime: identical pre/post-processing, so the only
+    # difference is quantisation (PyTorch pads images differently, which would blur the comparison).
+    same_runtime_fp32 = {"onnx_int8": "onnx_fp32", "tflite_int8": "tflite_fp32", "tflite_int8_full": "tflite_fp32"}
+    for b in ("onnx_int8", "tflite_int8", "tflite_int8_full"):
+        ref = same_runtime_fp32[b]
+        fp32 = acc.get(ref, {}).get("val_real", {}).get("mAP50")
         int8 = acc.get(b, {}).get("val_real", {}).get("mAP50")
         size = acc.get(b, {}).get("size_mb")
         pi = next((r for r in rows if r["host_tag"] == "pi" and r["backend"] == b), None)
         drop = round(fp32 - int8, 4) if fp32 is not None and int8 is not None else None
-        line("mAP@0.5 drop vs PyTorch FP32 (real val)", b, f"<= {targets['int8_map50_drop_max']}", drop,
+        line(f"mAP@0.5 drop vs {ref} (real val)", b, f"<= {targets['int8_map50_drop_max']}", drop,
              None if drop is None else drop <= targets["int8_map50_drop_max"])
         line("model size", b, f"<= {targets['int8_size_mb_max']} MB", size,
              None if size is None else size <= targets["int8_size_mb_max"])

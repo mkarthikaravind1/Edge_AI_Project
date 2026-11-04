@@ -25,5 +25,36 @@
       "seed": 0
     },
     "quantize_s": 18.6
-  }
+  },
+  "tflite": {
+    "best_int8.tflite": {
+      "file": "models/best_int8.tflite",
+      "size_mb": 3.198,
+      "from": "best_int8.tflite"
+    },
+    "best_int8_full.tflite": {
+      "file": "models/best_int8_full.tflite",
+      "size_mb": 3.233,
+      "from": "best_full_integer_quant.tflite"
+    },
+    "best_fp16.tflite": {
+      "file": "models/best_fp16.tflite",
+      "size_mb": 6.108,
+      "from": "best_float16.tflite"
+    },
+    "best_fp32.tflite": {
+      "file": "models/best_fp32.tflite",
+      "size_mb": 12.131,
+      "from": "best_float32.tflite"
+    }
+  },
+  "tflite_calibration": {
+    "images": 200,
+    "real": 126,
+    "synthetic": 74,
+    "split": "train (no augmented copies)",
+    "seed": 0
+  },
+  "tflite_export_s": 413.6,
+  "tflite_exported_on": "Google Colab (Linux x86-64), Python 3.12, TF 2.19.0, Ultralytics 8.3.253"
 }

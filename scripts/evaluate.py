@@ -28,7 +28,9 @@ BACKENDS = {
     "onnx_fp32": ("models/best.onnx", lambda m, kw: OnnxDetector(m, CLASSES, **kw)),
     "onnx_int8": ("models/best_int8.onnx", lambda m, kw: OnnxDetector(m, CLASSES, **kw)),
     "tflite_fp32": ("models/best_fp32.tflite", lambda m, kw: TfliteDetector(m, CLASSES, **kw)),
+    "tflite_fp16": ("models/best_fp16.tflite", lambda m, kw: TfliteDetector(m, CLASSES, **kw)),
     "tflite_int8": ("models/best_int8.tflite", lambda m, kw: TfliteDetector(m, CLASSES, **kw)),
+    "tflite_int8_full": ("models/best_int8_full.tflite", lambda m, kw: TfliteDetector(m, CLASSES, **kw)),
 }
 
 
