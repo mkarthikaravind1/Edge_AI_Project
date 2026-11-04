@@ -153,7 +153,10 @@ def make_camera(cfg: dict[str, Any], realtime: bool = True) -> Camera:
     if kind == "webcam":
         return WebcamCamera(cfg.get("index", 0), w, h, cfg.get("fps", 30))
     if kind == "video":
-        return VideoFileCamera(str(resolve(cfg["path"])), cfg.get("loop", True), realtime, w, h)
+        # keep the file's own size/aspect unless the config explicitly asks to resize it
+        rs = cfg.get("resize_video", False)
+        return VideoFileCamera(str(resolve(cfg["path"])), cfg.get("loop", True), realtime,
+                               w if rs else None, h if rs else None)
     if kind == "picamera2":
         return PiCamera2Camera(w, h, cfg.get("fps", 30))
     if kind == "fake":

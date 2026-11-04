@@ -37,7 +37,7 @@ python scripts/run_live.py
 
 | Milestone | Status |
 |---|---|
-| M1 Detect | in progress |
+| M1 Detect | laptop done (mAP@0.5 0.995 on real test); Pi runs pending |
 | M2 Optimize | – |
 | M3 Decide and Act | core logic + tests ready |
 | M4 Monitor and Connect | core logic ready |

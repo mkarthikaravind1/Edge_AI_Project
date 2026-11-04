@@ -54,6 +54,7 @@ def main() -> None:
     ap.add_argument("--conf", type=float, default=0.25)
     ap.add_argument("--n", type=int, default=10)
     ap.add_argument("--out", default="evidence/M1/wrong_detections")
+    ap.add_argument("--pattern", default="*.jpg", help="e.g. 'clip*.jpg' for real frames only")
     args = ap.parse_args()
 
     from ultralytics import YOLO
@@ -65,7 +66,7 @@ def main() -> None:
     out.mkdir(parents=True, exist_ok=True)
 
     errors = []
-    for p in sorted(img_dir.glob("*.jpg")):
+    for p in sorted(img_dir.glob(args.pattern)):
         img = cv2.imread(str(p))
         h, w = img.shape[:2]
         gt = load_gt(p.parent.parent / "labels" / f"{p.stem}.txt", w, h)

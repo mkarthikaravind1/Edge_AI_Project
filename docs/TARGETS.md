@@ -30,4 +30,23 @@ Machine-readable copy: [`targets.json`](targets.json) (read by the Colab noteboo
 | Motor false alarms over 5 normal runs | **≤ 1** | Threshold = 99.5th percentile of normal scores. |
 | Headline metric | **≥ 18 / 20** parts classified correctly | Shown live on the dashboard. |
 
+## Achieved so far (M1, 4 Nov 2026)
+
+| Metric | Target | Real test (18 img) | Real val (36 img) | Met? |
+|---|---|---|---|---|
+| mAP@0.5 | ≥ 0.85 | **0.995** | 0.991 | ✅ |
+| mAP@0.5:0.95 | ≥ 0.60 | **0.995** | 0.951 | ✅ |
+| Precision | ≥ 0.85 | **0.979** | 0.954 | ✅ |
+| Recall | ≥ 0.85 | **1.000** | 0.997 | ✅ |
+
+YOLOv8n, imgsz 320, 80 epochs from public `yolov8n.pt` (Colab T4). imgsz 640 gave the same mAP@0.5 and a slightly lower
+mAP@0.5:0.95 (0.991), so **320 is chosen**: same accuracy, about 4× less compute on the Pi.
+Sources: `evidence/M1/train_eval.json`, `evidence/M1/eval_val_real.json`.
+
+**How much to trust these numbers (honest limits):**
+- One video, one desk, one light: test and train share the background, so this measures "same scene", not new scenes.
+- 18 test images (only 3 body boxes): one extra mistake would move precision by about 5 points.
+- Test boxes were machine-proposed then checked, so boxes match the model's "style" → mAP@0.5:0.95 is likely optimistic.
+- The real check is the M2/M5 run on the Pi camera with new backgrounds.
+
 Final numbers vs these targets are in [RESULTS.md](RESULTS.md).

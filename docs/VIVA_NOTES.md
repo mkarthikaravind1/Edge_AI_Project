@@ -49,7 +49,14 @@ and Modbus. Switching is one setting in `config/<target>.yaml`, chosen by `EDGE_
 > so test never contains an augmented copy of a training image.
 
 **1.6 Train & run** — `scripts/train_colab.ipynb`
-> Transfer learning: start from public COCO weights (`yolov8n.pt`), fine-tune on my 2 classes.
+> Transfer learning: start from public COCO weights (`yolov8n.pt`), fine-tune on my 3 classes (enclosure, body, lid).
 > mAP@0.5 = area under the precision-recall curve, counting a box as correct if it overlaps the truth ≥ 50 %, averaged
 > over classes. mAP@0.5:0.95 averages that over stricter overlaps (50 % … 95 %), so it rewards tight boxes.
 > Precision = of the boxes I drew, how many were right. Recall = of the real parts, how many I found.
+> **My result:** test mAP@0.5 0.995, mAP@0.5:0.95 0.995, P 0.979, R 1.000 (18 real images); real val 0.991 / 0.951.
+> I picked 320 over 640: same mAP@0.5, ~4x fewer pixels, so faster on the Pi.
+> **Why I don't over-trust it:** one desk, one video, 18 test images, and boxes that a model proposed.
+> **One wrong detection to show** (`evidence/M1/wrong_detections/07_CLASS_val_clip1_001862.jpg`): a closed box seen from
+> straight above was called "lid", because from the top both are a flat white rectangle and the side walls aren't visible.
+> Fix: mount the inspection camera at an angle so the wall height shows. 6 of the 10 errors are slivers of a part cut off at
+> the image edge; my labelling rule skips those, so the fix is a decision rule that ignores boxes touching the border.

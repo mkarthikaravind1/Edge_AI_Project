@@ -1,0 +1,9 @@
+{
+  "total_errors": 3,
+  "by_type": {
+    "CLASS": 2,
+    "FP": 1,
+    "FN": 0,
+    "LOC": 0
+  }
+}

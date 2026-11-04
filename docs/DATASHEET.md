@@ -29,9 +29,9 @@ See [ARCHITECTURE.md](ARCHITECTURE.md).
 
 | Metric | Target | Laptop | Pi |
 |---|---|---|---|
-| mAP@0.5 (real test set) | ≥ 0.85 | | — |
-| Pipeline FPS | ≥ 6 (Pi 4) | | |
-| Inference median / p95 | ≤ 120 ms | | |
+| mAP@0.5 (real test set) | ≥ 0.85 | 0.995 (YOLOv8n-320, PyTorch FP32) | — |
+| Pipeline FPS | ≥ 6 (Pi 4) | 68.6 (uncapped, video source) | |
+| Frame latency median / p95 | ≤ 120 ms | 12.4 / 20.7 ms | |
 | Frame→actuator p95 | ≤ 600 ms | | |
 | Model size INT8 | ≤ 4 MB | | |
 | SoC temperature under load | < 80 °C | n/a | |

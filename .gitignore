@@ -50,3 +50,4 @@ colab_bundle.zip
 data/_render_test/
 data/labelled/cvat_annotations.zip
 models/prelabel.pt
+*.cache
