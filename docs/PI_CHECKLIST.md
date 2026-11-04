@@ -5,6 +5,19 @@ Laptop numbers never count as device results; every evidence json records `host.
 
 ---
 
+## Fast path (recommended): two scripts do everything below
+
+```bash
+git clone https://github.com/mkarthikaravind1/Edge_AI_Project.git ~/Edge_AI_Project
+bash ~/Edge_AI_Project/deploy/pi_setup.sh          # section 0 in one go; reboot when told, run it once more
+cd ~/Edge_AI_Project
+bash scripts/pi_evidence.sh m1                     # then m2, m3, coldboot, m4, m5
+```
+`pi_evidence.sh` runs every measurement in the tables below, **pauses for each hands-on step** (wiring, unplugging
+the camera, passing parts, injecting the motor fault) and prints the `git add / commit / push` commands at the end of
+each milestone; it never commits by itself. Suggested order with the 10 Nov deadline: day 1 setup + m1 + m2,
+day 2 m3 + coldboot, day 3 m4, day 4 rig + m5 + demo rehearsal. The sections below are the same steps by hand.
+
 ## 0. One-time setup (fresh Raspberry Pi OS 64-bit, Bookworm)
 
 Flash with Raspberry Pi Imager → set hostname `pi-karthik`, user, Wi-Fi, **enable SSH**. Then on the Pi:
