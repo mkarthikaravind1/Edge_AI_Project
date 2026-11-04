@@ -60,7 +60,21 @@ Copy the trained/exported model to the Pi first (commit `models/best.onnx` from 
 Fill the Pi column of `docs/DATASHEET.md` from `baseline_pi.json → host`.
 
 ## M2 — Optimize (on the Pi)
-_Commands added when M2 is built: `benchmark_model.py` for onnx + tflite INT8 → `evidence/M2/benchmark_pi_<backend>.json`._
+
+Models come from git (`git pull`): `models/best.onnx`, `models/best_int8.onnx`, `models/best_int8.tflite`.
+Close other programs; let the Pi idle 2 minutes first so it starts cool. Run with a fan/heatsink if you have one, and say so.
+
+| # | Command (on the Pi, venv active, `EDGE_TARGET=pi`) | Result file |
+|---|---|---|
+| 2.4a | `python scripts/benchmark_model.py --backend onnx_fp32 --threads 4` | `evidence/M2/benchmark_pi_onnx_fp32.json` |
+| 2.4b | `python scripts/benchmark_model.py --backend onnx_int8 --threads 4` | `evidence/M2/benchmark_pi_onnx_int8.json` |
+| 2.4c | `python scripts/benchmark_model.py --backend tflite_int8 --threads 4` | `evidence/M2/benchmark_pi_tflite_int8.json` |
+| 2.4d | `python scripts/benchmark_model.py --backend tflite_fp32 --threads 4` (CPU FP32 vs INT8) | `evidence/M2/benchmark_pi_tflite_fp32.json` |
+| 2.2 | `python scripts/run_live.py --backend tflite --model models/best_int8.tflite --headless --seconds 30 --save evidence/M2/live_int8_pi.mp4` | `evidence/M2/live_int8_pi.mp4` |
+| 2.3 | `python scripts/evaluate.py --backends onnx_int8 tflite_int8` (optional: same accuracy on the Pi runtime) | `evidence/M2/accuracy_compare.json` |
+| 2.5 | `python scripts/compare_backends.py` (back on the laptop after `git pull`) | `evidence/M2/comparison.md` |
+
+If a Coral/Hailo accelerator is fitted, tell Claude: it needs an Edge-TPU-compiled model and `delegate: libedgetpu.so.1`.
 
 ## M3 — Decide and act (on the Pi)
 _Added at M3: GPIO wiring table, two-stream run, Docker cold-boot test, end-to-end latency._

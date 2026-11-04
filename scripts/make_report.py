@@ -37,6 +37,8 @@ def main() -> None:
         lines += [f"## {m.name}", ""]
         for f in files:
             data = json.loads(f.read_text())
+            if not isinstance(data, dict):
+                continue
             host = data.get("host", {})
             where = f" — measured on **{host.get('device_type', '?')}** ({host.get('cpu_model', '?')})" if host else ""
             lines += [f"### `{f.relative_to(ROOT).as_posix()}`{where}", "", "| metric | value |", "|---|---|"]

@@ -33,7 +33,7 @@ See [ARCHITECTURE.md](ARCHITECTURE.md).
 | Pipeline FPS | ≥ 6 (Pi 4) | 68.6 (uncapped, video source) | |
 | Frame latency median / p95 | ≤ 120 ms | 12.4 / 20.7 ms | |
 | Frame→actuator p95 | ≤ 600 ms | | |
-| Model size INT8 | ≤ 4 MB | | |
+| Model size INT8 | ≤ 4 MB | 3.6 MB (ONNX INT8) | |
 | SoC temperature under load | < 80 °C | n/a | |
 
 ## 5. Headline metric

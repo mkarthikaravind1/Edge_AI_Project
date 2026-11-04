@@ -1,0 +1,47 @@
+[
+  {
+    "host": "laptop (Intel(R) Core(TM) Ultra 5 225H)",
+    "host_tag": "laptop",
+    "backend": "pytorch_fp32",
+    "size_mb": 6.209,
+    "threads": 4,
+    "infer_median_ms": 9.696,
+    "infer_p95_ms": 11.278,
+    "total_median_ms": 11.139,
+    "fps_total": 89.4,
+    "mAP50_test": 1.0,
+    "mAP50_95_test": 1.0,
+    "mAP50_val": 0.9695,
+    "mAP50_95_val": 0.9223
+  },
+  {
+    "host": "laptop (Intel(R) Core(TM) Ultra 5 225H)",
+    "host_tag": "laptop",
+    "backend": "onnx_fp32",
+    "size_mb": 12.141,
+    "threads": 4,
+    "infer_median_ms": 9.32,
+    "infer_p95_ms": 12.484,
+    "total_median_ms": 10.901,
+    "fps_total": 89.8,
+    "mAP50_test": 1.0,
+    "mAP50_95_test": 1.0,
+    "mAP50_val": 0.9746,
+    "mAP50_95_val": 0.9336
+  },
+  {
+    "host": "laptop (Intel(R) Core(TM) Ultra 5 225H)",
+    "host_tag": "laptop",
+    "backend": "onnx_int8",
+    "size_mb": 3.604,
+    "threads": 4,
+    "infer_median_ms": 5.191,
+    "infer_p95_ms": 7.334,
+    "total_median_ms": 6.601,
+    "fps_total": 143.9,
+    "mAP50_test": 1.0,
+    "mAP50_95_test": 1.0,
+    "mAP50_val": 0.9502,
+    "mAP50_95_val": 0.886
+  }
+]

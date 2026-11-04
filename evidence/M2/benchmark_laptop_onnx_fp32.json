@@ -1,0 +1,45 @@
+{
+  "task": "benchmark_laptop_onnx_fp32",
+  "host": {
+    "hostname": "LAPTOP-6BN8T06N",
+    "device_type": "laptop",
+    "cpu_model": "Intel(R) Core(TM) Ultra 5 225H",
+    "cpu_cores": 14,
+    "ram_gb": 16.57,
+    "os": "Windows 11",
+    "machine": "AMD64",
+    "python": "3.12.10",
+    "timestamp_utc": "2026-11-04T03:23:30+00:00"
+  },
+  "backend": "onnx_fp32",
+  "model": "models/best.onnx",
+  "model_size_mb": 12.141,
+  "imgsz": 320,
+  "batch": 1,
+  "threads": 4,
+  "warmup_runs": 20,
+  "timed_runs": 200,
+  "inputs": "real test images, cycled",
+  "infer": {
+    "n": 200,
+    "mean_ms": 9.526,
+    "median_ms": 9.32,
+    "p95_ms": 12.484,
+    "min_ms": 6.713,
+    "max_ms": 24.303,
+    "std_ms": 2.045
+  },
+  "total": {
+    "n": 200,
+    "mean_ms": 11.11,
+    "median_ms": 10.901,
+    "p95_ms": 14.239,
+    "min_ms": 8.062,
+    "max_ms": 26.107,
+    "std_ms": 2.144
+  },
+  "fps_infer_median": 107.3,
+  "fps_total": 89.8,
+  "temp_c_start": null,
+  "temp_c_end": null
+}

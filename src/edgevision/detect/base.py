@@ -29,6 +29,7 @@ class Detector(ABC):
         self.imgsz = imgsz
         self.conf = conf
         self.iou = iou
+        self.last_infer_s = 0.0      # runtime call only, set by each backend on every detect()
 
     @abstractmethod
     def detect(self, image: np.ndarray) -> list[Detection]: ...

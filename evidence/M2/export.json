@@ -1,0 +1,29 @@
+{
+  "source": {
+    "weights": "models/best.pt",
+    "size_mb": 6.209,
+    "imgsz": 320
+  },
+  "onnx": {
+    "file": "models/best.onnx",
+    "size_mb": 12.141,
+    "opset": 13,
+    "precision": "FP32",
+    "export_s": 2.1
+  },
+  "onnx_int8": {
+    "file": "models/best_int8.onnx",
+    "size_mb": 3.604,
+    "method": "onnxruntime quantize_static",
+    "format": "QDQ, weights int8 per-channel, activations uint8, MinMax",
+    "fp32_tail_nodes": 30,
+    "calibration": {
+      "split": "train (no augmented copies)",
+      "images": 200,
+      "real": 126,
+      "synthetic": 74,
+      "seed": 0
+    },
+    "quantize_s": 18.6
+  }
+}

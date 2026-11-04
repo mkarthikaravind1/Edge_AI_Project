@@ -1,0 +1,210 @@
+{
+  "results": {
+    "pytorch_fp32": {
+      "model": "models/best.pt",
+      "size_mb": 6.209,
+      "test_real": {
+        "images": 18,
+        "mAP50": 1.0,
+        "mAP50_95": 1.0,
+        "precision@0.25": 0.7778,
+        "recall@0.25": 1.0,
+        "tp": 21,
+        "fp": 6,
+        "fn": 0,
+        "per_class": {
+          "enclosure": {
+            "n_gt": 9,
+            "ap50": 1.0,
+            "ap50_95": 1.0
+          },
+          "body": {
+            "n_gt": 3,
+            "ap50": 1.0,
+            "ap50_95": 1.0
+          },
+          "lid": {
+            "n_gt": 9,
+            "ap50": 1.0,
+            "ap50_95": 1.0
+          }
+        }
+      },
+      "val_real": {
+        "images": 36,
+        "mAP50": 0.9695,
+        "mAP50_95": 0.9223,
+        "precision@0.25": 0.9655,
+        "recall@0.25": 0.9825,
+        "tp": 56,
+        "fp": 2,
+        "fn": 1,
+        "per_class": {
+          "enclosure": {
+            "n_gt": 15,
+            "ap50": 0.9307,
+            "ap50_95": 0.881
+          },
+          "body": {
+            "n_gt": 21,
+            "ap50": 1.0,
+            "ap50_95": 0.9901
+          },
+          "lid": {
+            "n_gt": 21,
+            "ap50": 0.9778,
+            "ap50_95": 0.8959
+          }
+        }
+      },
+      "delta_vs_fp32": {
+        "test_real": {
+          "mAP50": 0.0,
+          "mAP50_95": 0.0
+        },
+        "val_real": {
+          "mAP50": 0.0,
+          "mAP50_95": 0.0
+        }
+      }
+    },
+    "onnx_fp32": {
+      "model": "models/best.onnx",
+      "size_mb": 12.141,
+      "test_real": {
+        "images": 18,
+        "mAP50": 1.0,
+        "mAP50_95": 1.0,
+        "precision@0.25": 0.84,
+        "recall@0.25": 1.0,
+        "tp": 21,
+        "fp": 4,
+        "fn": 0,
+        "per_class": {
+          "enclosure": {
+            "n_gt": 9,
+            "ap50": 1.0,
+            "ap50_95": 1.0
+          },
+          "body": {
+            "n_gt": 3,
+            "ap50": 1.0,
+            "ap50_95": 1.0
+          },
+          "lid": {
+            "n_gt": 9,
+            "ap50": 1.0,
+            "ap50_95": 1.0
+          }
+        }
+      },
+      "val_real": {
+        "images": 36,
+        "mAP50": 0.9746,
+        "mAP50_95": 0.9336,
+        "precision@0.25": 0.9655,
+        "recall@0.25": 0.9825,
+        "tp": 56,
+        "fp": 2,
+        "fn": 1,
+        "per_class": {
+          "enclosure": {
+            "n_gt": 15,
+            "ap50": 0.9307,
+            "ap50_95": 0.8866
+          },
+          "body": {
+            "n_gt": 21,
+            "ap50": 1.0,
+            "ap50_95": 0.9948
+          },
+          "lid": {
+            "n_gt": 21,
+            "ap50": 0.9932,
+            "ap50_95": 0.9195
+          }
+        }
+      },
+      "delta_vs_fp32": {
+        "test_real": {
+          "mAP50": 0.0,
+          "mAP50_95": 0.0
+        },
+        "val_real": {
+          "mAP50": 0.0051,
+          "mAP50_95": 0.0113
+        }
+      }
+    },
+    "onnx_int8": {
+      "model": "models/best_int8.onnx",
+      "size_mb": 3.604,
+      "test_real": {
+        "images": 18,
+        "mAP50": 1.0,
+        "mAP50_95": 1.0,
+        "precision@0.25": 0.84,
+        "recall@0.25": 1.0,
+        "tp": 21,
+        "fp": 4,
+        "fn": 0,
+        "per_class": {
+          "enclosure": {
+            "n_gt": 9,
+            "ap50": 1.0,
+            "ap50_95": 1.0
+          },
+          "body": {
+            "n_gt": 3,
+            "ap50": 1.0,
+            "ap50_95": 1.0
+          },
+          "lid": {
+            "n_gt": 9,
+            "ap50": 1.0,
+            "ap50_95": 1.0
+          }
+        }
+      },
+      "val_real": {
+        "images": 36,
+        "mAP50": 0.9502,
+        "mAP50_95": 0.886,
+        "precision@0.25": 0.9322,
+        "recall@0.25": 0.9649,
+        "tp": 55,
+        "fp": 4,
+        "fn": 2,
+        "per_class": {
+          "enclosure": {
+            "n_gt": 15,
+            "ap50": 0.8614,
+            "ap50_95": 0.8161
+          },
+          "body": {
+            "n_gt": 21,
+            "ap50": 1.0,
+            "ap50_95": 0.9725
+          },
+          "lid": {
+            "n_gt": 21,
+            "ap50": 0.9892,
+            "ap50_95": 0.8692
+          }
+        }
+      },
+      "delta_vs_fp32": {
+        "test_real": {
+          "mAP50": 0.0,
+          "mAP50_95": 0.0
+        },
+        "val_real": {
+          "mAP50": -0.0193,
+          "mAP50_95": -0.0363
+        }
+      }
+    }
+  },
+  "method": "per class, predictions sorted by confidence are matched greedily to ground truth (IoU >= t);\nAP = area under the precision-recall curve with 101-point interpolation (COCO style), averaged over\nclasses; mAP@0.5:0.95 averages that over t = 0.50, 0.55, ..., 0.95.",
+  "imgsz": 320
+}

@@ -14,6 +14,7 @@ data/frames/*
 !data/frames/manifest.csv
 data/labelled/images/
 data/splits/*/images/
+!data/splits/test/images/
 data/synthetic/images/
 data/backgrounds/*
 !data/backgrounds/.gitkeep
@@ -51,3 +52,4 @@ data/_render_test/
 data/labelled/cvat_annotations.zip
 models/prelabel.pt
 *.cache
+export_bundle.zip

@@ -48,6 +48,8 @@ and Modbus. Switching is one setting in `config/<target>.yaml`, chosen by `EDGE_
 > Augmentation (flip, small shift/scale/±5° rotation, brightness, blur, light noise) runs on train only, after the split,
 > so test never contains an augmented copy of a training image.
 
+**M2 is below M1 in this file.**
+
 **1.6 Train & run** — `scripts/train_colab.ipynb`
 > Transfer learning: start from public COCO weights (`yolov8n.pt`), fine-tune on my 3 classes (enclosure, body, lid).
 > mAP@0.5 = area under the precision-recall curve, counting a box as correct if it overlaps the truth ≥ 50 %, averaged
@@ -60,3 +62,33 @@ and Modbus. Switching is one setting in `config/<target>.yaml`, chosen by `EDGE_
 > straight above was called "lid", because from the top both are a flat white rectangle and the side walls aren't visible.
 > Fix: mount the inspection camera at an angle so the wall height shows. 6 of the 10 errors are slivers of a part cut off at
 > the image edge; my labelling rule skips those, so the fix is a decision rule that ignores boxes touching the border.
+
+---
+
+## M2 Optimize
+
+**2.1 Export to ONNX** — `python scripts/export.py --format onnx`
+> ONNX is a standard file format for neural networks: any runtime (ONNX Runtime, TensorRT, …) can run it without PyTorch.
+> Fixed batch 1 and 320×320 input, opset 13 (needed for per-channel INT8 later).
+
+**2.2 INT8 + run live** — `python scripts/quantize_onnx.py`, `scripts/export_colab.ipynb`, `run_live.py --backend onnx --model models/best_int8.onnx`
+> Quantisation maps each float to one of 256 integer steps using a scale and zero-point. To choose the scale, the
+> quantiser runs 200 *calibration* images and records the range of every layer's values. They come from the train split
+> only, so the model is never tuned on images I later score it on. The last ~30 nodes (box decoding) stay FP32 because
+> boxes are sensitive to rounding and that part is cheap anyway.
+
+**2.3 Accuracy check** — `python scripts/evaluate.py`
+> One metric implementation for every backend, same real images. Test is saturated (1.000 for all), so I compare on the
+> 36 real val frames: FP32 0.970 → INT8 0.950 mAP@0.5 (drop 0.019, target ≤ 0.03).
+
+**2.4 Fair benchmark** — `python scripts/benchmark_model.py --backend onnx_int8`
+> Fair = same images, batch 1, same thread count, 20 warm-up runs thrown away (caches, memory allocation), 200 timed runs.
+> I report the *median* (typical frame) and *p95* (bad-but-normal frame), plus the pure inference time vs the full
+> detect() (pre-processing + NMS), because the live pipeline pays the full cost.
+
+**2.5 CPU vs accelerator + stack** — `evidence/M2/comparison.md`, `docs/stack.png`
+> The stack is camera → OpenCV → runtime → delegate → OS → hardware. Without an accelerator my "delegate" is XNNPACK on
+> the CPU. The detector is a plug-in, so adding Coral is a config change plus an Edge-TPU-compiled model.
+
+**2.6 Target & trade-off** — `docs/OPTIMISATION.md`
+> 3.4× smaller, 1.8× faster on the laptop; "is it there" barely changes, tight boxes and enclosure-vs-lid suffer most.

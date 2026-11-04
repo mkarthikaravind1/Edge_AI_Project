@@ -38,7 +38,7 @@ python scripts/run_live.py
 | Milestone | Status |
 |---|---|
 | M1 Detect | laptop done (mAP@0.5 0.995 on real test); Pi runs pending |
-| M2 Optimize | – |
+| M2 Optimize | laptop done: ONNX INT8 3.6 MB, 1.8x faster, mAP50 drop 0.019; TFLite INT8 via Colab + Pi runs pending |
 | M3 Decide and Act | core logic + tests ready |
 | M4 Monitor and Connect | core logic ready |
 | M5 Complete System | – |

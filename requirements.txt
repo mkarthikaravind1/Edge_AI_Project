@@ -12,7 +12,8 @@ albumentations>=1.4
 
 # Detection runtimes
 ultralytics>=8.3
-onnx>=1.16
+onnx==1.17.0          # 1.18+ needs protobuf 6, which conflicts with tensorflow 2.19
+# tensorflow==2.19.*   # laptop only, to run/evaluate .tflite files (TFLite export itself runs in Colab)
 onnxruntime>=1.18
 
 # Comms + dashboard

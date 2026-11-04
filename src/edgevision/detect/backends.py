@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import time
 from typing import Any
 
 import cv2
@@ -21,6 +22,7 @@ class UltralyticsDetector(Detector):
 
     def detect(self, image: np.ndarray) -> list[Detection]:
         r = self._m.predict(image, imgsz=self.imgsz, conf=self.conf, iou=self.iou, verbose=False)[0]
+        self.last_infer_s = r.speed["inference"] / 1000.0
         out = []
         for b in r.boxes:
             c = int(b.cls)
@@ -41,7 +43,9 @@ class OnnxDetector(Detector):
     def detect(self, image: np.ndarray) -> list[Detection]:
         lb, r, pad = letterbox(image, self.imgsz)
         x = cv2.cvtColor(lb, cv2.COLOR_BGR2RGB).transpose(2, 0, 1)[None].astype(np.float32) / 255.0
+        t = time.perf_counter()
         pred = self._s.run(None, {self._in: x})[0][0]
+        self.last_infer_s = time.perf_counter() - t
         return decode_yolov8(pred, self.names, self.conf, self.iou, r, pad, image.shape[:2])
 
 
@@ -78,7 +82,9 @@ class TfliteDetector(Detector):
             info = np.iinfo(self._inp["dtype"])
             x = np.clip(np.round(x / s + z), info.min, info.max).astype(self._inp["dtype"])
         self._it.set_tensor(self._inp["index"], x)
+        t = time.perf_counter()
         self._it.invoke()
+        self.last_infer_s = time.perf_counter() - t
         y = self._it.get_tensor(self._out["index"])[0]
         if self._out["dtype"] in (np.int8, np.uint8):
             s, z = self._out["quantization"]
