@@ -1,9 +1,13 @@
 # Edge Inspection — Edge AI & Embedded Vision Systems (individual assessment)
 
+[![tests](https://github.com/mkarthikaravind1/Edge_AI_Project/actions/workflows/tests.yml/badge.svg)](https://github.com/mkarthikaravind1/Edge_AI_Project/actions/workflows/tests.yml)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/mkarthikaravind1/Edge_AI_Project)
+
 **Karthik Aravind M (S10)** · a complete edge visual-inspection station for my IDRP 3D-printed enclosure:
 camera → INT8 detector → pass/fail inspection → decision → relay/LED + PLC + secure MQTT → live dashboard,
-with motor-vibration monitoring, OTA updates and fail-safe behaviour. Runs on a Raspberry Pi in Docker and starts by
-itself after a power cycle.
+with motor-vibration monitoring, OTA updates and fail-safe behaviour. Built to run on a Raspberry Pi with a USB webcam,
+in Docker, starting by itself after a power cycle. **Status: everything so far is measured on my laptop; the Pi runs
+are pending** (they follow [docs/PI_CHECKLIST.md](docs/PI_CHECKLIST.md)).
 
 Objects (classes): **enclosure** (my closed printed part), **body** = Model 1, **lid** = Model 2 — both models split
 from my CAD file `cad/enclosure_full.stl`.
@@ -11,7 +15,7 @@ from my CAD file `cad/enclosure_full.stl`.
 ![software stack](docs/stack.png)
 
 ## How it works (one paragraph)
-`hal/` hides the hardware (webcam/video ↔ Picamera2, console ↔ GPIO relay, CSV ↔ MPU6050, fake ↔ Modbus), so the same
+`hal/` hides the hardware (USB webcam / video / image folder / Picamera2, console ↔ GPIO relay, CSV ↔ MPU6050, fake ↔ Modbus), so the same
 code runs on the laptop and the Pi (`EDGE_TARGET=laptop|pi`). A YOLOv8n trained on my own labelled frames and CAD
 renders, quantised to **TFLite INT8 (3.2 MB)**, finds the part; `inspect.py` checks it against limits learned from
 good parts only; a **3-of-5 debounce** turns frames into one decision per part; a `reject` output pulses and the PLC
@@ -38,20 +42,32 @@ py -3.12 -m venv .venv
 .venv\Scripts\activate            # Pi/Linux: source .venv/bin/activate
 pip install -r requirements.txt
 pip install -e .
-pytest -q                         # 29 tests
+pytest -q                         # 32 tests
 python scripts/station_sim.py --minutes 2        # full station on a simulated conveyor -> http://localhost:8000
 python -m edgevision.app --dashboard --inspect   # with the webcam
 ```
 Docker on the laptop: `docker compose -f docker/compose.yaml -f docker/compose.laptop.yaml up -d --build`.
 
+## Run it online (GitHub Codespaces, nothing to install)
+1. Click **Open in GitHub Codespaces** above (or **Code → Codespaces → Create codespace on main**); wait ~3 min
+   while `.devcontainer/devcontainer.json` installs the Pi's packages.
+2. In the terminal: `python scripts/station_sim.py --minutes 30 --auto-truth`
+3. **PORTS** tab → port 8000 → globe icon: the live dashboard (simulated conveyor of real + simulated rig images,
+   synthetic motor fault at 40–55 s). The port is private (your GitHub login); set it to *Public* only for a demo.
+4. Stop the codespace when done (free tier: 60 core-hours / month).
+Tests run automatically on every push (badge above, `.github/workflows/tests.yml`).
+
 ## Quick start — Raspberry Pi
-Section 0 of [docs/PI_CHECKLIST.md](docs/PI_CHECKLIST.md) (OS, camera, I²C, Docker), then:
+Flash **Raspberry Pi OS (Legacy, 64-bit) = Bookworm** with Raspberry Pi Imager (hostname `pi-karthik`, your own
+user, Wi-Fi, SSH), plug the USB webcam in, then on the Pi (the repo is public, no GitHub login needed to clone):
 ```bash
-bash docker/mosquitto/make_certs.sh $(hostname -I | awk '{print $1}') && python docker/mosquitto/make_passwd.py
-docker compose -f docker/compose.yaml up -d --build
-sudo cp deploy/edge-compose.service /etc/systemd/system/ && sudo systemctl enable edge-compose
+git clone https://github.com/mkarthikaravind1/Edge_AI_Project.git ~/Edge_AI_Project
+bash ~/Edge_AI_Project/deploy/pi_setup.sh          # reboot when told, run once more
+cd ~/Edge_AI_Project && bash scripts/pi_evidence.sh m1   # then m2, m3, coldboot, m4, m5 (docs/PI_CHECKLIST.md)
 ```
-Dashboard: `http://pi-karthik.local:8000`.
+`pi_evidence.sh m3` builds the Docker stack and installs `deploy/install_service.sh compose` (starts at every boot,
+for any username). `bash deploy/kiosk.sh install` makes the monitor open the dashboard full-screen after boot.
+Dashboard: `http://localhost:8000` on the Pi, `http://pi-karthik.local:8000` from a phone on the same Wi-Fi.
 
 ## Repository map
 | Path | What |

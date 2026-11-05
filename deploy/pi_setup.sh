@@ -10,10 +10,21 @@ REPO="$(cd "$(dirname "$0")/.." && pwd)"
 step() { printf '\n\033[1;36m== %s ==\033[0m\n' "$*"; }
 need_reboot=0
 
+step "0/7 OS check"
+. /etc/os-release
+echo "OS: $PRETTY_NAME  arch: $(uname -m)  python: $(python3 --version 2>&1)"
+[ "$(uname -m)" = "aarch64" ] || { echo "!! needs the 64-bit Raspberry Pi OS (uname -m = aarch64)"; exit 1; }
+if [ "${VERSION_CODENAME:-}" != "bookworm" ]; then
+  printf '\033[1;33m!! This repo is pinned to Raspberry Pi OS Bookworm (Python 3.11, numpy 1.x).\n'
+  printf '   This card has "%s". Re-flash with Raspberry Pi Imager -> Raspberry Pi OS (other) ->\n' "${VERSION_CODENAME:-unknown}"
+  printf '   "Raspberry Pi OS (Legacy, 64-bit)" = Bookworm. Continue anyway with: FORCE_OS=1 bash %s\033[0m\n' "$0"
+  [ "${FORCE_OS:-0}" = 1 ] || exit 1
+fi
+
 step "1/7 system packages"
 sudo apt-get update
 sudo apt-get install -y git python3-venv python3-picamera2 python3-gpiozero python3-lgpio python3-smbus2 \
-    i2c-tools libgl1 libglib2.0-0 mosquitto-clients ufw
+    i2c-tools libgl1 libglib2.0-0 mosquitto-clients ufw v4l-utils curl
 
 step "2/7 interfaces: I2C on, camera auto-detect"
 if [ "$(sudo raspi-config nonint get_i2c)" != "0" ]; then sudo raspi-config nonint do_i2c 0; need_reboot=1; fi
@@ -38,8 +49,19 @@ step "5/7 tests (must all pass on the Pi too)"
 EDGE_TARGET=pi .venv/bin/python -m pytest -q || echo "!! some tests failed - send the output to Claude"
 
 step "6/7 hardware check"
-echo "cameras:";  (rpicam-hello --list-cameras 2>/dev/null || libcamera-hello --list-cameras 2>/dev/null || echo "  (rpicam tools missing)") | head -8
-echo "USB video:"; ls /dev/video* 2>/dev/null | head -4 || true
+echo "USB webcam (config/pi.yaml camera: webcam, index: auto):"
+v4l2-ctl --list-devices 2>/dev/null | head -12 || true
+ls -l /dev/v4l/by-id/ 2>/dev/null || echo "  !! no USB webcam found: plug it into a USB port and run this script again"
+EDGE_TARGET=pi .venv/bin/python - <<'PY' || true
+from edgevision.hal import make_camera
+from edgevision.config import load_config
+try:
+    cam = make_camera(load_config("pi")["camera"]); frames = [cam.read() for _ in range(10)]; cam.close()
+    ok = [f for f in frames if f is not None]
+    print(f"  webcam test: {len(ok)}/10 frames, size {ok[-1].image.shape[1]}x{ok[-1].image.shape[0]}" if ok else "  !! webcam opened but gave no frames")
+except Exception as e:
+    print("  !! webcam test failed:", e)
+PY
 echo "I2C bus 1 (MPU6050 shows 68):"; sudo i2cdetect -y 1 2>/dev/null || echo "  I2C not active yet (reboot)"
 echo "temperature: $(vcgencmd measure_temp 2>/dev/null || echo n/a)"
 echo "model: $(tr -d '\0' < /proc/device-tree/model)"
@@ -54,4 +76,6 @@ if [ "$need_reboot" = 1 ]; then
   printf '\n\033[1;33mREBOOT NEEDED: sudo reboot   then run this script once more to confirm everything is green.\033[0m\n'
 else
   printf '\n\033[1;32mPi ready. Next: bash scripts/pi_evidence.sh m1\033[0m\n'
+  printf '  later (M3): bash deploy/install_service.sh compose   (station starts at every boot)\n'
+  printf '  later (M5): bash deploy/kiosk.sh install             (monitor shows the dashboard after boot)\n'
 fi

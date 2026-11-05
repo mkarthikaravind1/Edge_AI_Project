@@ -18,9 +18,25 @@ the camera, passing parts, injecting the motor fault) and prints the `git add / 
 each milestone; it never commits by itself. Suggested order with the 10 Nov deadline: day 1 setup + m1 + m2,
 day 2 m3 + coldboot, day 3 m4, day 4 rig + m5 + demo rehearsal. The sections below are the same steps by hand.
 
+## Hardware on this rig
+- Raspberry Pi + monitor (HDMI) + keyboard/mouse, **one USB webcam** (the mentor's) in a USB port. No Pi Camera Module.
+- `config/pi.yaml`: `camera: webcam, index: auto` (found by its `/dev/v4l/by-id/` name, so it is the same camera after
+  the unplug test). Stream 2 of the two-stream test replays the committed real test frames (`camera2: images`);
+  with a second webcam set `camera2: {type: webcam, index: /dev/video2}` instead.
+- Only **one program can open the webcam**. From M3 on the station runs at boot and holds it; `pi_evidence.sh` stops
+  the station before every step that opens the camera itself and starts it again afterwards.
+
 ## 0. One-time setup (fresh Raspberry Pi OS 64-bit, Bookworm)
 
-Flash with Raspberry Pi Imager → set hostname `pi-karthik`, user, Wi-Fi, **enable SSH**. Then on the Pi:
+**Which image:** Raspberry Pi Imager → *Raspberry Pi OS (other)* → **Raspberry Pi OS (Legacy, 64-bit)** = Bookworm.
+The newest default image is Trixie (Python 3.13): `requirements-pi.txt` pins numpy 1.x for Bookworm, so `pi_setup.sh`
+stops on any other release (override with `FORCE_OS=1`).
+
+In Imager's *Edit settings*: hostname **`pi-karthik`**, any username + password (the services are filled in for your
+user by `deploy/install_service.sh`), Wi-Fi, **enable SSH**. The repo is public: cloning needs no GitHub login; pushing
+evidence back needs a GitHub Personal Access Token as the password (or copy the files to the laptop and push there).
+
+Then on the Pi:
 
 ```bash
 sudo apt update && sudo apt full-upgrade -y
@@ -34,8 +50,8 @@ sudo reboot
 After reboot, check the hardware:
 
 ```bash
-rpicam-hello --list-cameras                # Pi camera visible?
-ls /dev/video*                             # USB webcam visible?
+v4l2-ctl --list-devices                    # USB webcam visible? (sudo apt install v4l-utils)
+ls -l /dev/v4l/by-id/                      # its stable name (index: auto uses the *-video-index0 link)
 i2cdetect -y 1                             # MPU6050 shows 68
 vcgencmd measure_temp
 ```
@@ -112,9 +128,9 @@ python -c "from gpiozero import LED; import time; r=LED(17); l=LED(27); r.on(); 
 ### Measurements
 | # | Command (on the Pi, venv active, `EDGE_TARGET=pi`) | Result file |
 |---|---|---|
-| 3.2 | `python scripts/two_stream.py --seconds 30` (Pi camera + USB webcam; if the USB cam is not index 0, set `camera2.index`) | `evidence/M3/two_stream_pi.json` |
+| 3.2 | `python scripts/two_stream.py --seconds 30` (stream 1 = USB webcam live, stream 2 = committed real test frames; second webcam: see *Hardware on this rig*) | `evidence/M3/two_stream_pi.json` |
 | 3.3 | `python scripts/debounce_demo.py` | `evidence/M3/debounce_demo.json/.csv` |
-| 3.4 | `python scripts/safe_state_demo.py --live --seconds 40` — at ~10 s **unplug the USB camera / ribbon**, at ~25 s plug back (watch relay 1 click off and on; film it) | `evidence/M3/safe_state.json` |
+| 3.4 | `python scripts/safe_state_demo.py --live --seconds 40` — at ~10 s **unplug the USB webcam**, at ~25 s plug back (watch relay 1 click off and on; film it) | `evidence/M3/safe_state.json` |
 | 3.6 | `python scripts/e2e_latency.py --live --events 25` — slide a closed enclosure under the camera and away again, every ~3 s | `evidence/M3/e2e_latency_pi.json` |
 
 ### Docker + cold boot (3.5)
@@ -124,7 +140,7 @@ echo "MQTT_PASSWORD=<the password from the M4 step>" > docker/.env      # compos
 docker compose -f docker/compose.yaml build                            # ~10-15 min the first time
 docker compose -f docker/compose.yaml up -d
 docker logs -f edge                                                    # see frames / triggers; Ctrl+C to leave
-sudo cp deploy/edge-compose.service /etc/systemd/system/ && sudo systemctl daemon-reload && sudo systemctl enable edge-compose
+bash deploy/install_service.sh compose      # fills in your username + repo path, enables it at boot
 ```
 Cold-boot test (film it): `sudo poweroff` → pull the power → plug in → wait ~60 s without touching anything →
 show `docker ps` (both containers *Up*) and trigger the relay by putting a part in view. Save the output:
@@ -207,6 +223,7 @@ docker logs edge 2>&1 | grep -E "FORCED CRASH|station starting" | tail -3 > evid
 | 5.1 | Build the rig (`docs/RIG.md`), photo of it; `python scripts/capture_frame.py --name rig_view` | `evidence/M5/rig_photo.jpg`, `rig_view.png` |
 | 5.2 | `python scripts/capture_rig.py` (≈15 calib, 10 good, 10 defective) → `python scripts/calibrate_inspection.py --dir data/rig/calib_good` → `python scripts/passfail_test.py --dir data/rig/test` | `evidence/M5/passfail.json`, `passfail_confusion.png`, `passfail_sheet.jpg` |
 | 5.3 | Full chain 10 min: `docker compose -f docker/compose.yaml up -d`, pass parts by hand every few seconds, shake the motor once; meanwhile `python scripts/mqtt_subscribe.py --seconds 600 --save evidence/M5/full_chain_mqtt_pi.json`. Afterwards `curl -s localhost:8000/api/stats > evidence/M5/full_chain_pi_stats.json; curl -s localhost:8000/api/kpis > evidence/M5/full_chain_pi_kpis.json; docker logs edge --since 11m > evidence/M5/full_chain_pi.log 2>&1` | the 4 files |
+| 5.3b | Monitor shows the dashboard after boot: `bash deploy/kiosk.sh install`, `sudo reboot` (leave kiosk: Alt+F4) | photo of the monitor |
 | 5.4 | Dashboard on a phone: `http://pi-karthik.local:8000` → screenshot | `evidence/M5/dashboard_phone_pi.png` |
 | 5.5 | Power cycle (pull the plug), wait 90 s, then `python scripts/readiness_check.py --pi`; repeat the last check **with Wi-Fi off / cable out** (`sudo nmcli radio wifi off`, then back `on`) | `evidence/M5/readiness_pi.json` |
 | 5.6 | Headline metric: mark every part on the dashboard during 5.3; `curl -s localhost:8000/api/kpis` shows `headline` | in `full_chain_pi_kpis.json` |

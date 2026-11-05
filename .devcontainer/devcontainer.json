@@ -1,0 +1,21 @@
+{
+  // GitHub Codespaces: the whole station + live dashboard in the cloud, started from this repo.
+  // Code -> Codespaces -> "Create codespace on main", wait ~3 min, then in the terminal:
+  //   python scripts/station_sim.py --minutes 30 --auto-truth
+  // and open the forwarded port 8000 (PORTS tab -> globe icon).
+  "name": "edge-inspection",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11-bookworm",
+  "containerEnv": {
+    "EDGE_TARGET": "laptop",
+    "MPLBACKEND": "Agg"
+  },
+  // same packages as the Pi (headless OpenCV: no screen in the cloud)
+  "postCreateCommand": "sed 's/^opencv-python>=/opencv-python-headless>=/' requirements-pi.txt > /tmp/req.txt && pip install --default-timeout=120 -r /tmp/req.txt pytest httpx && pip install -e . --no-deps",
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": { "label": "Inspection dashboard", "onAutoForward": "openBrowser" }
+  },
+  "customizations": {
+    "vscode": { "extensions": ["ms-python.python"] }
+  }
+}

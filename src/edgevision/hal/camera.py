@@ -46,17 +46,48 @@ class Camera(ABC):
         self.close()
 
 
+def resolve_webcam(index: int | str = 0) -> int | str:
+    """Which device to open for a USB webcam.
+
+    "auto" (Linux / Raspberry Pi): the first /dev/v4l/by-id/*-video-index0 link. That name stays the same when the
+    webcam is unplugged and plugged back in, while the /dev/videoN number can change (video0 -> video2), so the
+    camera-unplug test (M3 safe state) recovers on the same camera. Elsewhere, or if no link exists: index 0.
+    A number or a device path is used as given.
+    """
+    if isinstance(index, str) and index != "auto":
+        return int(index) if index.isdigit() else index
+    if index != "auto":
+        return index
+    import glob
+    links = sorted(glob.glob("/dev/v4l/by-id/*-video-index0"))
+    return links[0] if links else 0
+
+
 class WebcamCamera(Camera):
-    def __init__(self, index: int = 0, width: int = 640, height: int = 480, fps: int = 30) -> None:
+    """USB webcam through OpenCV. On Linux it uses V4L2 + MJPG, which most USB webcams need for 640x480 at 30 FPS,
+    and a 1-frame buffer so the detector always sees the newest frame (lower latency)."""
+
+    def __init__(self, index: int | str = 0, width: int = 640, height: int = 480, fps: int = 30,
+                 fourcc: str | None = "MJPG") -> None:
         super().__init__()
+        import sys
+
         import cv2
 
-        self._cap = cv2.VideoCapture(index)
+        dev = resolve_webcam(index)
+        if sys.platform.startswith("linux"):
+            self._cap = cv2.VideoCapture(dev, cv2.CAP_V4L2)
+            if fourcc:
+                self._cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*fourcc))
+        else:
+            self._cap = cv2.VideoCapture(dev)
         self._cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
         self._cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
         self._cap.set(cv2.CAP_PROP_FPS, fps)
+        self._cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
         if not self._cap.isOpened():
-            raise CameraError(f"cannot open webcam {index}")
+            raise CameraError(f"cannot open webcam {dev}")
+        self.device = dev
 
     def _grab(self) -> np.ndarray | None:
         ok, img = self._cap.read()
@@ -64,6 +95,42 @@ class WebcamCamera(Camera):
 
     def close(self) -> None:
         self._cap.release()
+
+
+class ImageFolderCamera(Camera):
+    """Loops the images of a folder as if they were a camera (sorted by name). realtime=True delivers them at `fps`.
+
+    Used as the SECOND stream of the two-stream test (M3.2) when only one webcam is connected: the folder holds
+    real recorded frames of the part, and the folder is in git, so it exists on the Pi (videos are git-ignored).
+    """
+
+    def __init__(self, path: str, fps: float = 30.0, realtime: bool = True,
+                 width: int | None = None, height: int | None = None) -> None:
+        super().__init__()
+        import cv2
+        from pathlib import Path
+
+        self._cv2 = cv2
+        files = sorted(p for p in Path(path).iterdir() if p.suffix.lower() in {".jpg", ".jpeg", ".png", ".bmp"}) \
+            if Path(path).is_dir() else []
+        self._imgs = [im for im in (cv2.imread(str(p)) for p in files) if im is not None]
+        if not self._imgs:
+            raise CameraError(f"no images in {path}")
+        if width and height:
+            self._imgs = [cv2.resize(im, (width, height)) for im in self._imgs]
+        self._period = 1.0 / fps if realtime and fps else 0.0
+        self._next = time.perf_counter()
+        self._i = 0
+
+    def _grab(self) -> np.ndarray | None:
+        if self._period:
+            delay = self._next - time.perf_counter()
+            if delay > 0:
+                time.sleep(delay)
+            self._next = max(self._next + self._period, time.perf_counter())
+        img = self._imgs[self._i % len(self._imgs)]
+        self._i += 1
+        return img.copy()
 
 
 class VideoFileCamera(Camera):
@@ -171,7 +238,11 @@ def make_camera(cfg: dict[str, Any], realtime: bool = True) -> Camera:
     kind = cfg.get("type", "webcam")
     w, h = cfg.get("width", 640), cfg.get("height", 480)
     if kind == "webcam":
-        return WebcamCamera(cfg.get("index", 0), w, h, cfg.get("fps", 30))
+        return WebcamCamera(cfg.get("index", 0), w, h, cfg.get("fps", 30), cfg.get("fourcc", "MJPG"))
+    if kind == "images":
+        rs = cfg.get("resize_video", False)
+        return ImageFolderCamera(str(resolve(cfg["path"])), cfg.get("fps", 30), realtime,
+                                 w if rs else None, h if rs else None)
     if kind == "video":
         # keep the file's own size/aspect unless the config explicitly asks to resize it
         rs = cfg.get("resize_video", False)

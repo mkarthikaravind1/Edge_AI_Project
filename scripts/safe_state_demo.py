@@ -1,7 +1,7 @@
 """M3.4: break the camera -> the station drops into the SAFE STATE; plug it back -> it recovers.
 
 Laptop: the video "cable" is pulled at --drop-at s and restored at --resume-at s (FlakyCamera).
-Pi:     run with --live and physically unplug the USB camera (or ribbon) during the run.
+Pi:     run with --live and physically unplug the USB webcam during the run, then plug it back in.
 
     python scripts/safe_state_demo.py                         -> evidence/M3/safe_state.json + .csv
     EDGE_TARGET=pi python scripts/safe_state_demo.py --live --seconds 40

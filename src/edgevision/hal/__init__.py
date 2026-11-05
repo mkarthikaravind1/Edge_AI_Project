@@ -1,13 +1,15 @@
 """Hardware abstraction layer. Only these modules import hardware libraries."""
 
 from .actuator import Actuator, ConsoleActuator, GpioActuator, make_actuator
-from .camera import Camera, CameraError, FakeCamera, FlakyCamera, Frame, VideoFileCamera, WebcamCamera, make_camera
+from .camera import (Camera, CameraError, FakeCamera, FlakyCamera, Frame, ImageFolderCamera, VideoFileCamera,
+                     WebcamCamera, make_camera, resolve_webcam)
 from .imu import CsvReplayImu, Imu, ImuSample, Mpu6050Imu, make_imu
 from .plc import FakePlc, ModbusPlc, Plc, make_plc
 
 __all__ = [
     "Actuator", "ConsoleActuator", "GpioActuator", "make_actuator",
-    "Camera", "CameraError", "FakeCamera", "FlakyCamera", "Frame", "VideoFileCamera", "WebcamCamera", "make_camera",
+    "Camera", "CameraError", "FakeCamera", "FlakyCamera", "Frame", "ImageFolderCamera", "VideoFileCamera",
+    "WebcamCamera", "make_camera", "resolve_webcam",
     "CsvReplayImu", "Imu", "ImuSample", "Mpu6050Imu", "make_imu",
     "FakePlc", "ModbusPlc", "Plc", "make_plc",
 ]

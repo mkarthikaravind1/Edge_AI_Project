@@ -1,6 +1,6 @@
 # Alternative to Docker: run the station directly from the venv, restarted by systemd if it ever dies.
-#   sudo cp deploy/edge-station.service /etc/systemd/system/ && sudo systemctl daemon-reload
-#   sudo systemctl enable --now edge-station
+# TEMPLATE: @USER@ / @REPO@ are filled in by the installer with your Pi username and the repo folder:
+#   bash deploy/install_service.sh station
 # Crash test:  sudo systemctl kill -s USR1 edge-station   -> journalctl -u edge-station shows exit 70 + restart
 # (Use EITHER this unit OR edge-compose.service, not both: they would fight over the camera and GPIO.)
 [Unit]
@@ -11,11 +11,11 @@ StartLimitIntervalSec=0
 
 [Service]
 Type=simple
-User=pi
-WorkingDirectory=/home/pi/Edge_AI_Project
+User=@USER@
+WorkingDirectory=@REPO@
 Environment=EDGE_TARGET=pi
-EnvironmentFile=-/home/pi/Edge_AI_Project/docker/.env
-ExecStart=/home/pi/Edge_AI_Project/.venv/bin/python -m edgevision.app --dashboard
+EnvironmentFile=-@REPO@/docker/.env
+ExecStart=@REPO@/.venv/bin/python -m edgevision.app --dashboard --inspect
 Restart=always
 RestartSec=2
 # GPIO / camera / I2C access

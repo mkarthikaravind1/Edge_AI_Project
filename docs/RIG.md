@@ -4,7 +4,7 @@ Goal: every part is photographed from **the same place, angle and light**, so "g
 difference is a defect. Everything below is cheap or already on the desk.
 
 ```
-          camera (Pi Camera / USB) on a fixed arm
+          USB webcam on a fixed arm
                \   ~30-45 deg down, 20-25 cm from the part
                 \
    desk lamp ->  \        part sits in the stop, always the same way round

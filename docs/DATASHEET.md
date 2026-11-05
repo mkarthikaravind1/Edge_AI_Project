@@ -14,8 +14,8 @@ and **Model 2 = lid** (sliding plate, 50 × 25.2 × 4 mm). Models split from my 
 | CPU | _auto-recorded in every evidence json_ | _fill_ |
 | RAM | | |
 | Accelerator | none | none / Coral / Hailo _(fill)_ |
-| OS | Windows 11 | Raspberry Pi OS 64-bit (Bookworm) |
-| Camera | built-in webcam | Pi Camera Module _(v2/v3 — fill)_ + USB webcam |
+| OS | Windows 11 | Raspberry Pi OS (Legacy) 64-bit, Bookworm |
+| Camera | built-in webcam | USB webcam (mentor's), 640×480 MJPG _(model — fill)_ |
 | Actuator | console (fake) | relay / LED on GPIO17 (pin 11) |
 | Vibration sensor | CSV replay (fake) | MPU6050 on I²C-1 (0x68) |
 | PLC | in-memory fake | OpenPLC runtime, Modbus TCP :502 |

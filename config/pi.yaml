@@ -5,18 +5,18 @@ target: pi
 classes: [enclosure, body, lid]   # 0 = closed printed enclosure, 1 = Model 1 (body), 2 = Model 2 (lid)
 
 camera:
-  type: picamera2       # use "webcam" with index 0 for a USB camera
-  index: 0
+  type: webcam          # USB webcam (webcam | picamera2 for a Pi Camera Module on the ribbon cable)
+  index: auto           # auto = /dev/v4l/by-id/...-video-index0: same camera after unplug/replug. Or 0, 1, /dev/video0
   width: 640
   height: 480
   fps: 30
+  fourcc: MJPG          # most USB webcams need MJPG for 640x480 @ 30 FPS (YUYV is limited by USB bandwidth)
 
-camera2:
-  type: webcam          # USB webcam as the second stream
-  index: 0
-  width: 640
-  height: 480
+camera2:                # second stream for the two-stream test (M3.2)
+  type: images          # only ONE webcam on this rig: stream 2 replays my real recorded test frames (in git)
+  path: data/splits/test/images
   fps: 30
+  # with a second USB webcam instead:  type: webcam, index: /dev/video2  (check: v4l2-ctl --list-devices)
 
 detector:
   backend: tflite       # tflite | onnx | ultralytics

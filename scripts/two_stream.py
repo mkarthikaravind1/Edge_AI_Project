@@ -6,7 +6,7 @@ Two set-ups are measured:
   separate - one model instance per stream (more memory, both can infer at the same time)
 
     python scripts/two_stream.py --seconds 20                         # laptop: video + video
-    EDGE_TARGET=pi python scripts/two_stream.py --seconds 30          # Pi: Pi camera + USB webcam (config camera/camera2)
+    EDGE_TARGET=pi python scripts/two_stream.py --seconds 30          # Pi: USB webcam + recorded frames (config camera/camera2)
 -> evidence/M3/two_stream_<host>.json
 """
 

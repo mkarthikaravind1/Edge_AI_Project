@@ -1,0 +1,29 @@
+# Runs the unit tests on every push / pull request (GitHub Actions, free for public repos).
+# Python 3.11 = the Raspberry Pi OS version. Only the test dependencies are installed (no PyTorch / TensorFlow).
+name: tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: .github/workflows/tests.yml
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install "numpy>=1.26,<2" opencv-python-headless pyyaml psutil pillow fastapi httpx paho-mqtt pytest
+          pip install -e . --no-deps
+      - name: Run tests
+        env:
+          EDGE_TARGET: laptop
+        run: pytest -q

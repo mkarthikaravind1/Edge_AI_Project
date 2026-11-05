@@ -55,3 +55,6 @@ models/prelabel.pt
 export_bundle.zip
 docker/.env
 deploy/releases/
+
+# not my work: reference copy of a classmate's evidence, never commit
+friend_evidence_photos.zip

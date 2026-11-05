@@ -23,6 +23,31 @@ def test_make_camera_fake() -> None:
     assert make_camera({"type": "fake", "width": 64, "height": 48}).read().image.shape == (48, 64, 3)
 
 
+def test_pi_config_uses_usb_webcam_and_a_second_stream_that_exists_in_git() -> None:
+    cfg = load_config("pi")
+    assert cfg["camera"]["type"] == "webcam"
+    assert cfg["camera2"]["type"] == "images"
+    from edgevision.config import resolve
+    assert any(resolve(cfg["camera2"]["path"]).glob("*.jpg"))       # committed test frames, present on the Pi
+
+
+def test_image_folder_camera_loops(tmp_path) -> None:
+    import cv2
+    import numpy as np
+    for i in range(3):
+        cv2.imwrite(str(tmp_path / f"f{i}.jpg"), np.full((40, 60, 3), 50 * i, np.uint8))
+    cam = make_camera({"type": "images", "path": str(tmp_path), "fps": 30}, realtime=False)
+    frames = [cam.read() for _ in range(7)]
+    assert all(f is not None and f.image.shape == (40, 60, 3) for f in frames)
+    assert frames[3].image.mean() == frames[0].image.mean()            # wrapped around after 3 images
+
+
+def test_resolve_webcam() -> None:
+    from edgevision.hal import resolve_webcam
+    assert resolve_webcam(1) == 1 and resolve_webcam("2") == 2 and resolve_webcam("/dev/video4") == "/dev/video4"
+    assert resolve_webcam("auto") in (0,) or str(resolve_webcam("auto")).startswith("/dev/v4l/by-id/")
+
+
 def test_console_actuator_pulse(capsys) -> None:
     a = make_actuator({"type": "console"})
     assert isinstance(a, ConsoleActuator)
