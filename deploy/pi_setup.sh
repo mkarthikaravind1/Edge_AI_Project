@@ -36,6 +36,15 @@ if ! command -v docker >/dev/null; then curl -fsSL https://get.docker.com | sudo
 sudo systemctl enable --now docker
 groups "$USER" | grep -q docker || { sudo usermod -aG docker "$USER"; need_reboot=1; }
 groups "$USER" | grep -qw gpio || sudo usermod -aG gpio,video,i2c "$USER"
+# board LEDs (green ACT, red PWR) are the station's visible outputs until an LED/relay is wired: let group gpio
+# switch them without sudo (config/pi.yaml reject/run_permit: type onboard_led)
+RULE=/etc/udev/rules.d/99-edge-board-leds.rules
+if [ ! -f "$RULE" ]; then
+  echo 'SUBSYSTEM=="leds", KERNEL=="ACT|PWR", ACTION=="add", RUN+="/bin/sh -c '"'"'chgrp gpio /sys%p/brightness /sys%p/trigger; chmod g+w /sys%p/brightness /sys%p/trigger'"'"'"' \
+    | sudo tee "$RULE" >/dev/null
+  sudo udevadm control --reload-rules && sudo udevadm trigger --subsystem-match=leds --action=add || true
+fi
+ls /sys/class/leds/ 2>/dev/null | tr '\n' ' '; echo "(board LEDs)"
 
 step "4/7 python venv + requirements"
 cd "$REPO"
@@ -72,6 +81,8 @@ for p in 22 5900 8000 8883; do sudo ufw allow "$p/tcp" >/dev/null; done
 sudo ufw default deny incoming >/dev/null
 echo "y" | sudo ufw enable >/dev/null && sudo ufw status | head -8
 
+rm -f "$HOME/.edge_reboot_needed"
+[ "$need_reboot" = 1 ] && touch "$HOME/.edge_reboot_needed"     # read by deploy/start_here.sh
 if [ "$need_reboot" = 1 ]; then
   printf '\n\033[1;33mREBOOT NEEDED: sudo reboot   then run this script once more to confirm everything is green.\033[0m\n'
 else

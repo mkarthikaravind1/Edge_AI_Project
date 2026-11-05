@@ -1,0 +1,6 @@
+[PASS] 1. anonymous client over TLS: refused (Not authorized)
+[PASS] 2. user 'edge' with WRONG password over TLS: refused (Not authorized)
+[PASS] 3. correct password but PLAIN TCP :1883 (no TLS): refused (ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it)
+[PASS] 4. TLS but trusting a different CA (impostor broker check): refused (SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1010))
+[PASS] 5. user 'edge' + correct password + TLS (publish/subscribe round trip): accepted (Success; round trip received)
+[PASS] 6. read-only user 'monitor' publishes (ACL): refused (message dropped by ACL)

@@ -1,0 +1,42 @@
+chown: /mosquitto/config/mosquitto.conf: Read-only file system
+chown: /mosquitto/config/passwd: Read-only file system
+chown: /mosquitto/config/acl: Read-only file system
+chown: /mosquitto/certs/ca.crt: Read-only file system
+chown: /mosquitto/certs/ca.key: Read-only file system
+chown: /mosquitto/certs/server.crt: Read-only file system
+chown: /mosquitto/certs/server.key: Read-only file system
+chown: /mosquitto/certs: Read-only file system
+chown: /mosquitto/certs: Read-only file system
+2026-11-04T08:14:33: mosquitto version 2.0.20 starting
+2026-11-04T08:14:33: Config loaded from /mosquitto/config/mosquitto.conf.
+2026-11-04T08:14:33: Warning: File /mosquitto/config/passwd has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/passwd`.
+2026-11-04T08:14:33: Warning: File /mosquitto/config/passwd owner is not mosquitto. Future versions will refuse to load this file.To fix this, use `chown mosquitto /mosquitto/config/passwd`.
+2026-11-04T08:14:33: Warning: File /mosquitto/config/passwd group is not mosquitto. Future versions will refuse to load this file.
+2026-11-04T08:14:33: Warning: File /mosquitto/config/acl has world readable permissions. Future versions will refuse to load this file.
+To fix this, use `chmod 0700 /mosquitto/config/acl`.
+2026-11-04T08:14:33: Warning: File /mosquitto/config/acl owner is not mosquitto. Future versions will refuse to load this file.To fix this, use `chown mosquitto /mosquitto/config/acl`.
+2026-11-04T08:14:33: Warning: File /mosquitto/config/acl group is not mosquitto. Future versions will refuse to load this file.
+2026-11-04T08:14:33: Opening ipv4 listen socket on port 8883.
+2026-11-04T08:14:33: Opening ipv6 listen socket on port 8883.
+2026-11-04T08:14:33: mosquitto version 2.0.20 running
+2026-11-04T08:14:50: New connection from 172.19.0.1:57702 on port 8883.
+2026-11-04T08:14:50: Client t-anon disconnected, not authorised.
+2026-11-04T08:14:51: New connection from 172.19.0.1:57704 on port 8883.
+2026-11-04T08:14:51: Client t-wrong disconnected, not authorised.
+2026-11-04T08:15:14: New connection from 172.19.0.1:49684 on port 8883.
+2026-11-04T08:15:14: Client t-anon disconnected, not authorised.
+2026-11-04T08:15:14: New connection from 172.19.0.1:49694 on port 8883.
+2026-11-04T08:15:14: Client t-wrong disconnected, not authorised.
+2026-11-04T08:15:19: New connection from 172.19.0.1:36370 on port 8883.
+2026-11-04T08:15:19: OpenSSL Error[0]: error:0A000418:SSL routines::tlsv1 alert unknown ca
+2026-11-04T08:15:19: Client <unknown> disconnected: Protocol error.
+2026-11-04T08:15:19: New connection from 172.19.0.1:36376 on port 8883.
+2026-11-04T08:15:19: New client connected from 172.19.0.1:36376 as t-sub (p2, c1, k60, u'monitor').
+2026-11-04T08:15:20: New connection from 172.19.0.1:36392 on port 8883.
+2026-11-04T08:15:20: New client connected from 172.19.0.1:36392 as t-pub (p2, c1, k60, u'edge').
+2026-11-04T08:15:21: New connection from 172.19.0.1:36396 on port 8883.
+2026-11-04T08:15:21: New client connected from 172.19.0.1:36396 as t-ro (p2, c1, k60, u'monitor').
+2026-11-04T08:15:23: Client t-sub disconnected.
+2026-11-04T08:15:24: Client t-pub disconnected.
+2026-11-04T08:15:24: Client t-ro disconnected.

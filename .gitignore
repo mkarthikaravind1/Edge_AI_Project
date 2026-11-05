@@ -44,6 +44,8 @@ docker/mosquitto/passwd
 Thumbs.db
 .vscode/
 *.log
+# evidence logs (broker, crash restart, full chain) ARE proof: keep them
+!evidence/**/*.log
 logs/
 
 # Colab upload bundle and scratch

@@ -38,13 +38,17 @@ decide:
   camera_timeout_s: 1.0
   safe_state: run_permit_off
 
+# No external LED/relay on this rig yet: the Pi's own board LEDs show the outputs, and the GPIO pins are driven too,
+# so wiring an LED (330 ohm) or relay later needs no change. Only GPIO pins:  type: gpio  (drop `led`).
 reject:
-  type: gpio
+  type: onboard_led
+  led: ACT              # green board LED pulses when the decision rule fires
   pin: 27               # BCM 27 = physical pin 13 -> LED (330 ohm) or relay 2 IN
   active_high: true
 
 run_permit:
-  type: gpio
+  type: onboard_led
+  led: PWR              # red board LED: ON = line allowed to run, OFF = SAFE STATE (camera lost / stopped)
   pin: 17               # BCM 17 = physical pin 11 -> relay 1 IN (conveyor allowed while energised)
   active_high: true
 

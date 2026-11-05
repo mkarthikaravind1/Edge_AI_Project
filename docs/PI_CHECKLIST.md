@@ -5,7 +5,36 @@ Laptop numbers never count as device results; every evidence json records `host.
 
 ---
 
-## Fast path (recommended): two scripts do everything below
+## Easiest path: ONE command
+
+Before the Pi day, on the laptop: flash the card (section 0), then copy `deploy/start_here.sh` onto the card's
+**bootfs** drive (it appears in File Explorer after flashing). On the Pi, open **Terminal** and type:
+
+```bash
+bash /boot/firmware/start_here.sh
+```
+(Without the copy on the card: `git clone https://github.com/mkarthikaravind1/Edge_AI_Project.git ~/Edge_AI_Project && bash ~/Edge_AI_Project/deploy/start_here.sh`.)
+
+It clones the repo, runs `pi_setup.sh`, **reboots by itself and opens the Terminal again after the reboot**, then shows
+a menu: M1, rig clips, M2, M3, cold boot, M4, kiosk, M5, **collect evidence (one zip)**, **leave the Pi clean**. Each
+item says which photo / video to take. Run it again any time; it remembers what is done (`~/.edge_progress`).
+**No personal data on the Pi:** no git name/email, no GitHub login, nothing is committed from the Pi. Copy the zip to
+the laptop (`scp` or a USB stick), unzip it in the project folder (`tar -xf <zip>`) and commit there.
+
+## Control the Pi from the laptop (SSH) — optional, faster
+- **Needs:** SSH enabled in Imager (*Services* tab), laptop and Pi on the **same Wi-Fi**. College Wi-Fi often blocks
+  device-to-device traffic: use your phone's hotspot for both. Windows 11 already has `ssh` / `scp` (no install).
+- **Connect** (laptop PowerShell): `ssh <user>@pi-karthik.local` → type `yes` once → Pi password. If the name is not
+  found, read the IP on the Pi (`hostname -I`) and use `ssh <user>@<ip>`. Then run `bash ~/Edge_AI_Project/deploy/start_here.sh`
+  exactly as on the Pi, with copy-paste from the laptop.
+- **VS Code:** extension *Remote - SSH* → `F1` → *Remote-SSH: Connect to Host* → `<user>@pi-karthik.local` →
+  *Open Folder* `~/Edge_AI_Project`: edit files and use the terminal on the Pi from the laptop.
+- **Copy evidence back:** `scp <user>@pi-karthik.local:~/edge_evidence_*.zip .` (no login to anything on the Pi).
+- **Safety:** only reachable inside that Wi-Fi; the firewall (`pi_setup.sh`) allows 22/8000/8883/5900 only; use a strong
+  Pi password; nothing personal is stored on the Pi. Steps that open a window (`capture_rig.py`, kiosk) or need the
+  camera/LED in front of you are easiest at the Pi itself; after a reboot just reconnect with `ssh`.
+
+## Fast path by hand: two scripts do everything below
 
 ```bash
 git clone https://github.com/mkarthikaravind1/Edge_AI_Project.git ~/Edge_AI_Project
@@ -23,6 +52,10 @@ day 2 m3 + coldboot, day 3 m4, day 4 rig + m5 + demo rehearsal. The sections bel
 - `config/pi.yaml`: `camera: webcam, index: auto` (found by its `/dev/v4l/by-id/` name, so it is the same camera after
   the unplug test). Stream 2 of the two-stream test replays the committed real test frames (`camera2: images`);
   with a second webcam set `camera2: {type: webcam, index: /dev/video2}` instead.
+- **No external LED / relay yet:** the Pi's own board LEDs are the outputs (`type: onboard_led`): **green ACT** pulses
+  on a reject, **red PWR** is ON while the line may run and goes OFF in SAFE STATE. GPIO27 / GPIO17 are driven as
+  well, so an LED (330 Ω) or relay wired later works unchanged. Film the board LEDs for M3 "Actuator fires".
+- Training clips on the rig: `bash scripts/record_rig_video.sh <name> 60` (raw MJPG, no re-encode).
 - Only **one program can open the webcam**. From M3 on the station runs at boot and holds it; `pi_evidence.sh` stops
   the station before every step that opens the camera itself and starts it again afterwards.
 

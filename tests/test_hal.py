@@ -42,6 +42,33 @@ def test_image_folder_camera_loops(tmp_path) -> None:
     assert frames[3].image.mean() == frames[0].image.mean()            # wrapped around after 3 images
 
 
+def test_onboard_led_actuator_uses_sysfs_and_restores_trigger(tmp_path) -> None:
+    led = tmp_path / "ACT"
+    led.mkdir()
+    (led / "trigger").write_text("none [mmc0] heartbeat")
+    (led / "brightness").write_text("0")
+    a = make_actuator({"type": "onboard_led", "led": "ACT", "leds_root": str(tmp_path)}, "reject")
+    assert (led / "trigger").read_text() == "none"                 # kernel activity blinking switched off
+    a.set(True, "test")
+    assert (led / "brightness").read_text() == "1" and a.state
+    a.set(False, "test")
+    assert (led / "brightness").read_text() == "0"
+    a.close()
+    assert (led / "trigger").read_text() == "mmc0"                 # given back to the system
+
+
+def test_onboard_led_missing_falls_back_instead_of_crashing(tmp_path) -> None:
+    from edgevision.hal import ConsoleActuator
+    a = make_actuator({"type": "onboard_led", "led": "NOPE", "leds_root": str(tmp_path)}, "reject", quiet=True)
+    assert isinstance(a, ConsoleActuator)
+
+
+def test_pi_config_outputs_are_visible_without_extra_hardware() -> None:
+    cfg = load_config("pi")
+    assert cfg["reject"]["type"] == "onboard_led" and cfg["reject"]["pin"] == 27
+    assert cfg["run_permit"]["type"] == "onboard_led" and cfg["run_permit"]["pin"] == 17
+
+
 def test_resolve_webcam() -> None:
     from edgevision.hal import resolve_webcam
     assert resolve_webcam(1) == 1 and resolve_webcam("2") == 2 and resolve_webcam("/dev/video4") == "/dev/video4"

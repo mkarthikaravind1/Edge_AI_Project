@@ -1,0 +1,4 @@
+# forced crash inside the container (docker exec edge sh -c 'kill -USR1 1'); restart policy unless-stopped
+restart count before: 0  after: 1  back up after: 2 s
+2026-11-04 09:24:14,857 CRITICAL MainThread edgevision.app: FORCED CRASH TEST (SIGUSR1): exiting with code 70 without cleanup
+2026-11-04 09:24:16,089 INFO    MainThread edgevision.app: station starting: target=laptop camera=video backend=tflite model=deploy/releases/v2/best_int8_full.tflite rele

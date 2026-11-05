@@ -11,7 +11,8 @@ PY=".venv/bin/python"
 step()  { printf '\n\033[1;36m== %s ==\033[0m\n' "$*"; }
 ask()   { printf '\033[1;33m>> %s\033[0m\n   press ENTER when ready (or type s + ENTER to skip) ' "$*"; read -r a; [ "$a" != "s" ]; }
 run()   { echo "\$ $*"; "$@" || echo "!! failed: $* - send the output above to Claude"; }
-done_() { printf '\n\033[1;32mDone. Commit the evidence:\033[0m\n  git add %s && git commit -m "%s" && git push\n' "$1" "$2"; }
+# The Pi never commits (no git login / personal data on it): collect, copy to the laptop, commit there.
+done_() { printf '\n\033[1;32mDone.\033[0m Saved in %s. Collect it: bash scripts/collect_evidence.sh (start_here menu 9),\n  copy the zip to the laptop and commit there, e.g.  git commit -m "%s"\n' "$1" "$2"; }
 # Only one program can open the webcam. Once the station runs at boot (M3 onwards) it holds the camera, so every
 # script that opens the camera itself first stops the station, and station_up brings it back.
 free_camera() {
@@ -30,7 +31,7 @@ m1() {
   run $PY -c "import cv2; c=cv2.VideoCapture('evidence/M1/live_overlay_pi.mp4'); c.set(1, 200); ok, f=c.read(); ok and cv2.imwrite('evidence/M1/live_overlay_pi.png', f)"
   ask "Baseline speed 60 s (keep a part in view)" && run $PY scripts/benchmark_pipeline.py --seconds 60
   done_ "evidence/M1" "M1: Pi first frame, live overlay, baseline"
-  echo "  (the .mp4 is git-ignored; the .png screenshot is committed. Add the video with git add -f if < 50 MB)"
+  echo "  (videos are git-ignored: on the laptop add them with git add -f if < 50 MB)"
 }
 
 m2() {
@@ -47,8 +48,15 @@ m2() {
 m3() {
   step "M3 Decide and act on the Pi"
   free_camera
-  ask "Relay IN1 on GPIO17 (pin 11), LED/relay IN2 on GPIO27 (pin 13) wired? (table in PI_CHECKLIST M3) - relay 1 should click on, LED blinks" && \
-    run $PY -c "from gpiozero import LED; import time; r=LED(17); l=LED(27); r.on(); l.blink(0.2,0.2,5,False); r.off()"
+  ask "Output test: red PWR LED goes ON (run_permit), green ACT LED blinks 5x (reject); same on GPIO17/27 if an LED/relay is wired. FILM IT" && \
+    run $PY -c "
+import time
+from edgevision.config import load_config
+from edgevision.hal import make_actuator
+c = load_config('pi'); p = make_actuator(c['run_permit'], 'run_permit'); r = make_actuator(c['reject'], 'reject')
+p.set(True, 'test'); time.sleep(1)
+for _ in range(5): r.set(True, 'test'); time.sleep(0.3); r.set(False, 'test'); time.sleep(0.3)
+p.set(False, 'test'); time.sleep(1); r.close(); p.close()"
   ask "Two streams 30 s (stream 1 = USB webcam live, stream 2 = recorded test frames; config/pi.yaml camera2)" && \
     run $PY scripts/two_stream.py --seconds 30
   run $PY scripts/debounce_demo.py

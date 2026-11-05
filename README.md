@@ -42,7 +42,7 @@ py -3.12 -m venv .venv
 .venv\Scripts\activate            # Pi/Linux: source .venv/bin/activate
 pip install -r requirements.txt
 pip install -e .
-pytest -q                         # 32 tests
+pytest -q                         # 35 tests
 python scripts/station_sim.py --minutes 2        # full station on a simulated conveyor -> http://localhost:8000
 python -m edgevision.app --dashboard --inspect   # with the webcam
 ```
@@ -59,12 +59,13 @@ Tests run automatically on every push (badge above, `.github/workflows/tests.yml
 
 ## Quick start — Raspberry Pi
 Flash **Raspberry Pi OS (Legacy, 64-bit) = Bookworm** with Raspberry Pi Imager (hostname `pi-karthik`, your own
-user, Wi-Fi, SSH), plug the USB webcam in, then on the Pi (the repo is public, no GitHub login needed to clone):
+user, Wi-Fi, SSH), plug the USB webcam in, then on the Pi (the repo is public, no GitHub login needed to clone) — one
+command that installs, reboots, continues by itself and then offers every milestone from a menu:
 ```bash
-git clone https://github.com/mkarthikaravind1/Edge_AI_Project.git ~/Edge_AI_Project
-bash ~/Edge_AI_Project/deploy/pi_setup.sh          # reboot when told, run once more
-cd ~/Edge_AI_Project && bash scripts/pi_evidence.sh m1   # then m2, m3, coldboot, m4, m5 (docs/PI_CHECKLIST.md)
+git clone https://github.com/mkarthikaravind1/Edge_AI_Project.git ~/Edge_AI_Project && bash ~/Edge_AI_Project/deploy/start_here.sh
 ```
+(or copy `deploy/start_here.sh` onto the SD card's bootfs drive and run `bash /boot/firmware/start_here.sh`).
+No LED/relay wired yet: the Pi's own **green ACT** LED is the reject output and the **red PWR** LED shows run-permit.
 `pi_evidence.sh m3` builds the Docker stack and installs `deploy/install_service.sh compose` (starts at every boot,
 for any username). `bash deploy/kiosk.sh install` makes the monitor open the dashboard full-screen after boot.
 Dashboard: `http://localhost:8000` on the Pi, `http://pi-karthik.local:8000` from a phone on the same Wi-Fi.
