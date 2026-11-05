@@ -19,6 +19,7 @@ import cv2
 import numpy as np
 
 from edgevision.detect import OnnxDetector, TfliteDetector, UltralyticsDetector
+from edgevision.hostinfo import host_tag
 
 ROOT = Path(__file__).resolve().parents[1]
 CLASSES = ["enclosure", "body", "lid"]
@@ -127,7 +128,8 @@ def main() -> None:
         "test_real": sorted((ROOT / "data/splits/test/images").glob("*.jpg")),
         "val_real": sorted((ROOT / "data/splits/val/images").glob("clip*.jpg")),
     }
-    out_path = ROOT / "evidence/M2/accuracy_compare.json"
+    tag = host_tag()                         # the Pi writes its own file, never the laptop one
+    out_path = ROOT / "evidence/M2" / ("accuracy_compare.json" if tag == "laptop" else f"accuracy_compare_{tag}.json")
     report = json.loads(out_path.read_text()) if out_path.exists() else {"results": {}}
     report["method"] = __doc__.split("mAP:")[1].split("->")[0].strip()
     report["imgsz"] = args.imgsz
@@ -138,10 +140,14 @@ def main() -> None:
             print(f"skip {name}: {model} not found")
             continue
         det = make(str(ROOT / model), kw)
-        report["results"][name] = {"model": model, "size_mb": round((ROOT / model).stat().st_size / 1e6, 3)}
+        entry = report["results"].setdefault(name, {})
+        entry.update({"model": model, "size_mb": round((ROOT / model).stat().st_size / 1e6, 3)})
         for sname, imgs in sets.items():
+            if not imgs:                      # e.g. val images are not in git, so not on the Pi: keep what exists
+                print(f"  {sname}: no images here, skipped")
+                continue
             split = "test" if sname == "test_real" else "val"
-            report["results"][name][sname] = evaluate(det, imgs, ROOT / f"data/splits/{split}/labels", args.op_conf)
+            entry[sname] = evaluate(det, imgs, ROOT / f"data/splits/{split}/labels", args.op_conf)
         print(name, {s: (v["mAP50"], v["mAP50_95"]) for s, v in report["results"][name].items() if isinstance(v, dict)})
     base = report["results"].get("pytorch_fp32")
     if base:

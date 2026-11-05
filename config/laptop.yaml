@@ -22,8 +22,10 @@ camera2:                # second stream for the two-stream pipeline (M3)
   loop: true
 
 detector:
-  backend: tflite       # ultralytics | onnx | tflite   (same INT8 model the Pi ships)
-  model: models/best_int8.tflite
+  # ultralytics | onnx | tflite. The Pi ships TFLite INT8 (config/pi.yaml). On this Windows laptop Smart App Control
+  # blocks TensorFlow's TFLite DLL (5 Nov), so the laptop runs the same network as ONNX FP32 (same accuracy as TFLite FP32).
+  backend: onnx
+  model: models/best.onnx
   imgsz: 320
   conf: 0.25
   iou: 0.45

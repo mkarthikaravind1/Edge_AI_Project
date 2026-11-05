@@ -87,6 +87,10 @@ def apply_current_release(cfg: dict[str, Any], version: str | None = None) -> di
     man = json.loads((d / "manifest.json").read_text())
     out = copy.deepcopy(cfg)
     out["detector"]["model"] = str((d / man["model"]).relative_to(ROOT))
+    # a release decides the runtime too: a .tflite model must not be handed to ONNX Runtime (or the reverse)
+    backend = {".tflite": "tflite", ".onnx": "onnx", ".pt": "ultralytics"}.get(Path(man["model"]).suffix)
+    if backend:
+        out["detector"]["backend"] = backend
     if (d / "overlay.yaml").exists():
         for section, values in (yaml.safe_load((d / "overlay.yaml").read_text()) or {}).items():
             out.setdefault(section, {}).update(values)

@@ -34,7 +34,9 @@ WORKDIR /app
 RUN python3 -m venv --system-site-packages /opt/venv
 COPY requirements-pi.txt .
 # BuildKit cache: downloaded wheels survive a failed/slow build, so a retry resumes instead of restarting
-RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements-pi.txt
+# the container has no screen: use the headless OpenCV build (the Pi's own venv keeps the GUI one for capture_rig.py)
+RUN --mount=type=cache,target=/root/.cache/pip sed 's/^opencv-python>=/opencv-python-headless>=/' requirements-pi.txt > /tmp/req.txt \
+    && pip install -r /tmp/req.txt
 
 COPY pyproject.toml ./
 COPY src ./src
