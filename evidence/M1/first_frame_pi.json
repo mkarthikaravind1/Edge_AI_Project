@@ -1,0 +1,18 @@
+{
+  "task": "first_frame_pi",
+  "host": {
+    "hostname": "pi-karthik",
+    "device_type": "Raspberry Pi 5 Model B Rev 1.1",
+    "cpu_model": "Raspberry Pi 5 Model B Rev 1.1",
+    "cpu_cores": 4,
+    "ram_gb": 4.24,
+    "os": "Linux 6.12.109+rpt-rpi-2712",
+    "machine": "aarch64",
+    "python": "3.11.2",
+    "timestamp_utc": "2026-11-06T06:12:09+00:00"
+  },
+  "camera": "webcam",
+  "width": 640,
+  "height": 480,
+  "file": "first_frame_pi.png"
+}

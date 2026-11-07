@@ -1,0 +1,68 @@
+{
+  "results": {
+    "tflite_int8": {
+      "model": "models/best_int8.tflite",
+      "size_mb": 3.198,
+      "test_real": {
+        "images": 18,
+        "mAP50": 1.0,
+        "mAP50_95": 1.0,
+        "precision@0.25": 0.84,
+        "recall@0.25": 1.0,
+        "tp": 21,
+        "fp": 4,
+        "fn": 0,
+        "per_class": {
+          "enclosure": {
+            "n_gt": 9,
+            "ap50": 1.0,
+            "ap50_95": 1.0
+          },
+          "body": {
+            "n_gt": 3,
+            "ap50": 1.0,
+            "ap50_95": 1.0
+          },
+          "lid": {
+            "n_gt": 9,
+            "ap50": 1.0,
+            "ap50_95": 1.0
+          }
+        }
+      }
+    },
+    "onnx_int8": {
+      "model": "models/best_int8.onnx",
+      "size_mb": 3.604,
+      "test_real": {
+        "images": 18,
+        "mAP50": 1.0,
+        "mAP50_95": 1.0,
+        "precision@0.25": 0.84,
+        "recall@0.25": 1.0,
+        "tp": 21,
+        "fp": 4,
+        "fn": 0,
+        "per_class": {
+          "enclosure": {
+            "n_gt": 9,
+            "ap50": 1.0,
+            "ap50_95": 1.0
+          },
+          "body": {
+            "n_gt": 3,
+            "ap50": 1.0,
+            "ap50_95": 1.0
+          },
+          "lid": {
+            "n_gt": 9,
+            "ap50": 1.0,
+            "ap50_95": 1.0
+          }
+        }
+      }
+    }
+  },
+  "method": "per class, predictions sorted by confidence are matched greedily to ground truth (IoU >= t);\nAP = area under the precision-recall curve with 101-point interpolation (COCO style), averaged over\nclasses; mAP@0.5:0.95 averages that over t = 0.50, 0.55, ..., 0.95.",
+  "imgsz": 320
+}

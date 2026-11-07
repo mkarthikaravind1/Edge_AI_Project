@@ -1,0 +1,45 @@
+{
+  "task": "baseline_pi",
+  "host": {
+    "hostname": "pi-karthik",
+    "device_type": "Raspberry Pi 5 Model B Rev 1.1",
+    "cpu_model": "Raspberry Pi 5 Model B Rev 1.1",
+    "cpu_cores": 4,
+    "ram_gb": 4.24,
+    "os": "Linux 6.12.109+rpt-rpi-2712",
+    "machine": "aarch64",
+    "python": "3.11.2",
+    "timestamp_utc": "2026-11-06T06:14:20+00:00"
+  },
+  "camera": "webcam",
+  "backend": "tflite",
+  "model": "models/best_int8.tflite",
+  "imgsz": 320,
+  "duration_s": 60.06,
+  "frames": 934,
+  "fps": 15.55,
+  "frame_latency": {
+    "n": 934,
+    "mean_ms": 20.187,
+    "median_ms": 19.289,
+    "p95_ms": 23.075,
+    "min_ms": 18.172,
+    "max_ms": 35.349,
+    "std_ms": 1.898
+  },
+  "inference_latency": {
+    "n": 934,
+    "mean_ms": 19.758,
+    "median_ms": 18.874,
+    "p95_ms": 22.638,
+    "min_ms": 17.794,
+    "max_ms": 34.825,
+    "std_ms": 1.882
+  },
+  "cpu_pct_mean": 27.7,
+  "cpu_pct_peak": 38.1,
+  "gpu_pct_mean": null,
+  "temp_c_mean": 60.7,
+  "temp_c_peak": 63.7,
+  "note": "temperature/GPU are null when the host does not expose them (most Windows laptops)"
+}

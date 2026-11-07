@@ -1,0 +1,45 @@
+{
+  "task": "benchmark_pi_onnx_fp32",
+  "host": {
+    "hostname": "pi-karthik",
+    "device_type": "Raspberry Pi 5 Model B Rev 1.1",
+    "cpu_model": "Raspberry Pi 5 Model B Rev 1.1",
+    "cpu_cores": 4,
+    "ram_gb": 4.24,
+    "os": "Linux 6.12.109+rpt-rpi-2712",
+    "machine": "aarch64",
+    "python": "3.11.2",
+    "timestamp_utc": "2026-11-06T06:38:46+00:00"
+  },
+  "backend": "onnx_fp32",
+  "model": "models/best.onnx",
+  "model_size_mb": 12.141,
+  "imgsz": 320,
+  "batch": 1,
+  "threads": 4,
+  "warmup_runs": 20,
+  "timed_runs": 200,
+  "inputs": "real test images, cycled",
+  "infer": {
+    "n": 200,
+    "mean_ms": 36.523,
+    "median_ms": 35.47,
+    "p95_ms": 43.428,
+    "min_ms": 34.5,
+    "max_ms": 48.239,
+    "std_ms": 2.472
+  },
+  "total": {
+    "n": 200,
+    "mean_ms": 38.489,
+    "median_ms": 37.433,
+    "p95_ms": 45.284,
+    "min_ms": 36.403,
+    "max_ms": 50.101,
+    "std_ms": 2.494
+  },
+  "fps_infer_median": 28.2,
+  "fps_total": 26.0,
+  "temp_c_start": 74.7,
+  "temp_c_end": 81.8
+}

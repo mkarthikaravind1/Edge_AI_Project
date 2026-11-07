@@ -11,6 +11,11 @@ Batch 1, imgsz 320, 20 warm-up + 200 timed runs on real test images. Accuracy on
 | laptop (Intel(R) Core(TM) Ultra 5 225H) | tflite_fp16 | 6.108 | 12.729 | 14.409 | 15.37 | 64.8 | 1.0 | 1.0 | 0.9746 | 0.9336 |
 | laptop (Intel(R) Core(TM) Ultra 5 225H) | tflite_int8 | 3.198 | 8.984 | 10.831 | 11.542 | 85.1 | 1.0 | 1.0 | 0.9739 | 0.9288 |
 | laptop (Intel(R) Core(TM) Ultra 5 225H) | tflite_int8_full | 3.233 | 7.423 | 9.974 | 8.758 | 110.0 | 1.0 | 0.9585 | 0.9746 | 0.8765 |
+| Raspberry Pi 5 Model B Rev 1.1 (Raspberry Pi 5 Model B Rev 1.1) | onnx_fp32 | 12.141 | 35.47 | 43.428 | 37.433 | 26.0 | 1.0 | 1.0 | 0.9746 | 0.9336 |
+| Raspberry Pi 5 Model B Rev 1.1 (Raspberry Pi 5 Model B Rev 1.1) | onnx_int8 | 3.604 | 17.38 | 22.715 | 19.348 | 49.4 | 1.0 | 1.0 | 0.9502 | 0.886 |
+| Raspberry Pi 5 Model B Rev 1.1 (Raspberry Pi 5 Model B Rev 1.1) | tflite_fp32 | 12.131 | 23.684 | 28.382 | 25.883 | 37.5 | 1.0 | 1.0 | 0.9746 | 0.9336 |
+| Raspberry Pi 5 Model B Rev 1.1 (Raspberry Pi 5 Model B Rev 1.1) | tflite_int8 | 3.198 | 15.998 | 17.188 | 18.205 | 54.3 | 1.0 | 1.0 | 0.9739 | 0.9288 |
+| Raspberry Pi 5 Model B Rev 1.1 (Raspberry Pi 5 Model B Rev 1.1) | tflite_int8_full | 3.233 | 6.628 | 7.581 | 8.611 | 114.6 | 1.0 | 0.9585 | 0.9746 | 0.8765 |
 
 ## Target vs achieved
 
@@ -18,10 +23,10 @@ Batch 1, imgsz 320, 20 warm-up + 200 timed runs on real test images. Accuracy on
 |---|---|---|---|---|
 | mAP@0.5 drop vs onnx_fp32 (real val) | onnx_int8 | <= 0.03 | 0.0244 | yes |
 | model size | onnx_int8 | <= 4.0 MB | 3.604 | yes |
-| Pi median inference | onnx_int8 | <= 120 ms (Pi 4) / 60 ms (Pi 5) | pending | pending |
+| Pi median inference | onnx_int8 | <= 120 ms (Pi 4) / 60 ms (Pi 5) | 17.38 | yes |
 | mAP@0.5 drop vs tflite_fp32 (real val) | tflite_int8 | <= 0.03 | 0.0007 | yes |
 | model size | tflite_int8 | <= 4.0 MB | 3.198 | yes |
-| Pi median inference | tflite_int8 | <= 120 ms (Pi 4) / 60 ms (Pi 5) | pending | pending |
+| Pi median inference | tflite_int8 | <= 120 ms (Pi 4) / 60 ms (Pi 5) | 15.998 | yes |
 | mAP@0.5 drop vs tflite_fp32 (real val) | tflite_int8_full | <= 0.03 | 0.0 | yes |
 | model size | tflite_int8_full | <= 4.0 MB | 3.233 | yes |
-| Pi median inference | tflite_int8_full | <= 120 ms (Pi 4) / 60 ms (Pi 5) | pending | pending |
+| Pi median inference | tflite_int8_full | <= 120 ms (Pi 4) / 60 ms (Pi 5) | 6.628 | yes |
