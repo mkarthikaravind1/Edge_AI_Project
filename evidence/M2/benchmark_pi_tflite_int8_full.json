@@ -1,0 +1,45 @@
+{
+  "task": "benchmark_pi_tflite_int8_full",
+  "host": {
+    "hostname": "pi-karthik",
+    "device_type": "Raspberry Pi 5 Model B Rev 1.1",
+    "cpu_model": "Raspberry Pi 5 Model B Rev 1.1",
+    "cpu_cores": 4,
+    "ram_gb": 4.24,
+    "os": "Linux 6.12.109+rpt-rpi-2712",
+    "machine": "aarch64",
+    "python": "3.11.2",
+    "timestamp_utc": "2026-11-06T06:38:25+00:00"
+  },
+  "backend": "tflite_int8_full",
+  "model": "models/best_int8_full.tflite",
+  "model_size_mb": 3.233,
+  "imgsz": 320,
+  "batch": 1,
+  "threads": 4,
+  "warmup_runs": 20,
+  "timed_runs": 200,
+  "inputs": "real test images, cycled",
+  "infer": {
+    "n": 200,
+    "mean_ms": 6.728,
+    "median_ms": 6.628,
+    "p95_ms": 7.581,
+    "min_ms": 6.442,
+    "max_ms": 10.069,
+    "std_ms": 0.382
+  },
+  "total": {
+    "n": 200,
+    "mean_ms": 8.719,
+    "median_ms": 8.611,
+    "p95_ms": 9.52,
+    "min_ms": 8.395,
+    "max_ms": 12.103,
+    "std_ms": 0.396
+  },
+  "fps_infer_median": 150.9,
+  "fps_total": 114.6,
+  "temp_c_start": 57.6,
+  "temp_c_end": 60.9
+}
