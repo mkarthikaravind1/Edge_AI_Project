@@ -36,8 +36,10 @@ INT8 is compared with the FP32 model **of the same runtime** (same pre/post-proc
 |---|---|---|---|---|
 | mAP@0.5 drop ≤ 0.03 | 0.024 | **0.001** | 0.000 | ✅ all |
 | model ≤ 4 MB | 3.6 | **3.2** | 3.2 | ✅ all |
-| Pi median inference ≤ 120 ms (Pi 4) / 60 ms (Pi 5) | _pending Pi_ | _pending Pi_ | _pending Pi_ | ⏳ |
-| Pi pipeline ≥ 6 FPS (Pi 4) / 12 FPS (Pi 5) | | _pending Pi_ | | ⏳ |
+| Pi 5 median inference ≤ 60 ms | 17.4 ms | **16.0 ms** | 6.6 ms | ✅ all (Pi 5) |
+| Pi 5 live pipeline ≥ 12 FPS | | **15.5 FPS** (camera-limited) | | ✅ (Pi 5) |
+
+Pi numbers: Raspberry Pi 5 (4 GB), CPU only, 4 threads, 6 Nov 2026 — [`evidence/M2/PI_RUN.md`](../evidence/M2/PI_RUN.md).
 
 **Shipped on the Pi (`config/pi.yaml`): TFLite INT8** — smallest, almost no accuracy loss, and TFLite's XNNPACK int8
 kernels are made for Arm. Full-integer INT8 is kept for a Coral Edge TPU, which needs int8 input/output.

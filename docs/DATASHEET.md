@@ -10,12 +10,12 @@ and **Model 2 = lid** (sliding plate, 50 × 25.2 × 4 mm). Models split from my 
 
 | Item | Laptop (development) | Edge device |
 |---|---|---|
-| Device | _fill from `evidence/M1/first_frame.json` → host_ | Raspberry Pi _(4 / 5 — fill)_ |
-| CPU | _auto-recorded in every evidence json_ | _fill_ |
-| RAM | | |
-| Accelerator | none | none / Coral / Hailo _(fill)_ |
-| OS | Windows 11 | Raspberry Pi OS (Legacy) 64-bit, Bookworm |
-| Camera | built-in webcam | USB webcam (mentor's), 640×480 MJPG _(model — fill)_ |
+| Device | laptop | **Raspberry Pi 5 Model B Rev 1.1** |
+| CPU | Intel Core Ultra 5 225H (14 cores) | Arm Cortex-A76 ×4 (BCM2712) |
+| RAM | 16 GB | 4 GB |
+| Accelerator | none | none (CPU only) |
+| OS | Windows 11, Python 3.12 | Raspberry Pi OS (Legacy) 64-bit, Bookworm, Python 3.11.2 |
+| Camera | built-in webcam | USB webcam SunplusIT ZQ-1080RL, 640×480 MJPG |
 | Actuator | console (fake) | relay / LED on GPIO17 (pin 11) |
 | Vibration sensor | CSV replay (fake) | MPU6050 on I²C-1 (0x68) |
 | PLC | in-memory fake | OpenPLC runtime, Modbus TCP :502 |
@@ -29,12 +29,13 @@ See [ARCHITECTURE.md](ARCHITECTURE.md).
 
 | Metric | Target | Laptop | Pi |
 |---|---|---|---|
-| mAP@0.5 (real test set) | ≥ 0.85 | 0.995 (YOLOv8n-320, PyTorch FP32) | — |
-| Pipeline FPS | ≥ 6 (Pi 4) | 68.6 (uncapped, video source) | |
-| Frame latency median / p95 | ≤ 120 ms | 12.4 / 20.7 ms | |
-| Frame→actuator p95 | ≤ 600 ms | | |
-| Model size INT8 | ≤ 4 MB | 3.2 MB (TFLite INT8, shipped) | |
-| SoC temperature under load | < 80 °C | n/a | |
+| mAP@0.5 (real test set) | ≥ 0.85 | 0.995 (YOLOv8n-320, PyTorch FP32) | 1.000 (TFLite INT8 on the Pi runtime, 18 images) |
+| Pipeline FPS | ≥ 12 (Pi 5) | 68.6 (uncapped, video source) | 15.55 (USB webcam, camera-limited) |
+| Frame latency median / p95 | ≤ 120 ms | 12.4 / 20.7 ms | 19.3 / 23.1 ms |
+| Inference median (TFLite INT8) | ≤ 60 ms (Pi 5) | 9.0 ms | 16.0 ms |
+| Frame→actuator p95 | ≤ 600 ms | 8.8 ms | _pending (M3 on the Pi)_ |
+| Model size INT8 | ≤ 4 MB | 3.2 MB (TFLite INT8, shipped) | 3.2 MB (same file) |
+| SoC temperature under load | < 80 °C | n/a | 60.7 °C mean / 63.7 °C peak (live pipeline, no cooler) |
 
 ## 5. Headline metric
 **Parts classified correctly out of all operator-checked parts** (shown live as e.g. "19/20 correct"), with the
