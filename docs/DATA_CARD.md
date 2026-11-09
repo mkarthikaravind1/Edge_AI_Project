@@ -26,7 +26,7 @@ Why three classes: the closed box looks nothing like the open body or the loose 
 | val | 36 | 100 | – | 52 | 81 | 75 |
 | test | 18 | 0 | – | 9 | 3 | 9 |
 
-Real frames: 217 extracted → 7 held back in `data/labelled/exclude.txt` (labels still to fix) → 30 dropped at split
+Real frames: 217 extracted → 7 held back in `data/labelled/exclude.txt` (part mostly hidden by my hand; reviewed, kept out of the split) → 30 dropped at split
 boundaries → 180 used (126 / 36 / 18 = 70 / 20 / 10 %). Label check: 0 empty, tiny, overlapping or malformed boxes
 (`evidence/M1/label_check.json`).
 
@@ -53,7 +53,7 @@ Frame extraction (clip1): 314 sampled at ~4 fps → 72 dropped as blurry (Laplac
 |---|---|---|---|
 | 1 | Claude (AI assistant), from contact sheets | YOLO-World boxes kept, classes corrected, 3 false boxes deleted (finger, two holes) | 111 / 217 frames accepted; 106 had a missing part → pass 2 (`data/labelled/review_pass1_claude.json`) |
 | 2 | helper model, checked by Claude | `train_prelabel.py` on the 111 accepted frames + renders → re-labelled the 106 (168 boxes, 83 lids vs 8 from YOLO-World); 7 class/box fixes | 99 accepted; 7 left for me (part hidden by hand / missed lid) (`review_pass2_claude.json`) |
-| final | me (Karthik) | `review_labels.py` | _pending: the two runs so far stamped all 217 frames in ~8 s and changed no labels; the 7 frames in `exclude.txt` still need fixing_ |
+| final | me (Karthik), 9 Nov 2026 | `review_labels.py` over all 217 frames, then `review_labels.py --only exclude` on the 7 held-back frames | 1 box corrected (`clip1_000854`: body box too long → tightened); the other labels kept as they are. In the 7 held-back frames, parts mostly hidden by my hand, cut off by the frame edge or heavily blurred are left unlabelled (my decision per frame in `data/labelled/exclude.txt`). The 7 stay out of the split, because the trained model's split was made without them. Log: `data/labelled/reviewed.csv` |
 
 ## Split
 70 / 20 / 10 by **contiguous time blocks**: the video is cut into 20 blocks (~3.7 s each) and whole blocks go to one split;

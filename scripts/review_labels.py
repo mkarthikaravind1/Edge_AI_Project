@@ -2,6 +2,8 @@
 
     python scripts/review_labels.py                 # starts at the first frame I have not reviewed
     python scripts/review_labels.py --start 40
+    python scripts/review_labels.py --only exclude          # only the frames listed in data/labelled/exclude.txt
+    python scripts/review_labels.py --only clip1_000854 clip1_000875
 
 Mouse
   left-drag on empty space  draw a new box (current class)
@@ -184,9 +186,30 @@ def main() -> None:
     ap.add_argument("--start", type=int, default=None, help="index to start at (default: first unreviewed)")
     ap.add_argument("--height", type=int, default=640, help="window image height in pixels")
     ap.add_argument("--reviewer", default="karthik", help="name written to reviewed.csv")
+    ap.add_argument("--only", nargs="+", default=None,
+                    help="review only these frames (e.g. clip1_000854.jpg or clip1_000854), "
+                         "or 'exclude' for every frame listed in exclude.txt")
     args = ap.parse_args()
     images = sorted(p for p in (ROOT / args.images).glob("*") if p.suffix.lower() in {".jpg", ".png", ".jpeg"})
     root = ROOT / args.labels
+    if args.only:
+        wanted: set[str] = set()
+        for name in args.only:
+            if name == "exclude":
+                for line in (root / "exclude.txt").read_text(encoding="utf-8").splitlines():
+                    line = line.split("#")[0].strip()
+                    if line:
+                        wanted.add(Path(line).stem)
+            else:
+                wanted.add(Path(name).stem)
+        images = [p for p in images if p.stem in wanted]
+        missing = wanted - {p.stem for p in images}
+        if missing:
+            print(f"not found in {args.images}: {', '.join(sorted(missing))}")
+        if not images:
+            return
+        print(f"reviewing only {len(images)} frame(s): {', '.join(p.name for p in images)}")
+        args.start = 0 if args.start is None else args.start
     (root / "labels").mkdir(parents=True, exist_ok=True)
     Review(images, root / "labels", root / "reviewed.csv", args.height, args.reviewer).run(args.start)
 

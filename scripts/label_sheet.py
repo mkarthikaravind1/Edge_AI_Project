@@ -60,7 +60,7 @@ def main() -> None:
     sheet = np.vstack(rows)
     out = ROOT / a.out
     cv2.imwrite(str(out), sheet, [cv2.IMWRITE_JPEG_QUALITY, 85])
-    print(f"{len(images)} images -> {out.relative_to(ROOT)} ({sheet.shape[1]}x{sheet.shape[0]})")
+    print(f"{len(images)} images -> {out} ({sheet.shape[1]}x{sheet.shape[0]})")
 
 
 if __name__ == "__main__":
