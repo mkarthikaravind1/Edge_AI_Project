@@ -6,8 +6,9 @@
 **Karthik Aravind M (S10)** · a complete edge visual-inspection station for my IDRP 3D-printed enclosure:
 camera → INT8 detector → pass/fail inspection → decision → relay/LED + PLC + secure MQTT → live dashboard,
 with motor-vibration monitoring, OTA updates and fail-safe behaviour. Built to run on a Raspberry Pi with a USB webcam,
-in Docker, starting by itself after a power cycle. **Status: everything so far is measured on my laptop; the Pi runs
-are pending** (they follow [docs/PI_CHECKLIST.md](docs/PI_CHECKLIST.md)).
+in Docker, starting by itself after a power cycle. **Status: M1 and M2 are measured on my Raspberry Pi 5 (6 Nov 2026,
+[M1 Pi run](evidence/M1/PI_RUN.md), [M2 Pi run](evidence/M2/PI_RUN.md)); M3–M5 are measured on my laptop so far, their
+Pi runs follow [docs/PI_CHECKLIST.md](docs/PI_CHECKLIST.md).**
 
 Objects (classes): **enclosure** (my closed printed part), **body** = Model 1, **lid** = Model 2 — both models split
 from my CAD file `cad/enclosure_full.stl`.
@@ -23,15 +24,15 @@ counts; a `run_permit` relay is on only while the system is healthy, so a lost c
 the line. Everything is published on an internal bus that feeds **MQTT over TLS**, the **dashboard** and the logs.
 Details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-## Results so far (laptop; Pi runs follow [docs/PI_CHECKLIST.md](docs/PI_CHECKLIST.md))
+## Results so far (M1–M2 on the Raspberry Pi 5; M3–M5 on the laptop, Pi runs follow [docs/PI_CHECKLIST.md](docs/PI_CHECKLIST.md))
 
 | Milestone | Key measured numbers | Evidence |
 |---|---|---|
-| **M1 Detect** | real test mAP@0.5 **0.995**, mAP@0.5:0.95 0.995 (real val 0.991 / 0.951); 10 wrong detections analysed; laptop 68.6 FPS | `evidence/M1/`, [TARGETS](docs/TARGETS.md), [DATA_CARD](docs/DATA_CARD.md) |
-| **M2 Optimize** | TFLite INT8 **3.2 MB**, mAP@0.5 drop **0.001** vs its FP32; ONNX INT8 3.6 MB, drop 0.024; fair benchmark (20 warm-up, 200 runs) | `evidence/M2/comparison.md`, [OPTIMISATION](docs/OPTIMISATION.md) |
-| **M3 Decide & Act** | one bad frame never fires, 3-in-a-row does; safe state **1.06 s** after camera loss; 2 streams × 30 FPS; frame→actuator p95 **8.8 ms** (part→actuator 75 ms) | `evidence/M3/`, [DECISION_RULES](docs/DECISION_RULES.md) |
-| **M4 Monitor & Connect** | MQTT security **6/6**; 3 topics, 0 schema failures; PLC 7/7 pulses; OTA v1→v2, broken v3 rolled back, tampered refused; restart after crash **1.2 s**; motor alert 1.0 s (synthetic IMU) | `evidence/M4/`, [MQTT_TOPICS](docs/MQTT_TOPICS.md), [THREAT_MODEL](docs/THREAT_MODEL.md) |
-| **M5 Complete system** | 10-min full chain: **30.0 FPS**, 0 errors, 171/172 parts tracked, 1858 MQTT msgs, part→reject p95 90 ms; 20-part stand-in test **16/20, false-pass 0.30 (target 0.10 not met yet — rig test pending)**; readiness 7/7 | `evidence/M5/`, [DEFECTS](docs/DEFECTS.md), [DEMO](docs/DEMO.md) |
+| **M1 Detect** | real test mAP@0.5 **0.995**, mAP@0.5:0.95 0.995 (real val 0.991 / 0.951); 10 wrong detections analysed; **on the Pi 5: live overlay 15.5 FPS (camera-limited), frame latency median 19.3 ms / p95 23.1 ms, CPU 28 %, 61 °C**; laptop 68.6 FPS | [M1 index](evidence/M1/README.md), [TARGETS](docs/TARGETS.md), [DATA_CARD](docs/DATA_CARD.md) |
+| **M2 Optimize** | TFLite INT8 **3.2 MB**, mAP@0.5 drop **0.001** vs its FP32; ONNX INT8 3.6 MB, drop 0.024; fair benchmark (20 warm-up, 200 runs) **on the Pi 5: TFLite INT8 inference median 16.0 ms (54 FPS model-only), 1.5–2× faster than FP32; INT8 runs live on the Pi; all 4 own targets met on the Pi** | [M2 index](evidence/M2/README.md), [comparison](evidence/M2/comparison.md), [OPTIMISATION](docs/OPTIMISATION.md) |
+| **M3 Decide & Act** | one bad frame never fires, 3-in-a-row does; safe state **1.06 s** after camera loss; 2 streams × 30 FPS; frame→actuator p95 **8.8 ms** (part→actuator 75 ms) | [M3 index](evidence/M3/README.md), [DECISION_RULES](docs/DECISION_RULES.md) |
+| **M4 Monitor & Connect** | MQTT security **6/6**; 3 topics, 0 schema failures; PLC 7/7 pulses; OTA v1→v2, broken v3 rolled back, tampered refused; restart after crash **1.2 s**; motor alert 1.0 s (synthetic IMU) | [M4 index](evidence/M4/README.md), [MQTT_TOPICS](docs/MQTT_TOPICS.md), [THREAT_MODEL](docs/THREAT_MODEL.md) |
+| **M5 Complete system** | 10-min full chain: **30.0 FPS**, 0 errors, 171/172 parts tracked, 1858 MQTT msgs, part→reject p95 90 ms; 20-part stand-in test **16/20, false-pass 0.30 (target 0.10 not met yet — rig test pending)**; readiness 7/7 | [M5 index](evidence/M5/README.md), [DEFECTS](docs/DEFECTS.md), [DEMO](docs/DEMO.md) |
 
 Everything measured is in `evidence/` and collected in [docs/RESULTS.md](docs/RESULTS.md) (`python scripts/make_report.py`).
 Every evidence json records the host it ran on: laptop numbers are never presented as Pi numbers.
@@ -86,7 +87,7 @@ Dashboard: `http://localhost:8000` on the Pi, `http://pi-karthik.local:8000` fro
 | `docker/`, `deploy/` | Dockerfile, compose, Mosquitto TLS config, systemd units, OTA bundles, OpenPLC program |
 | `cad/` | my CAD: full enclosure, Model 1 (body), Model 2 (lid) |
 | `docs/` | see below |
-| `evidence/M1..M5/` | every measured number (json/csv/png/log) |
+| `evidence/M1..M5/` | every measured number (json/csv/png/log); each folder's `README.md` maps checklist item → result → files |
 
 ## Documents
 [DATASHEET](docs/DATASHEET.md) · [ARCHITECTURE](docs/ARCHITECTURE.md) · [TARGETS](docs/TARGETS.md) ·
@@ -99,4 +100,5 @@ Dashboard: `http://localhost:8000` on the Pi, `http://pi-karthik.local:8000` fro
 - Training data: one 74 s video on one desk + CAD renders; test set is 18 real frames → M1 scores are "same scene".
 - Motor model and false alarms are from **synthetic** IMU data until the MPU6050 runs are recorded on the Pi.
 - Pass/fail is measured on a laptop stand-in with **simulated** marks/chips; chipped corners are not caught yet.
-- All device numbers (Pi FPS, latency, temperature, cold boot, OpenPLC) are pending the Pi.
+- Pi FPS, latency and temperature for M1–M2 are measured on the Pi 5 (no cooler fitted); M3–M5 device numbers
+  (frame→actuator on the Pi, cold boot, OpenPLC, real IMU, rig pass/fail) are still pending the Pi.

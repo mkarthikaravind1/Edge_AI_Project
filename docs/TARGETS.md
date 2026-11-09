@@ -49,7 +49,7 @@ Sources: `evidence/M1/train_eval.json`, `evidence/M1/eval_val_real.json`.
 - Test boxes were machine-proposed then checked, so boxes match the model's "style" → mAP@0.5:0.95 is likely optimistic.
 - The real check is the M2/M5 run on the Pi camera with new backgrounds.
 
-## Achieved so far (M2–M5, laptop)
+## Achieved so far (M2 on the Raspberry Pi 5; M3–M5 on the laptop)
 
 | Target | Value | Laptop result | Met? |
 |---|---|---|---|
@@ -59,6 +59,6 @@ Sources: `evidence/M1/train_eval.json`, `evidence/M1/eval_val_real.json`.
 | Motor false alarms / 5 normal runs | ≤ 1 | 1 (SYNTHETIC data) | ⚠️ synthetic only |
 | False-pass rate | ≤ 10 % | 30 % (stand-in set with simulated marks/chips) | ❌ not yet — rig test pending |
 | Headline correct / 20 | ≥ 18 | 16 | ❌ not yet — rig test pending |
-| Pi inference / FPS | ≤ 120 ms / ≥ 6 FPS (Pi 4) | — | ⏳ Pi |
+| Pi inference / FPS | ≤ 60 ms / ≥ 12 FPS (Pi 5) | **Pi 5: 16.0 ms** median (TFLite INT8) / **15.5 FPS** live (camera-limited) | ✅ Pi 5 |
 
 Final numbers vs these targets are in [RESULTS.md](RESULTS.md).
