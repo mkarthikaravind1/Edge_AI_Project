@@ -1,8 +1,9 @@
-# Frames kept OUT of the split until their labels are fixed in review_labels.py (then delete the line).
-clip1_000854.jpg  # lid not boxed separately: one body box covers lid + body
-clip1_000875.jpg  # lid at top not boxed
-clip1_001295.jpg  # body mostly under hand: box only partial
-clip1_001302.jpg  # hand covers part: decide box / no box
-clip1_001323.jpg  # blurred body at bottom not boxed
-clip1_001463.jpg  # lid at top not boxed
-clip1_001897.jpg  # closed box mostly under hand: no box
+# Frames kept OUT of the split (the trained model's split was made without them; re-splitting would change the test set).
+# Reviewed by me (Karthik) on 9 Nov 2026 with `python scripts/review_labels.py --only exclude`; the note says what I decided.
+clip1_000854.jpg  # body box was too long -> tightened; lid at top-left mostly cut off by the frame edge -> left unlabelled
+clip1_000875.jpg  # body boxed; lid at top behind my finger -> left unlabelled
+clip1_001295.jpg  # body mostly under my hand -> kept the box on the visible part
+clip1_001302.jpg  # only a sliver visible under my hand -> no box
+clip1_001323.jpg  # lid boxed; body at bottom heavily motion-blurred -> left unlabelled
+clip1_001463.jpg  # body boxed; lid at top-left behind my thumb -> left unlabelled
+clip1_001897.jpg  # closed box mostly under my fingers -> no box
