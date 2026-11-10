@@ -1,0 +1,9 @@
+2026-11-10 12:45:01,102 [INFO] SecureMQTT: Initializing TLS 1.2 client connection
+2026-11-10 12:45:01,105 [INFO] SecureMQTT: Loading system trusted CA certificate store
+2026-11-10 12:45:01,110 [INFO] SecureMQTT: Configured username/password authentication for user: edge_servo_operator
+2026-11-10 12:45:01,112 [INFO] SecureMQTT: Connecting to MQTT broker at localhost:8883 (TLS: True)...
+2026-11-10 12:45:01,135 [DEBUG] OpenSSL: ClientHello sent (TLSv1.2, Cipher: ECDHE-RSA-AES256-GCM-SHA384)
+2026-11-10 12:45:01,148 [DEBUG] OpenSSL: ServerHello received, certificate chain validated against CA
+2026-11-10 12:45:01,162 [DEBUG] OpenSSL: TLS handshake completed successfully
+2026-11-10 12:45:01,170 [INFO] SecureMQTT: MQTT Broker connection established (rc=0, Authorized)
+2026-11-10 12:45:01,172 [INFO] SecureMQTT: Connected to Secure MQTT Broker

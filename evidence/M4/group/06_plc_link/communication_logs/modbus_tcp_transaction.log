@@ -1,0 +1,22 @@
+# ==============================================================================
+# MODBUS TCP COMMUNICATION LOG & TRANSACTION TRACE
+# Server: 127.0.0.1:5020 | Unit ID: 1 | Standard: IEC 61158 / IEC 61784
+# ==============================================================================
+2026-11-10 12:55:00.100 [TX REQUEST]  FC: 04 (Read Input Registers) | Start: 0000 | Count: 0010
+  Hex Frame: 00 01 00 00 00 06 01 04 00 00 00 0A
+2026-11-10 12:55:00.102 [RX RESPONSE] FC: 04 (Success) | Byte Count: 20
+  Data Decoded:
+    [30001] Angle      : 90 deg
+    [30002] Voltage    : 5040 mV (5.04V)
+    [30003] Current    : 115 mA (0.115A)
+    [30004] Accel X    : 340
+    [30005] Accel Y    : 385
+    [30006] Accel Z    : 310
+    [30007] Sound RMS  : 145 (14.5)
+    [30008] Sound P2P  : 58
+    [30009] Anom Score : 120 (0.120 - NORMAL)
+    [30010] Packet Cnt : 142
+2026-11-10 12:55:01.250 [TX REQUEST]  FC: 06 (Write Single Holding Register) | Addr: 0003 | Value: 0078 (120 deg)
+2026-11-10 12:55:01.252 [RX RESPONSE] FC: 06 (Success) | Commanded Angle 120 deg Acknowledged by Edge Node
+2026-11-10 12:55:02.500 [TX REQUEST]  FC: 05 (Write Single Coil) | Addr: 0000 | Value: FF00 (E-STOP ACTIVE)
+2026-11-10 12:55:02.501 [RX RESPONSE] FC: 05 (Success) | Coil 00001 Latched TRUE -> Motor Interlock Engaged

@@ -10,6 +10,23 @@ replace them. Pi commands: [PI_CHECKLIST § M4](../../docs/PI_CHECKLIST.md#m4--m
 **Group media rule:** every photo/video from the group session is labelled *"group run on the shared Pi rig — my part:
 … — filmed by …"*. My own measured numbers are listed separately from the group media.
 
+### Group rig (shared Raspberry Pi 5)
+
+The group's M4 system on the shared rig is an **SG90 servo condition monitor**: an Arduino Uno reads an MPU6050
+(vibration), ACS712 (current), a 0–25 V divider (voltage) and a MAX9814 microphone (sound) at 10 Hz and sends CSV rows
+over USB serial to the Pi 5. The Pi runs a 21-feature anomaly model and a web dashboard. My own motor monitor (6-axis
+MPU6050 at 200 Hz, 36 features) is a separate system. Group media below shows that rig, not my numbers. All group
+files are in [group/](group/), one folder per task.
+
+Group media caption: *group run on the shared Pi rig — my part: _to fill in_ — filmed by _to fill in_* (all files in
+[group/](group/)).
+
+**Group reports and logs:** the group's TLS, MQTT, Modbus and reliability logs and reports, its benchmark and
+false-alarm reports, and its charts are the values my group member measured on the rig. They were then written into
+files by the group's script [generate_m4_evidence.py](group/scripts/generate_m4_evidence.py), so they are a write-up of
+the results, not raw captures. Each is marked 📝 *group-reported* below. Where a chart's shape comes from that script
+rather than from recorded scores, it says so.
+
 | Task | Max | Measured so far | Section |
 |---|---|---|---|
 | Sensor data | 3 | 8 normal + 3 fault runs, 6 axes at 200 Hz (synthetic) | [4.1](#41-sensor-data) |
@@ -35,7 +52,31 @@ replace them. Pi commands: [PI_CHECKLIST § M4](../../docs/PI_CHECKLIST.md#m4--m
 - Code: [scripts/record_imu.py](../../scripts/record_imu.py) (real sensor), [scripts/gen_synthetic_imu.py](../../scripts/gen_synthetic_imu.py),
   [src/edgevision/hal/imu.py](../../src/edgevision/hal/imu.py).
 
-👥 **Group run on the Pi** — photo of the MPU6050 on the motor, real normal and fault CSVs (`data/imu/real/`): _to add_.
+👥 **Group run on the Pi** (group's servo monitor, Arduino Uno → Pi 5 over USB serial):
+- Videos: [hardware set-up walkthrough](group/01_sensor_data/videos/initial_hardware_configuration.mp4),
+  [servo mounting and wiring](group/01_sensor_data/videos/initial_configuration_servo_motor.mp4),
+  [servo moving with sensor values](group/01_sensor_data/videos/servo_motion_and_sensorvalues_demonstration.mp4),
+  [values in the serial monitor](group/01_sensor_data/videos/sensor_values_showing_in_serial_monitor.mp4),
+  [long serial-monitor stream during servo motion](group/01_sensor_data/videos/serial_monitor_servo_sensor_stream.mp4),
+  [values updating](group/01_sensor_data/videos/values_showing.mp4).
+- Photos: group member at the rig ([1](group/01_sensor_data/screenshots/me_working_photo.jpeg),
+  [2](group/01_sensor_data/screenshots/me_working_photo2.jpeg)); terminal printing servo angle, accelerometer X/Y/Z,
+  ACS712, voltage and microphone readings ([1](group/01_sensor_data/screenshots/sensor_values_shown_in_terminal.jpeg),
+  [2](group/01_sensor_data/screenshots/sensor_values_shown_in_terminall.jpeg)).
+- Frames from the videos: [set-up](group/01_sensor_data/screenshots/initial_hardware_configuration_frame.png),
+  [servo wiring](group/01_sensor_data/screenshots/servo_motor_mounting_and_wiring_frame.png),
+  [serial monitor](group/01_sensor_data/screenshots/serial_monitor_streaming_frame.png),
+  [serial stream](group/01_sensor_data/screenshots/serial_monitor_servo_sensor_stream_frame.png),
+  [live values](group/01_sensor_data/screenshots/telemetry_values_live_stream_frame.png),
+  [servo motion](group/01_sensor_data/screenshots/servo_motion_and_sensorvalues_frame.png).
+- Recorded sensor rows (10 fields: time, sequence, angle, voltage, current, accel X/Y/Z, sound RMS, sound peak-to-peak):
+  [baseline_telemetry_sample.csv](group/01_sensor_data/datasets/baseline_telemetry_sample.csv),
+  [serial_telemetry_raw_capture.log](group/01_sensor_data/logs/serial_telemetry_raw_capture.log), plotted in
+  [sensor_waveforms_plot.png](group/01_sensor_data/screenshots/sensor_waveforms_plot.png).
+
+![group rig: sensor values in the terminal](group/01_sensor_data/screenshots/sensor_values_shown_in_terminal.jpeg)
+
+Still to add for **my** code: real normal and fault CSVs from my 200 Hz recorder (`data/imu/real/`).
 
 ## 4.2 Anomaly model
 
@@ -53,7 +94,24 @@ replace them. Pi commands: [PI_CHECKLIST § M4](../../docs/PI_CHECKLIST.md#m4--m
 
 ![anomaly scores](anomaly_scores.png)
 
-👥 **Group run on the Pi** — video of the dashboard motor card turning red when the fault is injected: _to add_.
+👥 **Group run on the Pi** (group's servo monitor):
+- [video_showing_anomaly.mp4](group/02_anomaly_model/videos/video_showing_anomaly.mp4): a mechanical fault is
+  injected on the servo and the group's model flags it live. Frames: [before](group/02_anomaly_model/screenshots/anomaly_baseline_frame.png),
+  [fault injected](group/02_anomaly_model/screenshots/anomaly_triggered_frame.png),
+  [detection](group/02_anomaly_model/screenshots/anomaly_detection_event_frame.png).
+- [dashboard_anomaly_detected.jpeg](group/02_anomaly_model/screenshots/dashboard_anomaly_detected.jpeg): the Pi 5
+  dashboard shows **ANOMALY DETECTED** with anomaly score 1.00 (read off the screen, not a measurement of mine).
+- Group model settings: [model_summary.json](group/02_anomaly_model/model_results/model_summary.json) (21 features,
+  10-sample window at 10 Hz, threshold 0.65).
+- 📝 *group-reported* benchmark on the Pi 5 ([model_benchmark_report.txt](group/02_anomaly_model/test_results/model_benchmark_report.txt)):
+  feature extraction 0.082 ms, inference 0.109 ms, total 0.191 ms per window, 14.2 MB RAM.
+- 📝 *group-reported* charts: [anomaly_score_trajectory.png](group/02_anomaly_model/charts/anomaly_score_trajectory.png)
+  (score low while normal, high after the fault) and [feature_correlation_heatmap.png](group/02_anomaly_model/charts/feature_correlation_heatmap.png)
+  (21 features). Their exact curves and cells are drawn by the script, not plotted from recorded scores.
+
+![group rig: dashboard showing anomaly detected](group/02_anomaly_model/screenshots/dashboard_anomaly_detected.jpeg)
+
+Still to add for **my** code: video of my dashboard motor card turning red when the fault is injected.
 
 ## 4.3 False alarms
 
@@ -65,7 +123,20 @@ replace them. Pi commands: [PI_CHECKLIST § M4](../../docs/PI_CHECKLIST.md#m4--m
   ([false_alarms.json](false_alarms.json)).
 - Trade-off: a higher percentile gives fewer false alarms but later or missed faults.
 
-👥 **Group run on the Pi** — the same count on real normal runs: _to add_.
+👥 **Group run on the Pi** — normal vs fault on the group rig: frames
+[normal running](group/02_anomaly_model/screenshots/anomaly_baseline_frame.png) and
+[fault injected](group/02_anomaly_model/screenshots/anomaly_triggered_frame.png) from
+[the anomaly video](group/02_anomaly_model/videos/video_showing_anomaly.mp4) (see [4.2](#42-anomaly-model)).
+
+📝 *group-reported* false-alarm count ([false_alarm_rate_report.txt](group/03_false_alarms/test_results/false_alarm_rate_report.txt)),
+200 trials: 150 normal cycles → **0 false alarms**, 50 faults (bind / stall / overcurrent) → 50 detected, so false
+alarm rate **0 %**. Threshold reasoning: normal motion gave current pulses of about 0.065–0.146 A and huge scores
+because the static training data barely varied, so the group set a minimum spread per feature and a 0.200 A current
+limit (binding draws > 0.220 A). Charts: [confusion_matrix_heatmap.png](group/03_false_alarms/charts/confusion_matrix_heatmap.png)
+(the counts above) and [anomaly_score_distribution.png](group/03_false_alarms/charts/anomaly_score_distribution.png)
+(the histogram shape is drawn by the script, not plotted from recorded scores).
+
+Still to add for **my** code: the same count on real normal runs.
 
 ## 4.4 Secure MQTT
 
@@ -86,7 +157,14 @@ replace them. Pi commands: [PI_CHECKLIST § M4](../../docs/PI_CHECKLIST.md#m4--m
 Config: [mosquitto.conf](../../docker/mosquitto/mosquitto.conf), [acl](../../docker/mosquitto/acl),
 [make_certs.sh](../../docker/mosquitto/make_certs.sh). Test: [scripts/mqtt_security_test.py](../../scripts/mqtt_security_test.py).
 
-👥 **Group run on the Pi** — screenshot of the refused / accepted connections on the Pi broker: _to add_.
+👥 **Group rig:** the group's broker config
+[mosquitto_secure.conf](group/04_secure_mqtt/configuration_evidence/mosquitto_secure.conf) and certificate script
+[generate_x509_certificates.sh](group/04_secure_mqtt/configuration_evidence/generate_x509_certificates.sh).
+📝 *group-reported*: TLS 1.2 connection on port 8883 with the broker certificate checked and username/password
+accepted ([tls_connection_handshake.log](group/04_secure_mqtt/logs/tls_connection_handshake.log)), and the security
+checklist (TLS only, no secrets in git, reconnect backoff) in [mqtt_security_test_log.txt](group/04_secure_mqtt/test_results/mqtt_security_test_log.txt).
+
+Still to add: screenshot of the refused / accepted connections on the Pi broker.
 
 ## 4.5 Topics
 
@@ -103,7 +181,11 @@ Config: [mosquitto.conf](../../docker/mosquitto/mosquitto.conf), [acl](../../doc
 Topic design: [docs/MQTT_TOPICS.md](../../docs/MQTT_TOPICS.md). Code: [src/edgevision/comms/mqtt.py](../../src/edgevision/comms/mqtt.py),
 subscriber [scripts/mqtt_subscribe.py](../../scripts/mqtt_subscribe.py).
 
-👥 **Group run on the Pi** — screenshot of the subscriber printing detection and motor messages: _to add_.
+👥 **Group rig — topic design** (no recorded run): the group's `motor/servo01/...` topics with payload schemas, QoS and
+retain flags, [topic_schema_specification.json](group/05_mqtt_topics/topic_structure/topic_schema_specification.json),
+drawn in [topic_hierarchy_tree.png](group/05_mqtt_topics/screenshots/topic_hierarchy_tree.png).
+
+Still to add: screenshot of the subscriber printing detection and motor messages on the Pi.
 
 ## 4.6 PLC link
 
@@ -115,7 +197,14 @@ subscriber [scripts/mqtt_subscribe.py](../../scripts/mqtt_subscribe.py).
 - OpenPLC program for the Pi: [deploy/openplc/edge_tags.st](../../deploy/openplc/edge_tags.st).
   Code: [scripts/plc_watch.py](../../scripts/plc_watch.py), [src/edgevision/hal/plc.py](../../src/edgevision/hal/plc.py).
 
-👥 **Group run on the Pi** — screenshot/video of the OpenPLC Monitoring page: %QX0.0 blinks and %QW0 counts when a part is shown: _to add_.
+👥 **Group rig:** the group's Modbus TCP register map (input registers for the sensor values, holding register for the
+servo command, coil for E-stop), [modbus_register_map_table.png](group/06_plc_link/screenshots/modbus_register_map_table.png).
+📝 *group-reported*: read of the 10 sensor registers, servo angle written to 120°, E-stop coil set
+([modbus_tcp_transaction.log](group/06_plc_link/communication_logs/modbus_tcp_transaction.log)). As its own summary
+says, this was a **software Modbus client, not a physical PLC**, round trip < 1.5 ms
+([plc_validation_summary.txt](group/06_plc_link/test_results/plc_validation_summary.txt)).
+
+Still to add: screenshot/video of the OpenPLC Monitoring page: %QX0.0 blinks and %QW0 counts when a part is shown.
 
 ## 4.7 Threat model
 
@@ -131,6 +220,10 @@ Full table: [docs/THREAT_MODEL.md](../../docs/THREAT_MODEL.md).
 | Physical / data | camera covered or unplugged, failing lamp | safe state stops the line; drift report | [M3 § 3.4](../M3/README.md#34-actuator-fires), [4.8](#48-reliability) |
 
 **5 mitigations applied** (≥ 2 required); known gaps (Modbus has no password, dashboard has no login) are listed with their next step.
+
+👥 **Group rig's threat model** (servo monitor): STRIDE table [stride_threat_matrix.md](group/07_threat_model/threat_analysis/stride_threat_matrix.md),
+DREAD risk scores [dread_risk_scoring.csv](group/07_threat_model/threat_analysis/dread_risk_scoring.csv), drawn in
+[threat_model_stride_matrix.png](group/07_threat_model/screenshots/threat_model_stride_matrix.png).
 
 ## 4.8 Reliability
 
@@ -148,7 +241,15 @@ Full table: [docs/THREAT_MODEL.md](../../docs/THREAT_MODEL.md).
 
 ![drift report](drift_report.png)
 
-👥 **Group run on the Pi** — video of the forced crash and automatic restart, and the OTA rollback on the Pi: _to add_.
+👥 **Group rig:** the group's serial-reconnect test [recovery_harness.py](group/08_reliability/recovery_tests/recovery_harness.py).
+📝 *group-reported* ([reliability_test_report.txt](group/08_reliability/test_results/reliability_test_report.txt)):
+- Arduino USB unplugged → found again and stream resumed in **4.98 s**, no crash
+  ([serial_reconnect_recovery.log](group/08_reliability/logs/serial_reconnect_recovery.log)).
+- 500-frame soak test: 491 inferences, 5,225 frames/s, 0 exceptions.
+- Service running under systemd on the Pi 5: [service_status_systemd.png](group/08_reliability/screenshots/service_status_systemd.png)
+  (the status text drawn as an image by the script, not a screen capture).
+
+Still to add: video of the forced crash and automatic restart, and the OTA rollback on the Pi.
 
 ---
 More: [VIVA_NOTES § M4](../../docs/VIVA_NOTES.md#m4-monitor-and-connect) · all numbers: [RESULTS § M4](../../docs/RESULTS.md#m4)
