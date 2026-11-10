@@ -1,0 +1,10 @@
+# ==============================================================================
+# LIVE MQTT PUBLISH & SUBSCRIBE LOG STREAM (M4 VERIFICATION)
+# Broker: localhost:8883 (MQTTS) | Client ID: rpi5-servo-edge-node01
+# ==============================================================================
+PUB [motor/servo01/sensors/imu] -> {"timestamp": "2026-11-10T13:12:59.673861", "timestamp_ms": 12400, "sensor": "Analog3Axis", "accel_x": 336, "accel_y": 392, "accel_z": 308, "magnitude": 595.6, "unit": "raw_adc_10bit"}
+PUB [motor/servo01/sensors/current] -> {"timestamp": "2026-11-10T13:12:59.673861", "timestamp_ms": 12400, "sensor": "ACS712_5A", "current_a": 0.092, "unit": "A", "status": "NORMAL", "threshold_a": 0.2}
+PUB [motor/servo01/sensors/voltage] -> {"timestamp": "2026-11-10T13:12:59.673861", "timestamp_ms": 12400, "sensor": "VOLTAGE_DIVIDER_5TO1", "voltage_v": 5.02, "unit": "V", "status": "NOMINAL", "nominal_v": 5.0}
+PUB [motor/servo01/sensors/audio] -> {"timestamp": "2026-11-10T13:12:59.673861", "timestamp_ms": 12400, "sensor": "MAX9814_MIC", "sound_rms": 16.22, "sound_p2p": 65, "acoustic_status": "NORMAL"}
+PUB [motor/servo01/status] -> {"timestamp": "2026-11-10T13:12:59.673861", "servo_id": "servo01", "servo_angle": 90, "state": "NORMAL", "anomaly_score": 0.05, "condition": "NORMAL"}
+PUB [motor/servo01/health] -> {"timestamp": "2026-11-10T13:12:59.673861", "node": "Raspberry Pi 5", "uptime_seconds": 3600.0, "total_telemetry_packets": 36000, "arduino_connected": true, "database_healthy": true}

@@ -21,6 +21,9 @@ files are in [group/](group/), one folder per task.
 Group media caption: *group run on the shared Pi rig — my part: filming the group run — filmed by me* (all files in
 [group/](group/)).
 
+**All group M4 photos and videos (Google Drive):** [M4 Photos & Videos Evidence Folder](https://drive.google.com/drive/folders/1Rb_cH2TGkXbIfMN6ufUxH2sYoraduzOa?usp=sharing).
+The photos and videos from the group's repo are also in [group/](group/) here.
+
 **Group reports and logs:** the group's TLS, MQTT, Modbus and reliability logs and reports, its benchmark and
 false-alarm reports, and its charts are the values my group member measured on the rig. They were then written into
 files by the group's script [generate_m4_evidence.py](group/scripts/generate_m4_evidence.py), so they are a write-up of
@@ -181,9 +184,11 @@ Still to add: screenshot of the refused / accepted connections on the Pi broker.
 Topic design: [docs/MQTT_TOPICS.md](../../docs/MQTT_TOPICS.md). Code: [src/edgevision/comms/mqtt.py](../../src/edgevision/comms/mqtt.py),
 subscriber [scripts/mqtt_subscribe.py](../../scripts/mqtt_subscribe.py).
 
-👥 **Group rig — topic design** (no recorded run): the group's `motor/servo01/...` topics with payload schemas, QoS and
-retain flags, [topic_schema_specification.json](group/05_mqtt_topics/topic_structure/topic_schema_specification.json),
+👥 **Group rig:** the group's `motor/servo01/...` topics with payload schemas, QoS and retain flags,
+[topic_schema_specification.json](group/05_mqtt_topics/topic_structure/topic_schema_specification.json),
 drawn in [topic_hierarchy_tree.png](group/05_mqtt_topics/screenshots/topic_hierarchy_tree.png).
+📝 *group-reported*: one message on each of the 6 topics (IMU, current, voltage, audio, status, health) published by
+the Pi node over MQTTS port 8883 ([mqtt_publish_subscribe_stream.log](group/05_mqtt_topics/logs/mqtt_publish_subscribe_stream.log)).
 
 Still to add: screenshot of the subscriber printing detection and motor messages on the Pi.
 
