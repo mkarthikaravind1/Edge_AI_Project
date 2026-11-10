@@ -33,7 +33,7 @@ See [ARCHITECTURE.md](ARCHITECTURE.md).
 | Pipeline FPS | ≥ 12 (Pi 5) | 68.6 (uncapped, video source) | 15.55 (USB webcam, camera-limited) |
 | Frame latency median / p95 | ≤ 120 ms | 12.4 / 20.7 ms | 19.3 / 23.1 ms |
 | Inference median (TFLite INT8) | ≤ 60 ms (Pi 5) | 9.0 ms | 16.0 ms |
-| Frame→actuator p95 | ≤ 600 ms | 8.8 ms | _pending (M3 on the Pi)_ |
+| Frame→actuator p95 | ≤ 600 ms | 8.8 ms | – |
 | Model size INT8 | ≤ 4 MB | 3.2 MB (TFLite INT8, shipped) | 3.2 MB (same file) |
 | SoC temperature under load | < 80 °C | n/a | 60.7 °C mean / 63.7 °C peak (live pipeline, no cooler) |
 
@@ -51,8 +51,8 @@ How it is measured, live:
 
 | | Target | Laptop stand-in | Pi rig |
 |---|---|---|---|
-| Correct / 20 (fixed set) | ≥ 18/20 | 16/20 (with simulated defects) | _pending_ |
-| False-pass rate | ≤ 10 % | 30 % | _pending_ |
+| Correct / 20 (fixed set) | ≥ 18/20 | 16/20 (with simulated defects) | – |
+| False-pass rate | ≤ 10 % | 30 % | – |
 
 The other two dashboard KPIs: **throughput** (parts per minute over the last 5 min), **yield** (% PASS), and
 **median latency** (part's first frame → reject output).

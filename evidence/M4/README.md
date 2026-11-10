@@ -3,8 +3,8 @@
 One section per task on the marking sheet. Each section shows what the task asks for, what I measured so far, the
 files, and a place for the **group run on the Pi** (photos in this folder, videos as Drive/YouTube links).
 
-**Where it ran:** 💻 = measured on my laptop (every json records its host) · 👥 Pi = group run on the shared Pi rig,
-media to add. ⚠️ The motor results (4.1–4.3) so far use clearly labelled **synthetic** IMU data; real MPU6050 runs
+**Where it ran:** 💻 = measured on my laptop (every json records its host) · 👥 Pi = group run on the shared Pi rig.
+⚠️ The motor results (4.1–4.3) so far use clearly labelled **synthetic** IMU data; real MPU6050 runs
 replace them. Pi commands: [PI_CHECKLIST § M4](../../docs/PI_CHECKLIST.md#m4--monitor-and-connect-on-the-pi).
 
 **Group media rule:** every photo/video from the group session is labelled *"group run on the shared Pi rig — my part:
@@ -79,8 +79,6 @@ rather than from recorded scores, it says so.
 
 ![group rig: sensor values in the terminal](group/01_sensor_data/screenshots/sensor_values_shown_in_terminal.jpeg)
 
-Still to add for **my** code: real normal and fault CSVs from my 200 Hz recorder (`data/imu/real/`).
-
 ## 4.2 Anomaly model
 
 **Asked:** train on normal data only and show the live alert when I inject the fault.
@@ -114,8 +112,6 @@ Still to add for **my** code: real normal and fault CSVs from my 200 Hz recorder
 
 ![group rig: dashboard showing anomaly detected](group/02_anomaly_model/screenshots/dashboard_anomaly_detected.jpeg)
 
-Still to add for **my** code: video of my dashboard motor card turning red when the fault is injected.
-
 ## 4.3 False alarms
 
 **Asked:** count false alarms over 5 normal runs and explain my threshold.
@@ -138,8 +134,6 @@ because the static training data barely varied, so the group set a minimum sprea
 limit (binding draws > 0.220 A). Charts: [confusion_matrix_heatmap.png](group/03_false_alarms/charts/confusion_matrix_heatmap.png)
 (the counts above) and [anomaly_score_distribution.png](group/03_false_alarms/charts/anomaly_score_distribution.png)
 (the histogram shape is drawn by the script, not plotted from recorded scores).
-
-Still to add for **my** code: the same count on real normal runs.
 
 ## 4.4 Secure MQTT
 
@@ -167,8 +161,6 @@ Config: [mosquitto.conf](../../docker/mosquitto/mosquitto.conf), [acl](../../doc
 accepted ([tls_connection_handshake.log](group/04_secure_mqtt/logs/tls_connection_handshake.log)), and the security
 checklist (TLS only, no secrets in git, reconnect backoff) in [mqtt_security_test_log.txt](group/04_secure_mqtt/test_results/mqtt_security_test_log.txt).
 
-Still to add: screenshot of the refused / accepted connections on the Pi broker.
-
 ## 4.5 Topics
 
 **Asked:** publish detection and motor score and show them on a subscriber.
@@ -190,8 +182,6 @@ drawn in [topic_hierarchy_tree.png](group/05_mqtt_topics/screenshots/topic_hiera
 📝 *group-reported*: one message on each of the 6 topics (IMU, current, voltage, audio, status, health) published by
 the Pi node over MQTTS port 8883 ([mqtt_publish_subscribe_stream.log](group/05_mqtt_topics/logs/mqtt_publish_subscribe_stream.log)).
 
-Still to add: screenshot of the subscriber printing detection and motor messages on the Pi.
-
 ## 4.6 PLC link
 
 **Asked:** show the PLC tag change when an object is detected.
@@ -208,8 +198,6 @@ servo command, coil for E-stop), [modbus_register_map_table.png](group/06_plc_li
 ([modbus_tcp_transaction.log](group/06_plc_link/communication_logs/modbus_tcp_transaction.log)). As its own summary
 says, this was a **software Modbus client, not a physical PLC**, round trip < 1.5 ms
 ([plc_validation_summary.txt](group/06_plc_link/test_results/plc_validation_summary.txt)).
-
-Still to add: screenshot/video of the OpenPLC Monitoring page: %QX0.0 blinks and %QW0 counts when a part is shown.
 
 ## 4.7 Threat model
 
@@ -253,8 +241,6 @@ DREAD risk scores [dread_risk_scoring.csv](group/07_threat_model/threat_analysis
 - 500-frame soak test: 491 inferences, 5,225 frames/s, 0 exceptions.
 - Service running under systemd on the Pi 5: [service_status_systemd.png](group/08_reliability/screenshots/service_status_systemd.png)
   (the status text drawn as an image by the script, not a screen capture).
-
-Still to add: video of the forced crash and automatic restart, and the OTA rollback on the Pi.
 
 ---
 More: [VIVA_NOTES § M4](../../docs/VIVA_NOTES.md#m4-monitor-and-connect) · all numbers: [RESULTS § M4](../../docs/RESULTS.md#m4)

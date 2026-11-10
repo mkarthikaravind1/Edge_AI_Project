@@ -1,7 +1,5 @@
 # Data card — dataset v1
 
-_Counts are filled from `evidence/M1/split_report.json`, `extract_frames.json`, `augment.json` and `label_check.json` once the video is processed._
-
 ## Classes
 | id | name | object | source |
 |---|---|---|---|
@@ -68,4 +66,3 @@ Test = real images only. Details: `evidence/M1/split_report.json`.
 - Phone video is WhatsApp-compressed (480×854) → lower detail than the Pi camera will give.
 - Only 2 physical copies of each part → limited variation in print defects and colour.
 - Synthetic renders are flat-shaded (no texture/layer lines) → the domain gap is why real frames dominate val/test.
-- _Add any lighting/background that is missing after reviewing errors._

@@ -3,8 +3,8 @@
 One section per task on the marking sheet. Each section shows what the task asks for, what I measured so far, the
 files, and a place for the **group run on the Pi** (photos in this folder, videos as Drive/YouTube links).
 
-**Where it ran:** 💻 = measured on my laptop (every json records its host) · 👥 Pi = group run on the shared Pi rig,
-media to add. Laptop numbers are never presented as Pi numbers. Pi commands: [PI_CHECKLIST § M3](../../docs/PI_CHECKLIST.md#m3--decide-and-act-on-the-pi).
+**Where it ran:** 💻 = measured on my laptop (every json records its host) · 👥 Pi = group run on the shared Pi rig.
+Laptop numbers are never presented as Pi numbers. Pi commands: [PI_CHECKLIST § M3](../../docs/PI_CHECKLIST.md#m3--decide-and-act-on-the-pi).
 
 **Group media rule:** every photo/video from the group session is labelled *"group run on the shared Pi rig — my part:
 … — filmed by …"*. My own measured numbers are listed separately from the group media.
@@ -72,8 +72,6 @@ Code: [src/edgevision/decide/rules.py](../../src/edgevision/decide/rules.py), co
 Both streams hold the camera rate (30 FPS). A shared model needs a lock, so the streams take turns; separate models
 use more memory but run in parallel. Code: [scripts/two_stream.py](../../scripts/two_stream.py).
 
-👥 **Group run on the Pi** — two-stream FPS photo/video: _to add_ (`two_stream_pi.json` if recorded).
-
 ## 3.3 Debounce
 
 **Asked:** show one bad frame does not trigger and N frames in a row do.
@@ -84,9 +82,6 @@ use more memory but run in parallel. Code: [scripts/two_stream.py](../../scripts
 - frame 59: the next part → **trigger** again
 
 Code: [scripts/debounce_demo.py](../../scripts/debounce_demo.py); unit tests [tests/test_decide.py](../../tests/test_decide.py).
-
-👥 **Group run on the Pi** — video of the trigger LED (green on the group breadboard) with one bad frame vs a real
-part: _to add_.
 
 ## 3.4 Actuator fires
 
@@ -106,9 +101,6 @@ part: _to add_.
   Raspberry Pi 5, sensor Arducam UC-844, about 5 FPS and 140–195 ms latency for the group's model (read off the
   screen, not a measurement of mine).
 
-Still to add for **my** code on this rig: video of the green LED (`reject`) pulsing when a part is shown and the
-yellow LED (`run_permit`) going off when the webcam is unplugged (`safe_state_pi.json`).
-
 ## 3.5 Docker
 
 **Asked:** build and start the container from a cold boot and trigger the actuator.
@@ -118,9 +110,6 @@ yellow LED (`run_permit`) going off when the webcam is unplugged (`safe_state_pi
 - Starts at every boot: [deploy/edge-compose.service](../../deploy/edge-compose.service), installed by
   [deploy/install_service.sh](../../deploy/install_service.sh).
 - 💻 Laptop: container `edge` **Up (healthy)**, 29.8 FPS ([docker_healthy_laptop.txt](../M5/docker_healthy_laptop.txt)).
-
-👥 **Group run on the Pi** — cold boot (pull the plug → plug in → hands off → `docker ps` shows the containers Up →
-part shown → actuator fires): video and `cold_boot_docker_ps.txt` _to add_.
 
 ## 3.6 End-to-end latency
 
@@ -134,8 +123,6 @@ part shown → actuator fires): video and `cold_boot_docker_ps.txt` _to add_.
 | part's first frame → actuator command (includes the deliberate 3-of-5 wait) | 73.1 ms | 75.4 ms | 91.4 ms | ≤ 600 ms ✅ |
 
 Code: [scripts/e2e_latency.py](../../scripts/e2e_latency.py).
-
-👥 **Group run on the Pi** — `e2e_latency_pi.json` (20+ events with a real part): _to add_.
 
 ---
 More: [VIVA_NOTES § M3](../../docs/VIVA_NOTES.md#m3-decide-and-act) · all numbers: [RESULTS § M3](../../docs/RESULTS.md#m3)

@@ -3,8 +3,8 @@
 One section per task on the marking sheet. Each section shows what the task asks for, what I measured so far, the
 files, and a place for the **group run on the Pi** (photos in this folder, videos as Drive/YouTube links).
 
-**Where it ran:** 💻 = measured on my laptop (every json records its host) · 👥 Pi = group run on the shared Pi rig,
-media to add. Laptop numbers are never presented as Pi numbers. Pi commands: [PI_CHECKLIST § M5](../../docs/PI_CHECKLIST.md#m5--complete-system-on-the-pi).
+**Where it ran:** 💻 = measured on my laptop (every json records its host) · 👥 Pi = group run on the shared Pi rig.
+Laptop numbers are never presented as Pi numbers. Pi commands: [PI_CHECKLIST § M5](../../docs/PI_CHECKLIST.md#m5--complete-system-on-the-pi).
 
 **Group media rule:** every photo/video from the group session is labelled *"group run on the shared Pi rig — my part:
 … — filmed by …"*. My own measured numbers are listed separately from the group media.
@@ -64,8 +64,6 @@ Group media caption: *group run on the shared Pi rig — my part: filming the gr
 
 ![group rig: Pi 5 camera feed](group/30_inspection_rig/photos/01_physical_camera_feed.jpeg)
 
-Still to add for **my** code: photo of my rig (camera, light, stop) and the image set captured on it.
-
 ## 5.2 Pass/fail station
 
 **Asked:** test 20 parts (10 good, 10 defective) and show the confusion matrix and false-pass rate.
@@ -92,8 +90,6 @@ Still to add for **my** code: photo of my rig (camera, light, stop) and the imag
   ([pass_fail_20_results.csv](group/31_pass_fail_station/test_results/pass_fail_20_results.csv)). Code: [runner.py](group/31_pass_fail_station/code/runner.py).
 - The dashboard's running total, which also counts live webcam inspections, is lower: TP 70, FP 10, FN 35, TN 95 →
   **78.57 % accuracy, false-pass 9.52 %** ([06_assessment_benchmarks.png](group/31_pass_fail_station/screenshots/06_assessment_benchmarks.png)).
-
-Still to add for **my** code: 20 real parts on the rig, with confusion matrix and false-pass rate.
 
 ## 5.3 Full chain on the device
 
@@ -127,8 +123,6 @@ dashboard, alongside motor replay → anomaly model → database, for **600.1 s*
 [run_10_minute_chain_benchmark.py](group/32_full_chain_device/code/run_10_minute_chain_benchmark.py)).
 It ran on Windows, not the Pi, and the motor input was replayed.
 
-Still to add for **my** code: 10-minute run on the Pi with real parts (video + `full_chain_pi_stats.json`).
-
 ## 5.4 Live dashboard
 
 **Asked:** show live detections, PASS/FAIL view, camera view, 3 KPIs and motor alert.
@@ -157,8 +151,6 @@ Still to add for **my** code: 10-minute run on the Pi with real parts (video + `
 
 ![group dashboard overview](group/33_live_dashboard/screenshots/01_dashboard_overview.png)
 
-Still to add for **my** code: dashboard from the Pi (`http://pi-karthik.local:8000`) on a phone, with a motor alert.
-
 ## 5.5 Product readiness
 
 **Asked:** show auto-start after power-cycle, offline run and logs.
@@ -184,9 +176,6 @@ Start, stop and setup scripts for Windows: [run_m5.bat](group/34_product_readine
 [stop_m5.bat](group/34_product_readiness/scripts/stop_m5.bat), [setup_windows.bat](group/34_product_readiness/scripts/setup_windows.bat).
 Runs offline (local model, local SQLite, no internet). No power-cycle auto-start was recorded.
 
-Still to add for **my** code: video: pull the plug → plug in → hands off → dashboard back; Wi-Fi off and still running;
-`readiness_pi.json`.
-
 ## 5.6 Headline metric
 
 **Asked:** measure one headline number and show it live.
@@ -203,8 +192,6 @@ Still to add for **my** code: video: pull the plug → plug in → hands off →
 the [benchmark page](group/31_pass_fail_station/screenshots/06_assessment_benchmarks.png)). The 50 runs reuse the
 **20 test images** from 5.2 (each 2–3 times), so this is 20 different images, not 50. The dashboard's running total
 over all inspections is 78.6 % (see [5.2](#52-passfail-station)).
-
-Still to add for **my** code: screenshot of the headline tile after marking the real parts.
 
 ## 5.7 Documents
 
@@ -238,8 +225,6 @@ All written and committed by me: [commit history](https://github.com/mkarthikara
 [media catalogue](group/36_documents/documentation/media_catalog.md). Some links inside these files point to the
 group's own repo layout.
 
-👥 **Demo video** (group run on the Pi): _Drive/YouTube link to add_.
-
 ## 5.8 Live demo and questions
 
 **Asked:** run one normal run and one injected fault, and answer the coach's questions.
@@ -253,8 +238,6 @@ group's own repo layout.
 a normal run (PPE PASS/FAIL, 3 LEDs, motor graphs) and an injected motor fault (current surge > 200 mA → score 0.95 →
 red ANOMALY → back to normal), plus 5 prepared answers (why Windows, YOLO classes, LED logic, anomaly model,
 live vs replayed data). Fault video from the rig: [M4 anomaly video](../M4/group/02_anomaly_model/videos/video_showing_anomaly.mp4).
-
-Still to add: demo video (normal run + injected fault): _Drive/YouTube link to add_.
 
 ---
 More: [VIVA_NOTES § M5](../../docs/VIVA_NOTES.md#m5-complete-system--dashboard) · all numbers: [RESULTS § M5](../../docs/RESULTS.md#m5)

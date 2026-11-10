@@ -57,8 +57,8 @@ Sources: `evidence/M1/train_eval.json`, `evidence/M1/eval_val_real.json`.
 | INT8 model size | ≤ 4 MB | 3.2 MB | ✅ |
 | Frame → actuator p95 | ≤ 600 ms | 8.8 ms (frame that fired); 75–90 ms from the part's first frame | ✅ laptop, ⏳ Pi |
 | Motor false alarms / 5 normal runs | ≤ 1 | 1 (SYNTHETIC data) | ⚠️ synthetic only |
-| False-pass rate | ≤ 10 % | 30 % (stand-in set with simulated marks/chips) | ❌ not yet — rig test pending |
-| Headline correct / 20 | ≥ 18 | 16 | ❌ not yet — rig test pending |
+| False-pass rate | ≤ 10 % | 30 % (stand-in set with simulated marks/chips) | ❌ not yet |
+| Headline correct / 20 | ≥ 18 | 16 | ❌ not yet |
 | Pi inference / FPS | ≤ 60 ms / ≥ 12 FPS (Pi 5) | **Pi 5: 16.0 ms** median (TFLite INT8) / **15.5 FPS** live (camera-limited) | ✅ Pi 5 |
 
 Final numbers vs these targets are in [RESULTS.md](RESULTS.md).
