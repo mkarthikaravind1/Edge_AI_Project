@@ -9,12 +9,32 @@ media to add. Laptop numbers are never presented as Pi numbers. Pi commands: [PI
 **Group media rule:** every photo/video from the group session is labelled *"group run on the shared Pi rig — my part:
 … — filmed by …"*. My own measured numbers are listed separately from the group media.
 
+### Group rig (shared Raspberry Pi 5)
+
+The group session ran on one shared rig. The group's system on it is the helmet/glove (PPE) detector, which uses its
+own model and 3 LEDs. My enclosure-inspection code is a separate system. Group media below shows that rig, not my
+numbers.
+
+| Part | On the group rig |
+|---|---|
+| Board | Raspberry Pi 5 ([group_pi5_board.jpg](group_pi5_board.jpg)) |
+| Camera | Arducam UC-844 (USB) |
+| Outputs | 3 LEDs on a breadboard, 220 Ω each: green GPIO27 (pin 13), yellow GPIO17 (pin 11), red GPIO22 (pin 15), GND pin 14 ([group_led_breadboard.jpg](group_led_breadboard.jpg)) |
+| Walk-through video | [group_pi_setup.mp4](group_pi_setup.mp4) (13 s) |
+
+**My outputs on this rig:** my `reject` is GPIO27 and `run_permit` is GPIO17, the same pins as the green and yellow
+LEDs. Running my code on the group breadboard therefore needs no change: **green LED = `reject`** (pulses per part),
+**yellow LED = `run_permit`** (on while healthy, off in SAFE STATE). The red LED (GPIO22) is not used by my code.
+
+Group media caption: *group run on the shared Pi rig — my part: filming the group run — filmed by me* (all group photos and videos in
+this folder).
+
 | Task | Max | Measured so far | Section |
 |---|---|---|---|
 | Decision rule sheet | 3 | input, 0.60 threshold, 3-of-5, action, safe state written and tested | [3.1](#31-decision-rule-sheet) |
 | Two-stream pipeline | 4 | 2 streams × 29.8 FPS at once (laptop) | [3.2](#32-two-stream-pipeline) |
 | Debounce | 4 | 1 bad frame: no trigger; 3 in a row: trigger | [3.3](#33-debounce) |
-| Actuator fires | 3 | run_permit off 1.06 s after camera loss; reject pulse per part | [3.4](#34-actuator-fires) |
+| Actuator fires | 3 | run_permit off 1.06 s after camera loss; reject pulse per part; 👥 Pi video of 3 LEDs firing | [3.4](#34-actuator-fires) |
 | Docker | 4 | container built, healthy, restart policy + systemd unit | [3.5](#35-docker) |
 | End-to-end latency | 2 | 25 events: frame → actuator p95 8.8 ms (laptop) | [3.6](#36-end-to-end-latency) |
 
@@ -65,7 +85,8 @@ use more memory but run in parallel. Code: [scripts/two_stream.py](../../scripts
 
 Code: [scripts/debounce_demo.py](../../scripts/debounce_demo.py); unit tests [tests/test_decide.py](../../tests/test_decide.py).
 
-👥 **Group run on the Pi** — video of the trigger LED with one bad frame vs a real part: _to add_.
+👥 **Group run on the Pi** — video of the trigger LED (green on the group breadboard) with one bad frame vs a real
+part: _to add_.
 
 ## 3.4 Actuator fires
 
@@ -77,8 +98,16 @@ Code: [scripts/debounce_demo.py](../../scripts/debounce_demo.py); unit tests [te
   back on at 8.0 s with the first good frame ([safe_state.json](safe_state.json), [safe_state_log.csv](safe_state_log.csv)).
 - Code: [src/edgevision/hal/actuator.py](../../src/edgevision/hal/actuator.py), [scripts/safe_state_demo.py](../../scripts/safe_state_demo.py).
 
-👥 **Group run on the Pi** — video of the relay/LED firing when a part is shown, and stopping when the webcam is
-unplugged: _to add_.
+👥 **Group run on the Pi 5** (group's PPE system, live Arducam camera):
+- [group_3led_actuator.mp4](group_3led_actuator.mp4) (45 s): the breadboard LEDs switch live as a helmet and a glove
+  are shown to the camera; the Pi dashboard runs alongside.
+- [group_led_breadboard.jpg](group_led_breadboard.jpg): the wired breadboard with LEDs lit.
+- [group_pi_dashboard_frame.png](group_pi_dashboard_frame.png): frame from that video. The dashboard reads host
+  Raspberry Pi 5, sensor Arducam UC-844, about 5 FPS and 140–195 ms latency for the group's model (read off the
+  screen, not a measurement of mine).
+
+Still to add for **my** code on this rig: video of the green LED (`reject`) pulsing when a part is shown and the
+yellow LED (`run_permit`) going off when the webcam is unplugged (`safe_state_pi.json`).
 
 ## 3.5 Docker
 
