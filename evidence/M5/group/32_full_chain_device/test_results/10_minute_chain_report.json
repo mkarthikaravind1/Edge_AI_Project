@@ -1,0 +1,15 @@
+{
+  "benchmark": "Assessment 32 - Full Chain on Device (10 Minutes)",
+  "status": "PASSED",
+  "start_time": "2026-11-10T15:36:40.996296",
+  "end_time": "2026-11-10T15:46:41.106955",
+  "duration_seconds": 600.11,
+  "vision_inferences_completed": 2417,
+  "average_vision_fps": 4.03,
+  "motor_records_processed": 5843,
+  "average_motor_hz": 9.74,
+  "alerts_count": 500,
+  "errors_count": 0,
+  "recovery_count": 0,
+  "dashboard_availability_pct": 100.0
+}

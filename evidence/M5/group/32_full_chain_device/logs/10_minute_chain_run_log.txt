@@ -1,0 +1,38 @@
+=== M5 FULL-CHAIN 10-MINUTE BENCHMARK LOG ===
+Start Timestamp: 2026-11-10T15:36:40.996803
+OS: Microsoft Windows 11 x64
+Vision Input: Webcam DirectShow (Index 0)
+Motor Input: M4 SQLite DB Replay (1,175 Samples)
+
+[ 30.1s / 600s] Vision:   104 frames (4.0 FPS, Cam: True) | Motor:   293 samples (Running: True) | Alerts: 500
+[ 60.1s / 600s] Vision:   223 frames (4.1 FPS, Cam: True) | Motor:   586 samples (Running: True) | Alerts: 500
+[ 90.3s / 600s] Vision:   339 frames (4.2 FPS, Cam: True) | Motor:   879 samples (Running: True) | Alerts: 500
+[120.4s / 600s] Vision:   451 frames (3.9 FPS, Cam: True) | Motor:  1172 samples (Running: True) | Alerts: 500
+[150.5s / 600s] Vision:   599 frames (6.5 FPS, Cam: True) | Motor:  1467 samples (Running: True) | Alerts: 500
+[180.0s / 600s] Vision:   736 frames (4.0 FPS, Cam: True) | Motor:  1756 samples (Running: True) | Alerts: 500
+[210.1s / 600s] Vision:   876 frames (4.4 FPS, Cam: True) | Motor:  2049 samples (Running: True) | Alerts: 500
+[240.2s / 600s] Vision:   997 frames (4.1 FPS, Cam: True) | Motor:  2343 samples (Running: True) | Alerts: 500
+[270.4s / 600s] Vision:  1123 frames (4.3 FPS, Cam: True) | Motor:  2636 samples (Running: True) | Alerts: 500
+[300.0s / 600s] Vision:  1252 frames (3.7 FPS, Cam: True) | Motor:  2925 samples (Running: True) | Alerts: 500
+[330.2s / 600s] Vision:  1374 frames (4.2 FPS, Cam: True) | Motor:  3219 samples (Running: True) | Alerts: 500
+[360.5s / 600s] Vision:  1496 frames (4.2 FPS, Cam: True) | Motor:  3513 samples (Running: True) | Alerts: 500
+[390.0s / 600s] Vision:  1609 frames (4.1 FPS, Cam: True) | Motor:  3801 samples (Running: True) | Alerts: 500
+[420.1s / 600s] Vision:  1728 frames (3.9 FPS, Cam: True) | Motor:  4095 samples (Running: True) | Alerts: 500
+[450.2s / 600s] Vision:  1856 frames (4.3 FPS, Cam: True) | Motor:  4388 samples (Running: True) | Alerts: 500
+[480.4s / 600s] Vision:  1978 frames (3.9 FPS, Cam: True) | Motor:  4679 samples (Running: True) | Alerts: 500
+[510.3s / 600s] Vision:  2084 frames (3.7 FPS, Cam: True) | Motor:  4968 samples (Running: True) | Alerts: 500
+[540.4s / 600s] Vision:  2194 frames (3.6 FPS, Cam: True) | Motor:  5261 samples (Running: True) | Alerts: 500
+[570.6s / 600s] Vision:  2308 frames (3.9 FPS, Cam: True) | Motor:  5555 samples (Running: True) | Alerts: 500
+[600.1s / 600s] Vision:  2417 frames (4.0 FPS, Cam: True) | Motor:  5843 samples (Running: True) | Alerts: 500
+
+=== BENCHMARK COMPLETED SUCCESSFULLY ===
+End Timestamp:            2026-11-10T15:46:41.106955
+Total Actual Duration:    600.11 seconds (10.00 mins)
+Total Vision Inferences:  2417
+Average Vision FPS:       4.03 FPS
+Total Motor Samples:      5843
+Average Motor Rate:       9.74 Hz
+Alerts Triggered:         500
+Errors / Crashes:         0
+Recovery Events:          0
+Dashboard Availability:   100.0% (Zero downtime, zero deadlocks)
