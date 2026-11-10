@@ -1,0 +1,9 @@
+Threat_ID,Threat_Description,Damage,Reproducibility,Exploitability,Affected_Users,Discoverability,DREAD_Score,Risk_Level
+T01,Unauthorized MQTT Broker Access,8,7,6,9,7,7.4,HIGH
+T02,Credential Leakage in Git Repo,10,9,9,10,9,9.4,CRITICAL
+T03,Network Data Interception / Sniffing,7,8,7,8,8,7.6,HIGH
+T04,Sensor Data Falsification / Tampering,8,6,5,7,6,6.4,MEDIUM
+T05,Unauthorized Servo Actuation Command,9,6,6,8,6,7.0,HIGH
+T06,Raspberry Pi OS Host Intrusion,10,5,5,10,5,7.0,HIGH
+T07,Denial of Service (DoS) Telemetry Flood,7,8,8,9,8,8.0,HIGH
+T08,Plaintext Protocol Communication,8,9,9,8,9,8.6,HIGH

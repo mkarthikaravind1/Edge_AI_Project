@@ -1,0 +1,11 @@
+2026-11-10 13:00:10.100 [INFO] SerialReader: Telemetry receiving normally on /dev/ttyUSB0 (Seq: 1450)
+2026-11-10 13:00:10.200 [INFO] SerialReader: Telemetry receiving normally on /dev/ttyUSB0 (Seq: 1451)
+2026-11-10 13:00:10.315 [WARNING] SerialReader: Device disconnected! [Errno 19] No such device (/dev/ttyUSB0)
+2026-11-10 13:00:10.316 [INFO] SerialReader: Connection marked CLOSED. Entering auto-discovery loop...
+2026-11-10 13:00:11.820 [DEBUG] SerialReader: Scanning USB / ACM ports... (Attempt 1: No Arduino found)
+2026-11-10 13:00:13.330 [DEBUG] SerialReader: Scanning USB / ACM ports... (Attempt 2: Discovered /dev/ttyUSB0)
+2026-11-10 13:00:13.350 [INFO] SerialReader: Opening /dev/ttyUSB0 at 115200 baud...
+2026-11-10 13:00:15.150 [INFO] SerialReader: DTR auto-reset settling delay elapsed (1.8s). Buffer flushed.
+2026-11-10 13:00:15.260 [INFO] SerialReader: Reconnection established! Resuming telemetry stream.
+2026-11-10 13:00:15.300 [INFO] SerialReader: Telemetry stream verified (Seq: 1452, Angle: 90 deg, Current: 0.092A)
+2026-11-10 13:00:15.301 [SUMMARY] Total Recovery Downtime: 4.985 seconds | Zero process crashes | Database safe

@@ -1,0 +1,93 @@
+{
+  "motor/servo01/sensors/imu": {
+    "description": "3-Axis acceleration & vibration vector",
+    "qos": 1,
+    "retain": false,
+    "fields": {
+      "timestamp": "ISO 8601 String",
+      "timestamp_ms": "Integer (Arduino millis)",
+      "accel_x": "Integer (0-1023)",
+      "accel_y": "Integer (0-1023)",
+      "accel_z": "Integer (0-1023)",
+      "magnitude": "Float",
+      "unit": "raw_adc_10bit"
+    }
+  },
+  "motor/servo01/sensors/current": {
+    "description": "ACS712 Motor current telemetry & safety thresholds",
+    "qos": 1,
+    "retain": false,
+    "fields": {
+      "timestamp": "ISO 8601 String",
+      "timestamp_ms": "Integer",
+      "current_a": "Float (Amperes)",
+      "unit": "A",
+      "status": "NORMAL | ELEVATED_ANOMALY | CRITICAL_OVERCURRENT",
+      "threshold_a": 0.2
+    }
+  },
+  "motor/servo01/sensors/voltage": {
+    "description": "0-25V resistive divider motor supply voltage",
+    "qos": 1,
+    "retain": false,
+    "fields": {
+      "timestamp": "ISO 8601 String",
+      "timestamp_ms": "Integer",
+      "voltage_v": "Float (Volts)",
+      "unit": "V",
+      "status": "NOMINAL | BROWNOUT_WARNING | DISCONNECTED",
+      "nominal_v": 5.0
+    }
+  },
+  "motor/servo01/sensors/audio": {
+    "description": "MAX9814 acoustic gear and motor noise",
+    "qos": 1,
+    "retain": false,
+    "fields": {
+      "timestamp": "ISO 8601 String",
+      "timestamp_ms": "Integer",
+      "sound_rms": "Float",
+      "sound_p2p": "Integer (0-1023)",
+      "acoustic_status": "NORMAL | HIGH_NOISE"
+    }
+  },
+  "motor/servo01/status": {
+    "description": "Actuator operational state & condition summary",
+    "qos": 1,
+    "retain": true,
+    "fields": {
+      "timestamp": "ISO 8601 String",
+      "servo_id": "servo01",
+      "servo_angle": "Integer (30, 90, 150)",
+      "state": "CYCLING | HOLDING | FAULT",
+      "anomaly_score": "Float (0.00 - 1.00)",
+      "condition": "NORMAL | FAULT"
+    }
+  },
+  "motor/servo01/alerts": {
+    "description": "Critical threshold breaches & ML anomaly events",
+    "qos": 2,
+    "retain": false,
+    "fields": {
+      "timestamp": "ISO 8601 String",
+      "severity": "WARNING | CRITICAL",
+      "channel": "CURRENT_OVERLOAD | MULTIVARIATE_ML | BROWNOUT",
+      "message": "String",
+      "metric_value": "Float",
+      "threshold": "Float"
+    }
+  },
+  "motor/servo01/health": {
+    "description": "Raspberry Pi 5 edge node heartbeat & operational status",
+    "qos": 1,
+    "retain": true,
+    "fields": {
+      "timestamp": "ISO 8601 String",
+      "node": "Raspberry Pi 5",
+      "uptime_seconds": "Float",
+      "total_telemetry_packets": "Integer",
+      "arduino_connected": "Boolean",
+      "database_healthy": "Boolean"
+    }
+  }
+}

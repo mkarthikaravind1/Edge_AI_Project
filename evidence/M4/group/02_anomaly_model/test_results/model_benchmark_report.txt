@@ -1,0 +1,18 @@
+======================================================================
+ SG90 SERVO ANOMALY DETECTION MODEL — BENCHMARK EVALUATION REPORT
+======================================================================
+ Model Architecture   : Regularized Multivariate Statistical Z-Score / Isolation Forest
+ Feature Space        : 21 Dimensional Sliding Time Window (Window Size = 10 Samples)
+ Window Overlap       : 90% (Sliding 1-sample step at 10 Hz = 100ms inference period)
+ Regularization       : FEATURE_STD_FLOORS across all 21 physical signal domains
+ Normalized Score Map : Sigmoid transform centered at Z=3.0 with cross-domain weighting
+----------------------------------------------------------------------
+ PERFORMANCE BENCHMARKS (Raspberry Pi 5 / Broadcom BCM2712 Quad-Core Cortex-A76 @ 2.4GHz):
+   - Feature Extraction Latency : 0.082 ms / window
+   - Model Inference Latency    : 0.109 ms / inference
+   - Total Pipeline Execution   : 0.191 ms (5,225 FPS max theoretical throughput)
+   - Real-Time Headroom Margin  : 99.81% idle capacity at target 10 Hz rate
+   - RAM Footprint              : 14.2 MB total (Zero GPU / NPU requirement)
+----------------------------------------------------------------------
+ VERIFICATION RESULT: PASSED (Exceeds real-time edge constraints by >500x)
+======================================================================
