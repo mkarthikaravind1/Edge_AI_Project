@@ -8,7 +8,8 @@ camera → INT8 detector → pass/fail inspection → decision → relay/LED + P
 with motor-vibration monitoring, OTA updates and fail-safe behaviour. Built to run on a Raspberry Pi with a USB webcam,
 in Docker, starting by itself after a power cycle. **Status: M1 and M2 are measured on my Raspberry Pi 5 (6 Nov 2026,
 [M1 Pi run](evidence/M1/PI_RUN.md), [M2 Pi run](evidence/M2/PI_RUN.md)); M3–M5 are measured on my laptop so far, their
-Pi runs follow [docs/PI_CHECKLIST.md](docs/PI_CHECKLIST.md).**
+Pi runs follow [docs/PI_CHECKLIST.md](docs/PI_CHECKLIST.md). For M3–M5 there is also 👥 group-run evidence from the
+shared Raspberry Pi 5 rig (filmed by me), kept in each milestone's index and listed apart from my own numbers.**
 
 Objects (classes): **enclosure** (my closed printed part), **body** = Model 1, **lid** = Model 2 — both models split
 from my CAD file `cad/enclosure_full.stl`.
@@ -30,9 +31,9 @@ Details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 |---|---|---|
 | **M1 Detect** | real test mAP@0.5 **0.995**, mAP@0.5:0.95 0.995 (real val 0.991 / 0.951); 10 wrong detections analysed; **on the Pi 5: live overlay 15.5 FPS (camera-limited), frame latency median 19.3 ms / p95 23.1 ms, CPU 28 %, 61 °C**; laptop 68.6 FPS | [M1 index](evidence/M1/README.md), [TARGETS](docs/TARGETS.md), [DATA_CARD](docs/DATA_CARD.md) |
 | **M2 Optimize** | TFLite INT8 **3.2 MB**, mAP@0.5 drop **0.001** vs its FP32; ONNX INT8 3.6 MB, drop 0.024; fair benchmark (20 warm-up, 200 runs) **on the Pi 5: TFLite INT8 inference median 16.0 ms (54 FPS model-only), 1.5–2× faster than FP32; INT8 runs live on the Pi; all 4 own targets met on the Pi** | [M2 index](evidence/M2/README.md), [comparison](evidence/M2/comparison.md), [OPTIMISATION](docs/OPTIMISATION.md) |
-| **M3 Decide & Act** | one bad frame never fires, 3-in-a-row does; safe state **1.06 s** after camera loss; 2 streams × 30 FPS; frame→actuator p95 **8.8 ms** (part→actuator 75 ms) | [M3 index](evidence/M3/README.md), [DECISION_RULES](docs/DECISION_RULES.md) |
-| **M4 Monitor & Connect** | MQTT security **6/6**; 3 topics, 0 schema failures; PLC 7/7 pulses; OTA v1→v2, broken v3 rolled back, tampered refused; restart after crash **1.2 s**; motor alert 1.0 s (synthetic IMU) | [M4 index](evidence/M4/README.md), [MQTT_TOPICS](docs/MQTT_TOPICS.md), [THREAT_MODEL](docs/THREAT_MODEL.md) |
-| **M5 Complete system** | 10-min full chain: **30.0 FPS**, 0 errors, 171/172 parts tracked, 1858 MQTT msgs, part→reject p95 90 ms; 20-part stand-in test **16/20, false-pass 0.30 (target 0.10 not met yet — rig test pending)**; readiness 7/7 | [M5 index](evidence/M5/README.md), [DEFECTS](docs/DEFECTS.md), [DEMO](docs/DEMO.md) |
+| **M3 Decide & Act** | one bad frame never fires, 3-in-a-row does; safe state **1.06 s** after camera loss; 2 streams × 30 FPS; frame→actuator p95 **8.8 ms** (part→actuator 75 ms)<br>👥 **Group run on the Pi 5:** group's PPE detector switching 3 LEDs live on the breadboard (45 s video), Pi dashboard about 5 FPS | [M3 index](evidence/M3/README.md), [group rig](evidence/M3/README.md#group-rig-shared-raspberry-pi-5), [DECISION_RULES](docs/DECISION_RULES.md) |
+| **M4 Monitor & Connect** | MQTT security **6/6**; 3 topics, 0 schema failures; PLC 7/7 pulses; OTA v1→v2, broken v3 rolled back, tampered refused; restart after crash **1.2 s**; motor alert 1.0 s (synthetic IMU)<br>👥 **Group servo monitor (Arduino → Pi 5):** real sensor stream (6 videos, recorded CSV), live anomaly video and dashboard "ANOMALY DETECTED"; group-reported: 0 false alarms in 150 normal cycles, TLS on 8883, Modbus to a software client (no physical PLC), USB reconnect 4.98 s; [photos & videos (Drive)](https://drive.google.com/drive/folders/1Rb_cH2TGkXbIfMN6ufUxH2sYoraduzOa?usp=sharing) | [M4 index](evidence/M4/README.md), [group rig](evidence/M4/README.md#group-rig-shared-raspberry-pi-5), [MQTT_TOPICS](docs/MQTT_TOPICS.md), [THREAT_MODEL](docs/THREAT_MODEL.md) |
+| **M5 Complete system** | 10-min full chain: **30.0 FPS**, 0 errors, 171/172 parts tracked, 1858 MQTT msgs, part→reject p95 90 ms; 20-part stand-in test **16/20, false-pass 0.30 (target 0.10 not met yet — rig test pending)**; readiness 7/7<br>👥 **Group integrated system (PPE station + servo monitor, on a Windows laptop, motor data replayed from the Pi rig):** 10-min chain 4.0 FPS, 0 errors; 20/20 test images correct (dashboard running total 78.6 %, false-pass 9.52 %); live dashboard with 3 KPIs and motor alert | [M5 index](evidence/M5/README.md), [group system](evidence/M5/README.md#group-system-m5-integrated-dashboard), [DEFECTS](docs/DEFECTS.md), [DEMO](docs/DEMO.md) |
 
 Everything measured is in `evidence/` and collected in [docs/RESULTS.md](docs/RESULTS.md) (`python scripts/make_report.py`).
 Every evidence json records the host it ran on: laptop numbers are never presented as Pi numbers.
@@ -102,3 +103,7 @@ Dashboard: `http://localhost:8000` on the Pi, `http://pi-karthik.local:8000` fro
 - Pass/fail is measured on a laptop stand-in with **simulated** marks/chips; chipped corners are not caught yet.
 - Pi FPS, latency and temperature for M1–M2 are measured on the Pi 5 (no cooler fitted); M3–M5 device numbers
   (frame→actuator on the Pi, cold boot, OpenPLC, real IMU, rig pass/fail) are still pending the Pi.
+- 👥 Group evidence for M3–M5 is the group's systems (PPE detector, SG90 servo monitor), not my enclosure station; my
+  part was filming. Group M4 reports and logs are written up by the group's script from my group member's
+  measurements (marked *group-reported*); the group's M5 ran on a Windows laptop with the motor data replayed, and its
+  "50 samples" reuse 20 images.
