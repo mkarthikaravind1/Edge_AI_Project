@@ -18,7 +18,7 @@ over USB serial to the Pi 5. The Pi runs a 21-feature anomaly model and a web da
 MPU6050 at 200 Hz, 36 features) is a separate system. Group media below shows that rig, not my numbers. All group
 files are in [group/](group/), one folder per task.
 
-Group media caption: *group run on the shared Pi rig — my part: _to fill in_ — filmed by _to fill in_* (all files in
+Group media caption: *group run on the shared Pi rig — my part: filming the group run — filmed by me* (all files in
 [group/](group/)).
 
 **Group reports and logs:** the group's TLS, MQTT, Modbus and reliability logs and reports, its benchmark and

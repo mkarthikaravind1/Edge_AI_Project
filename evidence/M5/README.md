@@ -9,6 +9,21 @@ media to add. Laptop numbers are never presented as Pi numbers. Pi commands: [PI
 **Group media rule:** every photo/video from the group session is labelled *"group run on the shared Pi rig — my part:
 … — filmed by …"*. My own measured numbers are listed separately from the group media.
 
+### Group system (M5 integrated dashboard)
+
+The group's M5 joins its two earlier systems into one app with one dashboard: the **M3 PPE station** (YOLOv8n,
+helmet/gloves → PASS/FAIL, 3 LEDs) and the **M4 SG90 servo monitor** (21-feature anomaly model). My enclosure
+inspection and motor monitor are a separate system. All group files are in [group/](group/), one folder per task
+(the group numbered them 30–37 for 5.1–5.8).
+
+**Where the group's M5 ran:** 💻👥 on a **Windows 11 laptop** (FastAPI + browser dashboard, laptop webcam). The motor
+side **replays the servo data the group recorded on the Pi rig** (1,175 rows); it is not live from the sensors. The
+Pi 5 / Arduino rig photos and videos come from M3 and M4. The group's demo notes say this
+([Q1](group/37_live_demo_questions/demo_protocol_and_qa.md)).
+
+Group media caption: *group run on the shared Pi rig — my part: filming the group run — filmed by me* (all files in
+[group/](group/)).
+
 | Task | Max | Measured so far | Section |
 |---|---|---|---|
 | Inspection rig | 2 | rig design; stand-in image set with all 4 defect types | [5.1](#51-inspection-rig) |
@@ -35,7 +50,21 @@ media to add. Laptop numbers are never presented as Pi numbers. Pi commands: [PI
 
 ![stand-in image set](../../data/rig_sim/contact_sheet.jpg)
 
-👥 **Group run on the Pi** — photo of the rig (camera, light, stop) and the image set captured on it: _to add_.
+👥 **Group rig** (group's PPE station):
+- Pi 5 camera feed: [01_physical_camera_feed.jpeg](group/30_inspection_rig/photos/01_physical_camera_feed.jpeg).
+- Rig hardware (already in this repo): Pi 5 [board](../M3/group_pi5_board.jpg), [LED breadboard](../M3/group_led_breadboard.jpg),
+  [group member at the bench](../M4/group/01_sensor_data/screenshots/me_working_photo.jpeg).
+- PPE test shots: [helmet and gloves 1](group/30_inspection_rig/photos/ppe_helmet_and_gloves_1.jpeg),
+  [helmet and gloves 2](group/30_inspection_rig/photos/ppe_helmet_and_gloves_2.jpeg),
+  [helmet only](group/30_inspection_rig/photos/ppe_helmet_only.jpeg).
+- Image set: labelling in Roboflow ([05_roboflow_defect_annotations.jpeg](group/30_inspection_rig/photos/05_roboflow_defect_annotations.jpeg)),
+  and the Kaggle PPE dataset opened on the Pi ([ppe_dataset_on_pi.jpeg](group/30_inspection_rig/photos/ppe_dataset_on_pi.jpeg)).
+- Test image set used in 5.2 and 5.6: [10 compliant](group/31_pass_fail_station/test_images/compliant/) (helmet + gloves) and
+  [10 non-compliant](group/31_pass_fail_station/test_images/non_compliant/).
+
+![group rig: Pi 5 camera feed](group/30_inspection_rig/photos/01_physical_camera_feed.jpeg)
+
+Still to add for **my** code: photo of my rig (camera, light, stop) and the image set captured on it.
 
 ## 5.2 Pass/fail station
 
@@ -58,7 +87,13 @@ media to add. Laptop numbers are never presented as Pi numbers. Pi commands: [PI
 
 ![pass/fail confusion matrix](passfail_confusion.png)
 
-👥 **Group run on the Pi** — 20 real parts on the rig: confusion matrix and false-pass rate: _to add_.
+👥 **Group station** (💻 group laptop, PPE model on the 20 test images above):
+- 20 samples (10 compliant, 10 non-compliant): **20/20 correct, 0 false passes**, mean 186 ms per image
+  ([pass_fail_20_results.csv](group/31_pass_fail_station/test_results/pass_fail_20_results.csv)). Code: [runner.py](group/31_pass_fail_station/code/runner.py).
+- The dashboard's running total, which also counts live webcam inspections, is lower: TP 70, FP 10, FN 35, TN 95 →
+  **78.57 % accuracy, false-pass 9.52 %** ([06_assessment_benchmarks.png](group/31_pass_fail_station/screenshots/06_assessment_benchmarks.png)).
+
+Still to add for **my** code: 20 real parts on the rig, with confusion matrix and false-pass rate.
 
 ## 5.3 Full chain on the device
 
@@ -84,7 +119,15 @@ dashboard, + motor monitor ([full_chain_laptop.json](full_chain_laptop.json), su
 
 Code: [scripts/station_sim.py](../../scripts/station_sim.py), [src/edgevision/runtime.py](../../src/edgevision/runtime.py).
 
-👥 **Group run on the Pi** — 10-minute run on the Pi with real parts (video + `full_chain_pi_stats.json`): _to add_.
+👥 **Group full chain** (💻 group laptop, 10 Nov 2026 15:36–15:46): webcam → PPE model → decision → backend → database →
+dashboard, alongside motor replay → anomaly model → database, for **600.1 s**: 2,417 vision inferences (**4.0 FPS**),
+5,843 motor samples (9.7 Hz), **0 errors, 0 recoveries needed**
+([10_minute_chain_report.json](group/32_full_chain_device/test_results/10_minute_chain_report.json), log every 30 s
+[10_minute_chain_run_log.txt](group/32_full_chain_device/logs/10_minute_chain_run_log.txt), code
+[run_10_minute_chain_benchmark.py](group/32_full_chain_device/code/run_10_minute_chain_benchmark.py)).
+It ran on Windows, not the Pi, and the motor input was replayed.
+
+Still to add for **my** code: 10-minute run on the Pi with real parts (video + `full_chain_pi_stats.json`).
 
 ## 5.4 Live dashboard
 
@@ -100,7 +143,21 @@ Code: [scripts/station_sim.py](../../scripts/station_sim.py), [src/edgevision/ru
 |---|---|
 | ![dashboard desktop](dashboard_desktop_laptop.jpg) | ![dashboard phone](dashboard_phone_laptop.jpg) |
 
-👥 **Group run on the Pi** — dashboard from the Pi (`http://pi-karthik.local:8000`) on a phone, with a motor alert: _to add_.
+👥 **Group dashboard** (💻 group laptop; screenshots taken automatically from the running app by
+[capture_dashboard_evidence.py](group/33_live_dashboard/code/capture_dashboard_evidence.py)):
+- [01_dashboard_overview.png](group/33_live_dashboard/screenshots/01_dashboard_overview.png): 3 KPIs (inspection
+  accuracy 78.6 %, pass rate 33.0 %, 71 motor anomaly events), latest PASS/FAIL, latest motor reading, alerts.
+- [02_vision_inspection_rig.png](group/33_live_dashboard/screenshots/02_vision_inspection_rig.png) camera view,
+  [03_motor_condition_oscilloscope.png](group/33_live_dashboard/screenshots/03_motor_condition_oscilloscope.png) motor graphs,
+  [04_live_motor_anomaly_alert.png](group/33_live_dashboard/screenshots/04_live_motor_anomaly_alert.png) motor alert,
+  [05_alerts_center.png](group/33_live_dashboard/screenshots/05_alerts_center.png) alert list.
+- The earlier M3 dashboard on the Pi: [photo](group/33_live_dashboard/screenshots/m3_pi_dashboard_helmet.jpeg),
+  [screen recording](group/33_live_dashboard/videos/m3_pi_dashboard_screen_record.mp4).
+- Some alert rows on the overview read "undefined" (a display bug in the group's page).
+
+![group dashboard overview](group/33_live_dashboard/screenshots/01_dashboard_overview.png)
+
+Still to add for **my** code: dashboard from the Pi (`http://pi-karthik.local:8000`) on a phone, with a motor alert.
 
 ## 5.5 Product readiness
 
@@ -121,8 +178,14 @@ Code: [scripts/station_sim.py](../../scripts/station_sim.py), [src/edgevision/ru
 Container healthy: [docker_healthy_laptop.txt](docker_healthy_laptop.txt). Code: [scripts/readiness_check.py](../../scripts/readiness_check.py)
 (`--pi` adds the power-cycle and offline checks).
 
-👥 **Group run on the Pi** — video: pull the plug → plug in → hands off → dashboard back; Wi-Fi off and still running;
-`readiness_pi.json`: _to add_.
+👥 **Group app** (💻 group laptop): health page showing backend running, webcam online, motor on recorded data
+(1,175 rows), database connected, 0 recovery events ([07_system_health.png](group/34_product_readiness/screenshots/07_system_health.png)).
+Start, stop and setup scripts for Windows: [run_m5.bat](group/34_product_readiness/scripts/run_m5.bat),
+[stop_m5.bat](group/34_product_readiness/scripts/stop_m5.bat), [setup_windows.bat](group/34_product_readiness/scripts/setup_windows.bat).
+Runs offline (local model, local SQLite, no internet). No power-cycle auto-start was recorded.
+
+Still to add for **my** code: video: pull the plug → plug in → hands off → dashboard back; Wi-Fi off and still running;
+`readiness_pi.json`.
 
 ## 5.6 Headline metric
 
@@ -135,7 +198,13 @@ Container healthy: [docker_healthy_laptop.txt](docker_healthy_laptop.txt). Code:
 - Live: dashboard tile and `GET /api/kpis` ([kpis.py](../../src/edgevision/dashboard/kpis.py)); the operator marks each
   part good/defective on the dashboard.
 
-👥 **Group run on the Pi** — screenshot of the headline tile after marking the real parts: _to add_.
+👥 **Group headline** (💻 group laptop): correct decisions out of 50 → **50/50 (100 %)**, 0 false passes, mean 191 ms
+([headline_metric_50_results.csv](group/35_headline_metric/test_results/headline_metric_50_results.csv); shown live on
+the [benchmark page](group/31_pass_fail_station/screenshots/06_assessment_benchmarks.png)). The 50 runs reuse the
+**20 test images** from 5.2 (each 2–3 times), so this is 20 different images, not 50. The dashboard's running total
+over all inspections is 78.6 % (see [5.2](#52-passfail-station)).
+
+Still to add for **my** code: screenshot of the headline tile after marking the real parts.
 
 ## 5.7 Documents
 
@@ -154,6 +223,21 @@ All written and committed by me: [commit history](https://github.com/mkarthikara
 
 ![software stack](../../docs/stack.png)
 
+👥 **Group documents** ([group/36_documents/documentation/](group/36_documents/documentation/)):
+[system architecture](group/36_documents/documentation/system_architecture.md),
+[datasheet](group/36_documents/documentation/datasheet.md),
+[known limitations](group/36_documents/documentation/known_limitations.md),
+[dashboard guide](group/36_documents/documentation/dashboard_guide.md),
+[inspection workflow](group/36_documents/documentation/inspection_workflow.md),
+[motor monitoring workflow](group/36_documents/documentation/motor_monitoring_workflow.md),
+[testing methodology](group/36_documents/documentation/testing_methodology.md),
+[reliability report](group/36_documents/documentation/reliability_report.md),
+[Windows setup](group/36_documents/documentation/windows_setup.md),
+[M3 source audit](group/36_documents/documentation/m3_source_audit.md),
+[M4 source audit](group/36_documents/documentation/m4_source_audit.md),
+[media catalogue](group/36_documents/documentation/media_catalog.md). Some links inside these files point to the
+group's own repo layout.
+
 👥 **Demo video** (group run on the Pi): _Drive/YouTube link to add_.
 
 ## 5.8 Live demo and questions
@@ -165,7 +249,12 @@ All written and committed by me: [commit history](https://github.com/mkarthikara
   → motor fault on the IMU → headline metric.
 - Explanations for every task in simple words: [docs/VIVA_NOTES.md](../../docs/VIVA_NOTES.md).
 
-👥 **Group run on the Pi** — demo video (normal run + injected fault): _Drive/YouTube link to add_.
+👥 **Group demo plan and questions:** [demo_protocol_and_qa.md](group/37_live_demo_questions/demo_protocol_and_qa.md):
+a normal run (PPE PASS/FAIL, 3 LEDs, motor graphs) and an injected motor fault (current surge > 200 mA → score 0.95 →
+red ANOMALY → back to normal), plus 5 prepared answers (why Windows, YOLO classes, LED logic, anomaly model,
+live vs replayed data). Fault video from the rig: [M4 anomaly video](../M4/group/02_anomaly_model/videos/video_showing_anomaly.mp4).
+
+Still to add: demo video (normal run + injected fault): _Drive/YouTube link to add_.
 
 ---
 More: [VIVA_NOTES § M5](../../docs/VIVA_NOTES.md#m5-complete-system--dashboard) · all numbers: [RESULTS § M5](../../docs/RESULTS.md#m5)
