@@ -1,4 +1,4 @@
-# Edge Inspection — Edge AI & Embedded Vision Systems (individual assessment)
+# Edge Inspection — Edge AI & Embedded Vision Systems
 
 [![tests](https://github.com/mkarthikaravind1/Edge_AI_Project/actions/workflows/tests.yml/badge.svg)](https://github.com/mkarthikaravind1/Edge_AI_Project/actions/workflows/tests.yml)
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/mkarthikaravind1/Edge_AI_Project)
